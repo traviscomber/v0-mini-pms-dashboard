@@ -1,37 +1,152 @@
-export default function Page() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-black px-6 text-neutral-400">
-      <div className="flex w-full max-w-md flex-col items-start gap-8">
-        <svg
-          fill="currentColor"
-          viewBox="0 0 147 70"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          className="size-10 text-white"
-        >
-          <path d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z" />
-          <path d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z" />
-        </svg>
+'use client';
 
-        <div className="space-y-3">
-          <h1 className="text-balance text-2xl font-semibold tracking-tight text-white">
-            To get started, describe what you want to build.
-          </h1>
-          <p className="text-pretty text-sm leading-relaxed text-neutral-500">
-            This is the default page for a fresh v0 project. Open the prompt and
-            tell v0 what to create, or browse the{' '}
-            <a
-              href="https://v0.app/templates"
-              target="_blank"
-              rel="noreferrer"
-              className="text-neutral-300 underline underline-offset-4 hover:text-white"
-            >
-              Community
-            </a>{' '}
-            for inspiration.
-          </p>
-        </div>
+import { useState } from 'react';
+import { demoData } from './pms/data';
+import Sidebar from './pms/components/Sidebar';
+import Dashboard from './pms/components/Dashboard';
+import BookingCalendar from './pms/components/BookingCalendar';
+import BookingForm from './pms/components/BookingForm';
+import ReservationList from './pms/components/ReservationList';
+import Reports from './pms/components/Reports';
+
+export default function PMSApp() {
+  const [rooms] = useState(demoData.rooms);
+  const [reservations, setReservations] = useState(demoData.reservations);
+  const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
+
+  const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
+    setReservations([...reservations, newRes]);
+  };
+
+  const handleDeleteReservation = (id: string) => {
+    setReservations(reservations.filter(r => r.id !== id));
+  };
+
+  const getPageTitle = () => {
+    const titles = {
+      dashboard: 'Dashboard',
+      calendar: 'Booking Calendar',
+      reservations: 'Reservations',
+      rooms: 'Properties',
+      reports: 'Reports',
+      settings: 'Settings'
+    };
+    return titles[activeSection];
+  };
+
+  return (
+    <div className="flex h-screen bg-background">
+      <Sidebar 
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+      />
+
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm px-8 py-6">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-bold text-foreground">{getPageTitle()}</h1>
+            <p className="text-muted-foreground">Manage your rental business efficiently</p>
+          </div>
+        </header>
+
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-8 space-y-8">
+            {activeSection === 'dashboard' && <Dashboard rooms={rooms} reservations={reservations} />}
+            {activeSection === 'calendar' && <BookingCalendar rooms={rooms} reservations={reservations} />}
+            {activeSection === 'reservations' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                  <BookingForm rooms={rooms} reservations={reservations} onAdd={handleAddReservation} />
+                </div>
+                <div>
+                  <ReservationList reservations={reservations} onDelete={handleDeleteReservation} />
+                </div>
+              </div>
+            )}
+            {activeSection === 'rooms' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rooms.map(room => (
+                  <div 
+                    key={room.id} 
+                    className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10"
+                  >
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-xl font-bold text-card-foreground group-hover:text-accent transition-colors">{room.name}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{room.type}</p>
+                      </div>
+                      <div className="pt-4 space-y-3 border-t border-border">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-muted-foreground">Capacity</span>
+                          <span className="font-semibold text-card-foreground">{room.capacity} guests</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-muted-foreground">Nightly Rate</span>
+                          <span className="font-semibold text-accent">${room.basePrice}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {activeSection === 'reports' && <Reports reservations={reservations} />}
+            {activeSection === 'settings' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
+                <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                  <h3 className="text-lg font-semibold text-card-foreground">Notifications</h3>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
+                        defaultChecked 
+                      />
+                      <span className="text-card-foreground group-hover:text-accent transition-colors">Email notifications</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
+                        defaultChecked 
+                      />
+                      <span className="text-card-foreground group-hover:text-accent transition-colors">SMS reminders</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
+                      />
+                      <span className="text-card-foreground group-hover:text-primary transition-colors">Auto-confirm bookings</span>
+                    </label>
+                  </div>
+                </div>
+                <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                  <h3 className="text-lg font-semibold text-card-foreground">Preferences</h3>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
+                        defaultChecked 
+                      />
+                      <span className="text-card-foreground group-hover:text-primary transition-colors">Dark mode</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-border bg-input checked:bg-secondary cursor-pointer" 
+                        defaultChecked 
+                      />
+                      <span className="text-card-foreground group-hover:text-secondary transition-colors">Analytics tracking</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
       </div>
-    </main>
-  )
+    </div>
+  );
 }
