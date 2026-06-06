@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface BookingFormProps {
   rooms: any[];
@@ -10,6 +11,7 @@ interface BookingFormProps {
 }
 
 export default function BookingForm({ rooms, reservations, onAdd }: BookingFormProps) {
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     guestName: '',
     guestEmail: '',
@@ -40,14 +42,14 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
-    if (!form.guestName.trim()) newErrors.guestName = 'Guest name is required';
-    if (!form.guestEmail.trim()) newErrors.guestEmail = 'Email is required';
+    if (!form.guestName.trim()) newErrors.guestName = t('filters.guestName') + ' is required';
+    if (!form.guestEmail.trim()) newErrors.guestEmail = t('filters.email') + ' is required';
     else if (!validateEmail(form.guestEmail)) newErrors.guestEmail = 'Invalid email format';
-    if (!form.roomId) newErrors.roomId = 'Room is required';
-    if (!form.checkIn) newErrors.checkIn = 'Check-in date is required';
-    if (!form.checkOut) newErrors.checkOut = 'Check-out date is required';
+    if (!form.roomId) newErrors.roomId = t('filters.room') + ' is required';
+    if (!form.checkIn) newErrors.checkIn = t('filters.checkInDate') + ' is required';
+    if (!form.checkOut) newErrors.checkOut = t('filters.checkOutDate') + ' is required';
     if (form.checkIn && form.checkOut && form.checkOut <= form.checkIn) {
-      newErrors.checkOut = 'Check-out must be after check-in';
+      newErrors.checkOut = t('filters.checkOutTo') + ' must be after ' + t('filters.checkInFrom').toLowerCase();
     }
     if (form.adults < 1) newErrors.adults = 'At least 1 adult required';
 
@@ -81,21 +83,21 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900 mb-4">Add New Reservation</h2>
+    <form onSubmit={handleSubmit} className="bg-card p-6 rounded-lg border border-border shadow-sm">
+      <h2 className="text-lg font-semibold text-foreground mb-4">{t('booking.addReservation')}</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Guest Name */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Guest Name *</label>
+          <label className="block text-sm font-medium text-foreground/80 mb-1">{t('filters.guestName')} *</label>
           <input
             type="text"
             value={form.guestName}
             onChange={(e) => { setForm({ ...form, guestName: e.target.value }); delete errors.guestName; }}
-            className={`w-full px-3 py-2 border rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.guestName ? 'border-red-500' : 'border-slate-300'}`}
+            className={`w-full px-3 py-2 border rounded-lg bg-card/50 text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary ${errors.guestName ? 'border-red-500' : 'border-border'}`}
             placeholder="John Doe"
           />
-          {errors.guestName && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestName}</p>}
+          {errors.guestName && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestName}</p>}
         </div>
 
         {/* Email */}
