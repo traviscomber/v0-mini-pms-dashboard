@@ -5,21 +5,33 @@ import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import AdvancedCalendar from './pms/components/AdvancedCalendar';
-import BookingForm from './pms/components/BookingForm';
-import ReservationList from './pms/components/ReservationList';
+import BookingFlowModal from './pms/components/BookingFlowModal';
+import GuestManagement from './pms/components/GuestManagement';
+import PaymentManager from './pms/components/PaymentManager';
 import Reports from './pms/components/Reports';
 
 export default function PMSApp() {
   const [rooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
-    setReservations([...reservations, newRes]);
+    const id = Math.random().toString(36).substr(2, 9);
+    setReservations([...reservations, { id, ...newRes }]);
+    setShowBookingModal(false);
   };
 
-  const handleDeleteReservation = (id: string) => {
-    setReservations(reservations.filter(r => r.id !== id));
+  const handleStatusChange = (reservationId: string, status: string) => {
+    setReservations(reservations.map(r => 
+      r.id === reservationId ? { ...r, status } : r
+    ));
+  };
+
+  const handlePaymentStatusChange = (reservationId: string, status: string) => {
+    setReservations(reservations.map(r => 
+      r.id === reservationId ? { ...r, paymentStatus: status } : r
+    ));
   };
 
   const getPageTitle = () => {
@@ -54,14 +66,27 @@ export default function PMSApp() {
             {activeSection === 'dashboard' && <EnhancedDashboard rooms={rooms} reservations={reservations} />}
             {activeSection === 'calendar' && <AdvancedCalendar rooms={rooms} reservations={reservations} onDateRangeSelect={(start, end, roomId) => console.log('Selected:', start, end, roomId)} />}
             {activeSection === 'reservations' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
-                  <BookingForm rooms={rooms} reservations={reservations} onAdd={handleAddReservation} />
+              <>
+                <div className="flex gap-4 mb-6">
+                  <button
+                    onClick={() => setShowBookingModal(true)}
+                    className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium transition"
+                  >
+                    + New Booking
+                  </button>
                 </div>
-                <div>
-                  <ReservationList reservations={reservations} onDelete={handleDeleteReservation} />
+                <div className="space-y-8">
+                  <GuestManagement 
+                    reservations={reservations} 
+                    rooms={rooms}
+                    onStatusChange={handleStatusChange}
+                  />
+                  <PaymentManager 
+                    reservations={reservations}
+                    onPaymentStatusChange={handlePaymentStatusChange}
+                  />
                 </div>
-              </div>
+              </>
             )}
             {activeSection === 'rooms' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -147,6 +172,15 @@ export default function PMSApp() {
           </div>
         </main>
       </div>
+
+      {/* Booking Modal */}
+      <BookingFlowModal
+        isOpen={showBookingModal}
+        onClose={() => setShowBookingModal(false)}
+        rooms={rooms}
+        reservations={reservations}
+        onConfirm={handleAddReservation}
+      />
     </div>
   );
 }
