@@ -35,10 +35,10 @@ const GuestManagement = memo(({ reservations, rooms, onStatusChange }: GuestMana
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'pending': return 'bg-accent/10 text-accent';
-      case 'confirmed': return 'bg-primary/10 text-primary';
-      case 'completed': return 'bg-foreground/10 text-foreground/60';
-      default: return 'bg-border text-foreground/60';
+      case 'pending': return 'bg-accent/20 text-accent';
+      case 'confirmed': return 'bg-primary/20 text-primary';
+      case 'completed': return 'bg-green-500/20 text-green-400';
+      default: return 'bg-foreground/20 text-foreground';
     }
   };
 

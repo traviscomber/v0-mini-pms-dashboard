@@ -107,8 +107,8 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
                   onClick={() => toggleCleaningStatus(res.roomId, res.id)}
                   className={`w-full p-4 rounded-lg border text-left transition ${
                     status === 'completed'
-                      ? 'bg-green-500/10 border-green-500/30'
-                      : 'bg-foreground/10 border-foreground/20 hover:bg-foreground/15'
+                      ? 'bg-green-500/10 border-green-500/30 text-foreground'
+                      : 'bg-card border-border text-foreground hover:bg-card/80'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -134,7 +134,7 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
               <div>
                 <p className="font-semibold text-foreground">{room.name}</p>
               </div>
-              <button className="px-4 py-2 bg-foreground/10 text-foreground rounded-lg hover:bg-foreground/20 transition text-sm">
+              <button className="px-4 py-2 bg-card border border-border text-foreground rounded-lg hover:bg-card/80 transition text-sm font-medium">
                 + Block Dates
               </button>
             </div>

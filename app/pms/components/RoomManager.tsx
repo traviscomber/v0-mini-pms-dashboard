@@ -113,13 +113,13 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={() => { setIsOpen(false); setEditingId(null); }}
-                  className="flex-1 px-4 py-2 bg-foreground/10 text-foreground rounded-lg hover:bg-foreground/20 transition"
+                  className="flex-1 px-4 py-2 bg-card border border-border text-foreground rounded-lg hover:bg-card/80 transition"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={editingId ? handleSaveEdit : handleAdd}
-                  className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition font-medium"
                 >
                   {editingId ? 'Save' : 'Add'}
                 </button>
@@ -141,15 +141,15 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(room)}
-                  className="p-2 hover:bg-foreground/10 rounded transition"
+                  className="p-2 hover:bg-accent/20 rounded transition text-accent"
                 >
-                  <Edit2 size={16} className="text-accent" />
+                  <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => handleDelete(room.id)}
-                  className="p-2 hover:bg-foreground/10 rounded transition"
+                  className="p-2 hover:bg-destructive/20 rounded transition text-destructive"
                 >
-                  <Trash2 size={16} className="text-destructive" />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
