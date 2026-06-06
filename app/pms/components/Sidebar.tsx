@@ -28,7 +28,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
       <div className="p-6 border-b border-sidebar-border">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-sidebar-foreground bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PMS</h1>
-          <p className="text-xs text-sidebar-accent">Property Management</p>
+          <p className="text-xs text-sidebar-foreground/60">{t('property.roomManagement')}</p>
         </div>
       </div>
       

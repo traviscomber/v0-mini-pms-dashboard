@@ -92,10 +92,32 @@ export const translations = {
     },
     // Alerts
     alerts: {
+      lowOccupancy: 'Low Occupancy',
       occupancy: 'Current occupancy is',
       consider: 'Consider promotions.',
+      pendingPayments: 'Pending Payments',
       pending: 'Pending payment(s).',
+      checkinsTitle: 'Check-ins Today',
       checkInsToday: 'Check-ins today. Prepare rooms.',
+    },
+    // Charts & Reports
+    reports: {
+      bookingStatus: 'Booking Status',
+      confirmed: 'Confirmed',
+      pending: 'Pending',
+      completed: 'Completed',
+      keyMetrics: 'Key Metrics',
+      avgRevenue: 'Avg Revenue',
+      avgOccupancy: 'Avg Occupancy',
+      totalBookings: 'Total Bookings',
+      avgPriceNight: 'Avg Price/Night',
+    },
+    // Property Management
+    property: {
+      roomManagement: 'Room Management',
+      bulkRates: 'Bulk Rate Manager',
+      cleaning: 'Cleaning Schedule',
+      forecast: 'Occupancy Forecast',
     },
     // Sidebar & Settings
     sidebar: {
@@ -196,10 +218,32 @@ export const translations = {
     },
     // Alertas
     alerts: {
+      lowOccupancy: 'Ocupación Baja',
       occupancy: 'La ocupación actual es',
       consider: 'Considera promociones.',
+      pendingPayments: 'Pagos Pendientes',
       pending: 'Pagos pendientes.',
+      checkinsTitle: 'Check-ins Hoy',
       checkInsToday: 'Check-ins hoy. Prepara las habitaciones.',
+    },
+    // Gráficos y Reportes
+    reports: {
+      bookingStatus: 'Estado de Reservas',
+      confirmed: 'Confirmado',
+      pending: 'Pendiente',
+      completed: 'Completado',
+      keyMetrics: 'Métricas Clave',
+      avgRevenue: 'Ingresos Promedio',
+      avgOccupancy: 'Ocupación Promedio',
+      totalBookings: 'Total de Reservas',
+      avgPriceNight: 'Precio Promedio/Noche',
+    },
+    // Gestión de Propiedades
+    property: {
+      roomManagement: 'Gestión de Habitaciones',
+      bulkRates: 'Gestor de Tarifas en Lote',
+      cleaning: 'Horario de Limpieza',
+      forecast: 'Pronóstico de Ocupación',
     },
     // Sidebar & Configuración
     sidebar: {
