@@ -68,6 +68,16 @@ export const translations = {
       cleaning: 'Cleaning Schedule',
       forecast: 'Occupancy Forecast',
     },
+    // Alerts
+    alerts: {
+      lowOccupancy: 'Low Occupancy',
+      occupancy: 'Current occupancy is',
+      consider: 'Consider promotions.',
+      pendingPayments: 'Pending Payments',
+      pending: 'Pending payment(s).',
+      checkinsTitle: 'Check-ins Today',
+      checkInsToday: 'Check-ins today. Prepare rooms.',
+    },
     // Tabs
     tabs: {
       all: 'All',
@@ -288,6 +298,16 @@ export const translations = {
       bulkPricing: 'Precios en Lote',
       cleaning: 'Horario de Limpieza',
       forecast: 'Pronóstico de Ocupación',
+    },
+    // Alertas
+    alerts: {
+      lowOccupancy: 'Ocupación Baja',
+      occupancy: 'La ocupación actual es',
+      consider: 'Considera promociones.',
+      pendingPayments: 'Pagos Pendientes',
+      pending: 'Pagos pendientes.',
+      checkinsTitle: 'Check-ins Hoy',
+      checkInsToday: 'Check-ins hoy. Prepara las habitaciones.',
     },
     // Pestañas
     tabs: {
