@@ -3,14 +3,17 @@
 import { memo } from 'react';
 
 // Generate revenue trend data (daily for past 7 days)
-const generateRevenueData = (reservations: any[]) => {
+const generateRevenueData = (reservations: any[], referenceDate: string = '2026-06-06') => {
   const data: { [key: string]: number } = {};
-  const today = new Date();
+  const today = new Date(referenceDate + 'T00:00:00Z');
   
   for (let i = 6; i >= 0; i--) {
     const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split('T')[0];
+    date.setUTCDate(date.getUTCDate() - i);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
     data[dateStr] = 0;
   }
   
@@ -21,10 +24,14 @@ const generateRevenueData = (reservations: any[]) => {
     }
   });
   
-  return Object.entries(data).map(([date, revenue]) => ({
-    date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    revenue: Math.round(revenue),
-  }));
+  return Object.entries(data).map(([date, revenue]) => {
+    const [year, month, day] = date.split('-');
+    const monthName = new Date(parseInt(year), parseInt(month) - 1, 1).toLocaleDateString('en-US', { month: 'short' });
+    return {
+      date: `${monthName} ${parseInt(day)}`,
+      revenue: Math.round(revenue),
+    };
+  });
 };
 
 // Generate occupancy data by room
@@ -59,7 +66,7 @@ interface ChartsProps {
 }
 
 const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
-  const revenueData = generateRevenueData(reservations);
+  const revenueData = generateRevenueData(reservations, '2026-06-06');
   const occupancyData = generateOccupancyData(rooms, reservations);
   const statusData = generateBookingStatusData(reservations);
   const maxRevenue = Math.max(...revenueData.map(d => d.revenue), 1);
