@@ -1,0 +1,113 @@
+'use client';
+
+import { AlertCircle, TrendingDown, Clock, X } from 'lucide-react';
+import { memo, useState, useCallback } from 'react';
+
+interface Alert {
+  id: string;
+  type: 'warning' | 'critical' | 'info';
+  title: string;
+  message: string;
+  icon?: React.ReactNode;
+}
+
+interface AlertsProps {
+  reservations: any[];
+  rooms: any[];
+}
+
+const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
+  const alerts: Alert[] = [];
+  
+  // Check low occupancy
+  const occupancyRate = (reservations.length / (rooms.length * 5)) * 100;
+  if (occupancyRate < 30) {
+    alerts.push({
+      id: 'low-occupancy',
+      type: 'warning',
+      title: 'Low Occupancy',
+      message: `Current occupancy is ${occupancyRate.toFixed(0)}%. Consider promotions.`,
+      icon: <TrendingDown className="text-orange-600" />,
+    });
+  }
+  
+  // Check pending payments
+  const pendingPayments = reservations.filter(r => r.status === 'pending').length;
+  if (pendingPayments > 0) {
+    alerts.push({
+      id: 'pending-payments',
+      type: 'critical',
+      title: 'Pending Payments',
+      message: `${pendingPayments} reservation(s) awaiting payment.`,
+      icon: <AlertCircle className="text-red-600" />,
+    });
+  }
+  
+  // Check upcoming check-ins
+  const today = new Date();
+  const checkInsToday = reservations.filter(r => {
+    const checkInDate = new Date(r.checkInDate);
+    return checkInDate.toDateString() === today.toDateString();
+  }).length;
+  
+  if (checkInsToday > 0) {
+    alerts.push({
+      id: 'check-ins-today',
+      type: 'info',
+      title: 'Check-ins Today',
+      message: `${checkInsToday} guest(s) checking in today. Prepare rooms.`,
+      icon: <Clock className="text-blue-600" />,
+    });
+  }
+  
+  return alerts;
+};
+
+const AlertsPanel = memo(({ reservations, rooms }: AlertsProps) => {
+  const [alerts, setAlerts] = useState(() => generateAlerts(reservations, rooms));
+  const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
+
+  const dismissAlert = useCallback((id: string) => {
+    setDismissedAlerts(prev => new Set([...prev, id]));
+  }, []);
+
+  const visibleAlerts = alerts.filter(alert => !dismissedAlerts.has(alert.id));
+
+  if (visibleAlerts.length === 0) return null;
+
+  return (
+    <div className="space-y-3 mb-6">
+      {visibleAlerts.map(alert => (
+        <div
+          key={alert.id}
+          className={`flex items-start gap-4 p-4 rounded-lg border ${
+            alert.type === 'critical'
+              ? 'bg-red-950/20 border-red-900/30'
+              : alert.type === 'warning'
+              ? 'bg-orange-950/20 border-orange-900/30'
+              : 'bg-blue-950/20 border-blue-900/30'
+          }`}
+          role="alert"
+        >
+          <div className="flex-shrink-0 pt-0.5">
+            {alert.icon}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-foreground">{alert.title}</h3>
+            <p className="text-foreground/70 text-sm mt-1">{alert.message}</p>
+          </div>
+          <button
+            onClick={() => dismissAlert(alert.id)}
+            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors p-1"
+            aria-label={`Dismiss ${alert.title}`}
+          >
+            <X size={18} />
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+});
+
+AlertsPanel.displayName = 'AlertsPanel';
+export default AlertsPanel;

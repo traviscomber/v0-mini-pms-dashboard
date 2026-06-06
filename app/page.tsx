@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
-import Dashboard from './pms/components/Dashboard';
+import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import BookingCalendar from './pms/components/BookingCalendar';
 import BookingForm from './pms/components/BookingForm';
 import ReservationList from './pms/components/ReservationList';
@@ -45,13 +45,13 @@ export default function PMSApp() {
         <header className="border-b border-border bg-card/50 backdrop-blur-sm px-8 py-6">
           <div className="space-y-1">
             <h1 className="text-4xl font-bold text-foreground">{getPageTitle()}</h1>
-            <p className="text-muted-foreground">Manage your rental business efficiently</p>
+            <p className="text-foreground/60">Manage your rental business efficiently</p>
           </div>
         </header>
 
         <main className="flex-1 overflow-y-auto">
           <div className="p-8 space-y-8">
-            {activeSection === 'dashboard' && <Dashboard rooms={rooms} reservations={reservations} />}
+            {activeSection === 'dashboard' && <EnhancedDashboard rooms={rooms} reservations={reservations} />}
             {activeSection === 'calendar' && <BookingCalendar rooms={rooms} reservations={reservations} />}
             {activeSection === 'reservations' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -72,16 +72,16 @@ export default function PMSApp() {
                   >
                     <div className="space-y-4">
                       <div>
-                        <h3 className="text-xl font-bold text-card-foreground group-hover:text-accent transition-colors">{room.name}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">{room.type}</p>
+                        <h3 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors">{room.name}</h3>
+                        <p className="text-sm text-foreground/60 mt-1">{room.type}</p>
                       </div>
                       <div className="pt-4 space-y-3 border-t border-border">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Capacity</span>
-                          <span className="font-semibold text-card-foreground">{room.capacity} guests</span>
+                          <span className="text-sm text-foreground/60">Capacity</span>
+                          <span className="font-semibold text-foreground">{room.capacity} guests</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Nightly Rate</span>
+                          <span className="text-sm text-foreground/60">Nightly Rate</span>
                           <span className="font-semibold text-accent">${room.basePrice}</span>
                         </div>
                       </div>
@@ -94,7 +94,7 @@ export default function PMSApp() {
             {activeSection === 'settings' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-card-foreground">Notifications</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -102,7 +102,7 @@ export default function PMSApp() {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-card-foreground group-hover:text-accent transition-colors">Email notifications</span>
+                      <span className="text-foreground group-hover:text-accent transition-colors">Email notifications</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -110,19 +110,19 @@ export default function PMSApp() {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-card-foreground group-hover:text-accent transition-colors">SMS reminders</span>
+                      <span className="text-foreground group-hover:text-accent transition-colors">SMS reminders</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
                         type="checkbox" 
                         className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
                       />
-                      <span className="text-card-foreground group-hover:text-primary transition-colors">Auto-confirm bookings</span>
+                      <span className="text-foreground group-hover:text-primary transition-colors">Auto-confirm bookings</span>
                     </label>
                   </div>
                 </div>
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-card-foreground">Preferences</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Preferences</h3>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -130,7 +130,7 @@ export default function PMSApp() {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-card-foreground group-hover:text-primary transition-colors">Dark mode</span>
+                      <span className="text-foreground group-hover:text-primary transition-colors">Dark mode</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -138,7 +138,7 @@ export default function PMSApp() {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-secondary cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-card-foreground group-hover:text-secondary transition-colors">Analytics tracking</span>
+                      <span className="text-foreground group-hover:text-secondary transition-colors">Analytics tracking</span>
                     </label>
                   </div>
                 </div>
