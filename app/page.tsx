@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
+import PageHeader from './pms/components/PageHeader';
 import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import AdvancedCalendar from './pms/components/AdvancedCalendar';
 import BookingFlowModal from './pms/components/BookingFlowModal';
@@ -104,12 +105,7 @@ function PMSContent(props: PMSContentProps) {
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm px-8 py-6">
-          <div className="space-y-1">
-            <h1 className="text-4xl font-bold text-foreground">{getPageTitle()}</h1>
-            <p className="text-foreground/60">Manage your rental business efficiently</p>
-          </div>
-        </header>
+        <PageHeader section={activeSection} />
 
         <main className="flex-1 overflow-y-auto">
           <div className="p-8 space-y-8">
@@ -122,7 +118,7 @@ function PMSContent(props: PMSContentProps) {
                     onClick={() => setShowBookingModal(true)}
                     className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium transition"
                   >
-                    + New Booking
+                    + {getPageTitle() === 'Reservations' ? 'New Booking' : 'Nueva Reserva'}
                   </button>
                 </div>
                 <div className="space-y-8">

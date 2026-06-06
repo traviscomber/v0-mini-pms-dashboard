@@ -32,9 +32,11 @@ export const translations = {
       title: 'Booking Calendar',
       today: 'Today',
       selectDates: 'Select Dates',
+      selectRoom: 'Select Room',
       available: 'Available',
       full: 'Full',
       nights: 'nights',
+      showing: 'Showing',
     },
     // Reservations
     reservations: {
@@ -93,6 +95,13 @@ export const translations = {
       pending: 'Pending payment(s).',
       checkInsToday: 'Check-ins today. Prepare rooms.',
     },
+    // Sidebar & Settings
+    sidebar: {
+      proTip: 'Pro Tip',
+      toggleLanguageTheme: 'Toggle language & theme above',
+      light: 'Light',
+      dark: 'Dark',
+    },
   },
   es: {
     // Navegación
@@ -125,9 +134,11 @@ export const translations = {
       title: 'Calendario de Reservas',
       today: 'Hoy',
       selectDates: 'Seleccionar Fechas',
+      selectRoom: 'Seleccionar Habitación',
       available: 'Disponible',
       full: 'Lleno',
       nights: 'noches',
+      showing: 'Mostrando',
     },
     // Reservaciones
     reservations: {
@@ -185,6 +196,13 @@ export const translations = {
       consider: 'Considera promociones.',
       pending: 'Pagos pendientes.',
       checkInsToday: 'Check-ins hoy. Prepara las habitaciones.',
+    },
+    // Sidebar & Configuración
+    sidebar: {
+      proTip: 'Consejo Pro',
+      toggleLanguageTheme: 'Alterna idioma y tema arriba',
+      light: 'Claro',
+      dark: 'Oscuro',
     },
   },
 };

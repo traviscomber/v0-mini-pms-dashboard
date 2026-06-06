@@ -62,12 +62,12 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
           title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          <span className="font-medium">{isDark ? 'Light' : 'Dark'}</span>
+          <span className="font-medium">{isDark ? t('sidebar.light') : t('sidebar.dark')}</span>
         </button>
 
         <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-4 space-y-2">
-          <p className="text-xs font-semibold text-sidebar-foreground">Pro Tip</p>
-          <p className="text-xs text-sidebar-accent">Toggle language & theme above</p>
+          <p className="text-xs font-semibold text-sidebar-foreground">{t('sidebar.proTip')}</p>
+          <p className="text-xs text-sidebar-accent">{t('sidebar.toggleLanguageTheme')}</p>
         </div>
       </div>
     </aside>

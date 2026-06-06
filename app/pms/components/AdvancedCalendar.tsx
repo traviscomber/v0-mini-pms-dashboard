@@ -2,6 +2,7 @@
 
 import { memo, useState, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface DateCellProps {
   date: Date;
@@ -168,6 +169,7 @@ export default function AdvancedCalendar({
   reservations,
   onDateRangeSelect,
 }: AdvancedCalendarProps) {
+  const { t } = useLanguage();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
@@ -236,18 +238,18 @@ export default function AdvancedCalendar({
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-foreground">Select Dates</h2>
+          <h2 className="text-2xl font-bold text-foreground">{t('calendar.selectDates')}</h2>
           <button
             onClick={handleToday}
             className="px-4 py-2 bg-primary text-background rounded-lg font-medium hover:bg-primary/90 transition-all"
           >
-            Today
+            {t('calendar.today')}
           </button>
         </div>
 
         {/* Room selector */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground/80">Select Room</label>
+          <label className="text-sm font-medium text-foreground/80">{t('calendar.selectRoom')}</label>
           <select
             value={selectedRoomId}
             onChange={(e) => {
@@ -302,7 +304,7 @@ export default function AdvancedCalendar({
             <ChevronLeft className="text-foreground" size={20} />
           </button>
           <div className="text-sm text-foreground/60">
-            Showing {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            {t('calendar.showing')} {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </div>
           <button
             onClick={handleNextMonth}
