@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 // Generate revenue trend data (daily for past 7 days)
 const generateRevenueData = (reservations: any[], referenceDate: string = '2026-06-06') => {
@@ -66,6 +67,7 @@ interface ChartsProps {
 }
 
 const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
+  const { t } = useLanguage();
   const revenueData = generateRevenueData(reservations, '2026-06-06');
   const occupancyData = generateOccupancyData(rooms, reservations);
   const statusData = generateBookingStatusData(reservations);
@@ -75,7 +77,7 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Revenue Trend */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Revenue Trend</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('dashboard.revenueTrend')}</h3>
         <div className="space-y-3">
           {revenueData.map((item, idx) => (
             <div key={idx}>
@@ -96,7 +98,7 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
 
       {/* Occupancy by Room */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Occupancy by Room</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('dashboard.occupancyByRoom')}</h3>
         <div className="space-y-3">
           {occupancyData.map((item, idx) => (
             <div key={idx}>
@@ -117,14 +119,15 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
 
       {/* Booking Status Breakdown */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Booking Status</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('reports.bookingStatus')}</h3>
         <div className="space-y-4">
           {statusData.map((item, idx) => {
             const colors = ['bg-primary', 'bg-accent', 'bg-foreground/50'];
+            const statusLabels = [t('reports.confirmed'), t('reports.pending'), t('reports.completed')];
             return (
               <div key={idx}>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-foreground/80">{item.name}</span>
+                  <span className="text-sm text-foreground/80">{statusLabels[idx]}</span>
                   <span className="font-semibold text-foreground">{item.value}</span>
                 </div>
                 <div className="w-full bg-card/50 rounded-full h-2">
@@ -141,22 +144,22 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
 
       {/* Metrics Summary */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Key Metrics</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('reports.keyMetrics')}</h3>
         <div className="grid grid-cols-2 gap-4">
           <div className="p-3 bg-primary/10 rounded-lg">
-            <p className="text-sm text-foreground/60">Avg Revenue</p>
+            <p className="text-sm text-foreground/60">{t('reports.avgRevenue')}</p>
             <p className="text-xl font-bold text-primary">${Math.round(revenueData.reduce((a, b) => a + b.revenue, 0) / Math.max(1, revenueData.length))}</p>
           </div>
           <div className="p-3 bg-accent/10 rounded-lg">
-            <p className="text-sm text-foreground/60">Avg Occupancy</p>
+            <p className="text-sm text-foreground/60">{t('reports.avgOccupancy')}</p>
             <p className="text-xl font-bold text-accent">{Math.round(occupancyData.reduce((a, b) => a + b.occupancy, 0) / Math.max(1, occupancyData.length))}%</p>
           </div>
           <div className="p-3 bg-primary/10 rounded-lg">
-            <p className="text-sm text-foreground/60">Total Bookings</p>
+            <p className="text-sm text-foreground/60">{t('reports.totalBookings')}</p>
             <p className="text-xl font-bold text-primary">{reservations.length}</p>
           </div>
           <div className="p-3 bg-accent/10 rounded-lg">
-            <p className="text-sm text-foreground/60">Avg Price/Night</p>
+            <p className="text-sm text-foreground/60">{t('reports.avgPriceNight')}</p>
             <p className="text-xl font-bold text-accent">${Math.round(reservations.reduce((a, b) => a + b.totalPrice, 0) / Math.max(1, reservations.length))}</p>
           </div>
         </div>

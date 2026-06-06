@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import { CreditCard, Check, AlertCircle, Clock } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface PaymentManagerProps {
   reservations: any[];
@@ -9,6 +10,7 @@ interface PaymentManagerProps {
 }
 
 const PaymentManager = memo(({ reservations, onPaymentStatusChange }: PaymentManagerProps) => {
+  const { t } = useLanguage();
   const totalRevenue = reservations
     .filter(r => r.paymentStatus === 'Paid')
     .reduce((sum, r) => sum + r.totalPrice, 0);
@@ -42,19 +44,19 @@ const PaymentManager = memo(({ reservations, onPaymentStatusChange }: PaymentMan
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-card p-6 rounded-lg border border-border">
-          <p className="text-foreground/60 text-sm font-medium mb-2">Total Revenue</p>
+          <p className="text-foreground/60 text-sm font-medium mb-2">{t('payment.totalRevenue')}</p>
           <p className="text-3xl font-bold text-primary">${totalRevenue}</p>
-          <p className="text-xs text-foreground/50 mt-2">From confirmed bookings</p>
+          <p className="text-xs text-foreground/50 mt-2">{t('payment.fromConfirmedBookings')}</p>
         </div>
 
         <div className="bg-card p-6 rounded-lg border border-border">
-          <p className="text-foreground/60 text-sm font-medium mb-2">Pending Payments</p>
+          <p className="text-foreground/60 text-sm font-medium mb-2">{t('payment.pendingPayments')}</p>
           <p className="text-3xl font-bold text-accent">${pendingPayments}</p>
           <p className="text-xs text-foreground/50 mt-2">{reservations.filter(r => r.paymentStatus === 'Pending').length} reservations</p>
         </div>
 
         <div className="bg-card p-6 rounded-lg border border-border">
-          <p className="text-foreground/60 text-sm font-medium mb-2">Partial Payments</p>
+          <p className="text-foreground/60 text-sm font-medium mb-2">{t('payment.partialPayments')}</p>
           <p className="text-3xl font-bold text-yellow-600">${partialPayments.reduce((sum, r) => sum + r.totalPrice, 0)}</p>
           <p className="text-xs text-foreground/50 mt-2">{partialPayments.length} reservations</p>
         </div>
@@ -63,17 +65,17 @@ const PaymentManager = memo(({ reservations, onPaymentStatusChange }: PaymentMan
       {/* Payment Breakdown Table */}
       <div className="bg-card rounded-lg border border-border overflow-hidden">
         <div className="p-6 border-b border-border">
-          <h3 className="text-lg font-semibold text-foreground">Payment Breakdown</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('paymentTable.paymentBreakdown')}</h3>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-background/50 border-b border-border">
-                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">Guest</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">Amount</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">Status</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">Action</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">{t('paymentTable.guest')}</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">{t('paymentTable.amount')}</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">{t('paymentTable.status')}</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-foreground/60">{t('paymentTable.action')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -96,7 +98,7 @@ const PaymentManager = memo(({ reservations, onPaymentStatusChange }: PaymentMan
                         onClick={() => onPaymentStatusChange?.(reservation.id, 'Paid')}
                         className="px-3 py-1 text-sm bg-primary/10 text-primary rounded hover:bg-primary/20 font-medium transition"
                       >
-                        Mark Paid
+                        {t('paymentTable.markPaid')}
                       </button>
                     )}
                   </td>

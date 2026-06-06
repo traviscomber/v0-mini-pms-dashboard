@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, memo } from 'react';
 import { Users, TrendingUp, DollarSign, AlertCircle, LogIn, LogOut } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 import DashboardCharts from './Charts';
 import DetailModal from './DetailModal';
 import AlertsPanel from './AlertsPanel';
@@ -33,6 +34,7 @@ const StatCard = memo(({ icon: Icon, title, value, unit = '', onClick }: any) =>
 StatCard.displayName = 'StatCard';
 
 const EnhancedDashboard = memo(({ rooms, reservations }: EnhancedDashboardProps) => {
+  const { t } = useLanguage();
   const [filteredReservations, setFilteredReservations] = useState(reservations);
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -121,19 +123,19 @@ const EnhancedDashboard = memo(({ rooms, reservations }: EnhancedDashboardProps)
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard 
           icon={Users} 
-          title="Total Reservations" 
+          title={t('dashboard.totalReservations')} 
           value={filteredReservations.length}
           onClick={openReservationsModal}
         />
         <StatCard 
           icon={TrendingUp} 
-          title="Occupancy Rate" 
+          title={t('dashboard.occupancyRate')} 
           value={stats.occupancyRate} 
           unit="%" 
         />
         <StatCard 
           icon={DollarSign} 
-          title="Monthly Revenue" 
+          title={t('dashboard.monthlyRevenue')} 
           value={`$${stats.totalRevenue}`}
         />
       </div>
@@ -142,19 +144,19 @@ const EnhancedDashboard = memo(({ rooms, reservations }: EnhancedDashboardProps)
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard 
           icon={AlertCircle} 
-          title="Pending Payments" 
+          title={t('dashboard.pendingPayments')} 
           value={stats.pendingPayments}
           onClick={openPaymentsModal}
         />
         <StatCard 
           icon={LogIn} 
-          title="Check-ins Today" 
+          title={t('dashboard.checkinsToday')} 
           value={stats.checkIns}
           onClick={openCheckInsModal}
         />
         <StatCard 
           icon={LogOut} 
-          title="Check-outs Today" 
+          title={t('dashboard.checkoutsToday')} 
           value={stats.checkOuts}
         />
       </div>

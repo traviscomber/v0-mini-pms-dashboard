@@ -2,6 +2,7 @@
 
 import { Filter, X } from 'lucide-react';
 import { memo, useState, useCallback } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 interface FiltersProps {
   rooms: any[];
@@ -24,6 +25,7 @@ const INITIAL_FILTERS: FilterState = {
 };
 
 const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) => {
+  const { t } = useLanguage();
   const [filters, setFilters] = useState<FilterState>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('pms-filters') : null;
     return saved ? JSON.parse(saved) : INITIAL_FILTERS;
@@ -97,7 +99,7 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
         aria-label="Toggle filters"
       >
         <Filter size={18} />
-        Filters
+        {t('dashboard.filters')}
       </button>
 
       {isOpen && (
@@ -105,7 +107,7 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
           {/* Date Range */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-foreground/60 mb-2">Check-in From</label>
+              <label className="block text-sm text-foreground/60 mb-2">{t('filters.checkInFrom')}</label>
               <input
                 type="date"
                 value={filters.dateRange.start}
@@ -114,7 +116,7 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
               />
             </div>
             <div>
-              <label className="block text-sm text-foreground/60 mb-2">Check-out To</label>
+              <label className="block text-sm text-foreground/60 mb-2">{t('filters.checkOutTo')}</label>
               <input
                 type="date"
                 value={filters.dateRange.end}
@@ -126,13 +128,13 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
 
           {/* Room Type */}
           <div>
-            <label className="block text-sm text-foreground/60 mb-2">Room Type</label>
+            <label className="block text-sm text-foreground/60 mb-2">{t('filters.roomType')}</label>
             <select
               value={filters.roomType}
               onChange={(e) => handleFilterChange('roomType', e.target.value)}
               className="w-full px-3 py-2 bg-card/50 border border-border rounded-lg text-foreground"
             >
-              <option value="all">All Types</option>
+              <option value="all">{t('filters.allTypes')}</option>
               {roomTypes.map(type => (
                 <option key={type} value={type}>{type}</option>
               ))}
@@ -141,30 +143,30 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
 
           {/* Payment Status */}
           <div>
-            <label className="block text-sm text-foreground/60 mb-2">Payment Status</label>
+            <label className="block text-sm text-foreground/60 mb-2">{t('filters.paymentStatus')}</label>
             <select
               value={filters.paymentStatus}
               onChange={(e) => handleFilterChange('paymentStatus', e.target.value)}
               className="w-full px-3 py-2 bg-card/50 border border-border rounded-lg text-foreground"
             >
-              <option value="all">All Statuses</option>
-              <option value="paid">Paid</option>
-              <option value="pending">Pending</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="paid">{t('reports.paid')}</option>
+              <option value="pending">{t('reports.pending')}</option>
             </select>
           </div>
 
           {/* Booking Status */}
           <div>
-            <label className="block text-sm text-foreground/60 mb-2">Booking Status</label>
+            <label className="block text-sm text-foreground/60 mb-2">{t('filters.bookingStatus')}</label>
             <select
               value={filters.bookingStatus}
               onChange={(e) => handleFilterChange('bookingStatus', e.target.value)}
               className="w-full px-3 py-2 bg-card/50 border border-border rounded-lg text-foreground"
             >
-              <option value="all">All Statuses</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="confirmed">{t('tabs.confirmed')}</option>
+              <option value="pending">{t('tabs.pending')}</option>
+              <option value="completed">{t('tabs.completed')}</option>
             </select>
           </div>
 
@@ -175,16 +177,16 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
                 applyFilters();
                 setIsOpen(false);
               }}
-              className="flex-1 px-4 py-2 bg-primary text-card-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="flex-1 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
-              Apply Filters
+              {t('filters.applyFilters')}
             </button>
             <button
               onClick={resetFilters}
               className="flex-1 px-4 py-2 bg-card border border-border rounded-lg text-foreground hover:bg-card/80 transition-colors flex items-center justify-center gap-2"
             >
               <X size={18} />
-              Reset
+              {t('filters.reset')}
             </button>
           </div>
         </div>

@@ -1,7 +1,8 @@
 'use client';
 
 import { AlertCircle, TrendingDown, Clock, X } from 'lucide-react';
-import { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback, useEffect } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 interface Alert {
   id: string;
@@ -16,7 +17,7 @@ interface AlertsProps {
   rooms: any[];
 }
 
-const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
+const generateAlerts = (reservations: any[], rooms: any[], t: any): Alert[] => {
   const alerts: Alert[] = [];
   
   // Check low occupancy
@@ -25,8 +26,8 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
     alerts.push({
       id: 'low-occupancy',
       type: 'warning',
-      title: 'Low Occupancy',
-      message: `Current occupancy is ${occupancyRate.toFixed(0)}%. Consider promotions.`,
+      title: t('alerts.lowOccupancy'),
+      message: `${t('alerts.occupancy')} ${occupancyRate.toFixed(0)}%. ${t('alerts.consider')}`,
       icon: <TrendingDown className="text-orange-600" />,
     });
   }
@@ -37,25 +38,25 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
     alerts.push({
       id: 'pending-payments',
       type: 'critical',
-      title: 'Pending Payments',
-      message: `${pendingPayments} reservation(s) awaiting payment.`,
+      title: t('alerts.pendingPayments'),
+      message: `${pendingPayments} ${t('alerts.pending')}`,
       icon: <AlertCircle className="text-red-600" />,
     });
   }
-  
-  // Check upcoming check-ins
-  const today = new Date();
+
+  // Check check-ins today
+  const today = new Date(2026, 5, 6);
   const checkInsToday = reservations.filter(r => {
-    const checkInDate = new Date(r.checkInDate);
+    const checkInDate = new Date(r.checkIn);
     return checkInDate.toDateString() === today.toDateString();
   }).length;
-  
+
   if (checkInsToday > 0) {
     alerts.push({
       id: 'check-ins-today',
       type: 'info',
-      title: 'Check-ins Today',
-      message: `${checkInsToday} guest(s) checking in today. Prepare rooms.`,
+      title: t('alerts.checkinsTitle'),
+      message: `${checkInsToday} ${t('alerts.checkInsToday')}`,
       icon: <Clock className="text-blue-600" />,
     });
   }
@@ -64,8 +65,14 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
 };
 
 const AlertsPanel = memo(({ reservations, rooms }: AlertsProps) => {
-  const [alerts, setAlerts] = useState(() => generateAlerts(reservations, rooms));
+  const { t } = useLanguage();
+  const [alerts, setAlerts] = useState(() => generateAlerts(reservations, rooms, t));
   const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
+
+  // Regenerate alerts when language changes
+  useEffect(() => {
+    setAlerts(generateAlerts(reservations, rooms, t));
+  }, [t, reservations, rooms]);
 
   const dismissAlert = useCallback((id: string) => {
     setDismissedAlerts(prev => new Set([...prev, id]));

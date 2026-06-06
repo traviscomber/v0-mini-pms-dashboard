@@ -2,6 +2,8 @@
 
 import { Calendar, Home, BarChart3, Settings, BookOpen, DoorOpen, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
+import { useLanguage } from '../LanguageContext';
+import LanguageToggle from './LanguageToggle';
 
 interface SidebarProps {
   activeSection: string;
@@ -10,14 +12,15 @@ interface SidebarProps {
 
 export default function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
   const { isDark, toggleTheme } = useTheme();
+  const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-    { id: 'reservations', label: 'Reservations', icon: BookOpen },
-    { id: 'rooms', label: 'Properties', icon: DoorOpen },
-    { id: 'reports', label: 'Reports', icon: BarChart3 },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'dashboard', label: t('nav.dashboard'), icon: Home },
+    { id: 'calendar', label: t('nav.calendar'), icon: Calendar },
+    { id: 'reservations', label: t('nav.reservations'), icon: BookOpen },
+    { id: 'rooms', label: t('nav.properties'), icon: DoorOpen },
+    { id: 'reports', label: t('nav.reports'), icon: BarChart3 },
+    { id: 'settings', label: t('nav.settings'), icon: Settings },
   ];
 
   return (
@@ -25,7 +28,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
       <div className="p-6 border-b border-sidebar-border">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-sidebar-foreground bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PMS</h1>
-          <p className="text-xs text-sidebar-accent">Property Management</p>
+          <p className="text-xs text-sidebar-foreground/60">{t('property.roomManagement')}</p>
         </div>
       </div>
       
@@ -51,18 +54,20 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
       </nav>
 
       <div className="p-4 border-t border-sidebar-border space-y-4">
+        <LanguageToggle />
+        
         <button
           onClick={toggleTheme}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/10 transition-all"
           title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          <span className="font-medium">{isDark ? 'Light' : 'Dark'}</span>
+          <span className="font-medium">{isDark ? t('sidebar.light') : t('sidebar.dark')}</span>
         </button>
 
         <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-4 space-y-2">
-          <p className="text-xs font-semibold text-sidebar-foreground">Pro Tip</p>
-          <p className="text-xs text-sidebar-accent">Toggle theme with the button above</p>
+          <p className="text-xs font-semibold text-sidebar-foreground">{t('sidebar.proTip')}</p>
+          <p className="text-xs text-sidebar-accent">{t('sidebar.toggleLanguageTheme')}</p>
         </div>
       </div>
     </aside>
