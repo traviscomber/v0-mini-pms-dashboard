@@ -15,12 +15,9 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'dashboard', label: t('nav.dashboard'), icon: Home },
-    { id: 'calendar', label: t('nav.calendar'), icon: Calendar },
-    { id: 'reservations', label: t('nav.reservations'), icon: BookOpen },
-    { id: 'rooms', label: t('nav.properties'), icon: DoorOpen },
-    { id: 'reports', label: t('nav.reports'), icon: BarChart3 },
-    { id: 'settings', label: t('nav.settings'), icon: Settings },
+    { id: 'dashboard', label: t('nav.dashboard') || 'Dashboard', icon: Home },
+    { id: 'reservations', label: t('nav.reservations') || 'Manage', icon: BookOpen },
+    { id: 'settings', label: t('nav.settings') || 'Settings', icon: Settings },
   ];
 
   return (
