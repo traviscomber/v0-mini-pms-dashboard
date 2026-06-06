@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import EnhancedDashboard from './pms/components/EnhancedDashboard';
-import BookingCalendar from './pms/components/BookingCalendar';
+import AdvancedCalendar from './pms/components/AdvancedCalendar';
 import BookingForm from './pms/components/BookingForm';
 import ReservationList from './pms/components/ReservationList';
 import Reports from './pms/components/Reports';
@@ -52,7 +52,7 @@ export default function PMSApp() {
         <main className="flex-1 overflow-y-auto">
           <div className="p-8 space-y-8">
             {activeSection === 'dashboard' && <EnhancedDashboard rooms={rooms} reservations={reservations} />}
-            {activeSection === 'calendar' && <BookingCalendar rooms={rooms} reservations={reservations} />}
+            {activeSection === 'calendar' && <AdvancedCalendar rooms={rooms} reservations={reservations} onDateRangeSelect={(start, end, roomId) => console.log('Selected:', start, end, roomId)} />}
             {activeSection === 'reservations' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
