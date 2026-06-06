@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { Send } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface InboxProps {
   reservations: any[];
 }
 
 export default function InboxSection({ reservations }: InboxProps) {
+  const { t } = useLanguage();
   const [selectedReservation, setSelectedReservation] = useState(reservations[0]);
   const [messages, setMessages] = useState<{id: string; sender: string; text: string; timestamp: string}[]>([
     { id: '1', sender: 'guest', text: 'Hi, I have a question about check-in time.', timestamp: '2:30 PM' },
@@ -29,7 +31,7 @@ export default function InboxSection({ reservations }: InboxProps) {
       {/* Conversations List */}
       <div className="lg:col-span-1 bg-card border border-border rounded-lg overflow-hidden flex flex-col">
         <div className="p-4 border-b border-border">
-          <h3 className="font-semibold text-foreground">Messages</h3>
+          <h3 className="font-semibold text-foreground">{t('inboxSection.messages')}</h3>
         </div>
         <div className="flex-1 overflow-y-auto">
           {reservations.map(reservation => (
@@ -81,7 +83,7 @@ export default function InboxSection({ reservations }: InboxProps) {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Type a message..."
+                placeholder={t('inboxSection.typeMessage')}
                 className="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground focus:border-primary outline-none"
               />
               <button

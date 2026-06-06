@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { TrendingUp, Users, DollarSign, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface AnalyticsProps {
   reservations: any[];
@@ -9,6 +10,7 @@ interface AnalyticsProps {
 }
 
 export default function AnalyticsSection({ reservations, rooms }: AnalyticsProps) {
+  const { t } = useLanguage();
   const stats = useMemo(() => {
     const totalRevenue = reservations.reduce((sum, r) => sum + r.totalPrice, 0);
     const avgOccupancy = (reservations.length / rooms.length) * 100;

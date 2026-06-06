@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface CalendarProps {
   rooms: any[];
@@ -9,6 +10,7 @@ interface CalendarProps {
 }
 
 export default function CalendarSection({ rooms, reservations }: CalendarProps) {
+  const { t } = useLanguage();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const daysInMonth = (date: Date) => {

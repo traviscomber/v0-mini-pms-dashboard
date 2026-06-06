@@ -2,12 +2,14 @@
 
 import { useMemo } from 'react';
 import { Download, DollarSign, CreditCard, TrendingUp } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface FinanceProps {
   reservations: any[];
 }
 
 export default function FinanceSection({ reservations }: FinanceProps) {
+  const { t } = useLanguage();
   const financials = useMemo(() => {
     const totalEarned = reservations.filter(r => r.paymentStatus === 'Paid').reduce((sum, r) => sum + r.totalPrice, 0);
     const pendingPayments = reservations.filter(r => r.paymentStatus === 'Pending').reduce((sum, r) => sum + r.totalPrice, 0);

@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { Upload, Trash2 } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface PropertyProps {
   rooms: any[];
 }
 
 export default function PropertySection({ rooms }: PropertyProps) {
+  const { t } = useLanguage();
   const [selectedRoom, setSelectedRoom] = useState(rooms[0]);
   const [roomData, setRoomData] = useState({
     name: selectedRoom?.name || '',
@@ -26,7 +28,7 @@ export default function PropertySection({ rooms }: PropertyProps) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Room List */}
       <div className="lg:col-span-1 bg-card border border-border rounded-lg p-6">
-        <h3 className="font-semibold text-foreground mb-4">Your Rooms</h3>
+        <h3 className="font-semibold text-foreground mb-4">{t('propertySection.roomEditor')}</h3>
         <div className="space-y-2">
           {rooms.map(room => (
             <button
