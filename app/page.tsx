@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
+import { useLanguage } from './pms/LanguageContext';
 import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import AdvancedCalendar from './pms/components/AdvancedCalendar';
 import BookingFlowModal from './pms/components/BookingFlowModal';
@@ -54,6 +55,7 @@ interface PMSContentProps {
 }
 
 function PMSContent(props: PMSContentProps) {
+  const { t } = useLanguage();
   const {
     rooms,
     setRooms,
@@ -146,17 +148,17 @@ function PMSContent(props: PMSContentProps) {
               <div className="space-y-6">
                 {/* Analytics Tabs */}
                 <div className="flex gap-2 border-b border-border">
-                  {(['bookings', 'reviews', 'wishlist'] as const).map(tab => (
+                  {(['bookings', 'reviews', 'wishlists'] as const).map(tab => (
                     <button
                       key={tab}
                       onClick={() => setAnalyticsTab(tab)}
-                      className={`px-4 py-2 font-medium transition capitalize ${
+                      className={`px-4 py-2 font-medium transition ${
                         analyticsTab === tab
                           ? 'border-b-2 border-primary text-primary'
                           : 'text-foreground/60 hover:text-foreground'
                       }`}
                     >
-                      {tab === 'reviews' ? 'Guest Reviews' : tab === 'wishlist' ? 'Wishlists' : 'Bookings'}
+                      {t(`tabs.${tab}`)}
                     </button>
                   ))}
                 </div>
@@ -164,7 +166,7 @@ function PMSContent(props: PMSContentProps) {
                 {/* Tab Content */}
                 {analyticsTab === 'bookings' && <Reports reservations={reservations} />}
                 {analyticsTab === 'reviews' && <ReviewSystem rooms={rooms} />}
-                {analyticsTab === 'wishlist' && <WishlistManager rooms={rooms} />}
+                {analyticsTab === 'wishlists' && <WishlistManager rooms={rooms} />}
               </div>
             )}
             {activeSection === 'settings' && (

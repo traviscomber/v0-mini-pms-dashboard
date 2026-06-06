@@ -1,7 +1,8 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Calendar, Users } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface Reservation {
   id: string;
@@ -26,6 +27,7 @@ interface GuestManagementProps {
 }
 
 const GuestManagement = memo(({ reservations, rooms, onStatusChange }: GuestManagementProps) => {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'completed'>('all');
   const [selectedReservation, setSelectedReservation] = useState<string | null>(null);
 
@@ -80,7 +82,7 @@ const GuestManagement = memo(({ reservations, rooms, onStatusChange }: GuestMana
                 : 'text-foreground/60 hover:text-foreground'
             }`}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {t(`tabs.${tab}`)}
             <span className="ml-2 opacity-60">({reservations.filter(r => tab === 'all' ? true : r.status === tab).length})</span>
           </button>
         ))}

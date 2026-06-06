@@ -66,42 +66,19 @@ export const translations = {
       cleaning: 'Cleaning Schedule',
       forecast: 'Occupancy Forecast',
     },
-    // Reports
-    reports: {
-      title: 'Reports',
+    // Tabs
+    tabs: {
+      all: 'All',
+      pending: 'Pending',
+      confirmed: 'Confirmed',
+      completed: 'Completed',
       bookings: 'Bookings',
       reviews: 'Guest Reviews',
       wishlists: 'Wishlists',
-      totalRevenue: 'Total Revenue',
-      pendingPayments: 'Pending Payments',
-      partialPayments: 'Partial Payments',
     },
-    // Common
-    common: {
-      save: 'Save',
-      cancel: 'Cancel',
-      delete: 'Delete',
-      edit: 'Edit',
-      close: 'Close',
-      next: 'Next',
-      back: 'Back',
-      confirm: 'Confirm',
-      language: 'Language',
-      english: 'English',
-      spanish: 'Español',
-    },
-    // Alerts
-    alerts: {
-      lowOccupancy: 'Low Occupancy',
-      occupancy: 'Current occupancy is',
-      consider: 'Consider promotions.',
-      pendingPayments: 'Pending Payments',
-      pending: 'Pending payment(s).',
-      checkinsTitle: 'Check-ins Today',
-      checkInsToday: 'Check-ins today. Prepare rooms.',
-    },
-    // Charts & Reports
+    // Reports
     reports: {
+      title: 'Reports',
       bookingStatus: 'Booking Status',
       confirmed: 'Confirmed',
       pending: 'Pending',
@@ -192,42 +169,19 @@ export const translations = {
       cleaning: 'Horario de Limpieza',
       forecast: 'Pronóstico de Ocupación',
     },
-    // Reportes
-    reports: {
-      title: 'Reportes',
+    // Pestañas
+    tabs: {
+      all: 'Todas',
+      pending: 'Pendientes',
+      confirmed: 'Confirmadas',
+      completed: 'Completadas',
       bookings: 'Reservas',
       reviews: 'Reseñas de Huéspedes',
       wishlists: 'Listas de Deseos',
-      totalRevenue: 'Ingresos Totales',
-      pendingPayments: 'Pagos Pendientes',
-      partialPayments: 'Pagos Parciales',
     },
-    // Común
-    common: {
-      save: 'Guardar',
-      cancel: 'Cancelar',
-      delete: 'Eliminar',
-      edit: 'Editar',
-      close: 'Cerrar',
-      next: 'Siguiente',
-      back: 'Atrás',
-      confirm: 'Confirmar',
-      language: 'Idioma',
-      english: 'English',
-      spanish: 'Español',
-    },
-    // Alertas
-    alerts: {
-      lowOccupancy: 'Ocupación Baja',
-      occupancy: 'La ocupación actual es',
-      consider: 'Considera promociones.',
-      pendingPayments: 'Pagos Pendientes',
-      pending: 'Pagos pendientes.',
-      checkinsTitle: 'Check-ins Hoy',
-      checkInsToday: 'Check-ins hoy. Prepara las habitaciones.',
-    },
-    // Gráficos y Reportes
+    // Reportes
     reports: {
+      title: 'Reportes',
       bookingStatus: 'Estado de Reservas',
       confirmed: 'Confirmado',
       pending: 'Pendiente',
