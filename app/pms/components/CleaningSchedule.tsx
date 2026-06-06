@@ -2,6 +2,7 @@
 
 import { memo, useState } from 'react';
 import { CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface CleaningScheduleProps {
   rooms: any[];
@@ -9,6 +10,7 @@ interface CleaningScheduleProps {
 }
 
 const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) => {
+  const { t } = useLanguage();
   const [cleaningStatus, setCleaningStatus] = useState<{ [key: string]: { [key: string]: string } }>({});
 
   const getTodayReservations = () => {
@@ -57,9 +59,9 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
     <div className="space-y-6">
       {/* Today's Checkouts */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-lg font-bold text-foreground mb-4">Today's Checkouts - Cleaning Needed</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4">{t('schedule.todayCheckoutsCleaning')}</h3>
         {todayCheckOuts.length === 0 ? (
-          <p className="text-foreground/60">No checkouts today</p>
+          <p className="text-foreground/60">{t('schedule.noCheckoutsToday')}</p>
         ) : (
           <div className="space-y-3">
             {todayCheckOuts.map(res => {
@@ -93,7 +95,7 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
 
       {/* Tomorrow's Check-ins */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-lg font-bold text-foreground mb-4">Tomorrow's Check-ins - Ready?</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4">{t('schedule.tomorrowCheckins')}</h3>
         {tomorrowCheckIns.length === 0 ? (
           <p className="text-foreground/60">No check-ins tomorrow</p>
         ) : (

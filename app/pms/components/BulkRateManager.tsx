@@ -2,6 +2,7 @@
 
 import { memo, useState } from 'react';
 import { DollarSign, Calendar } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface BulkRateManagerProps {
   rooms: any[];
@@ -9,6 +10,7 @@ interface BulkRateManagerProps {
 }
 
 const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => {
+  const { t } = useLanguage();
   const [startDate, setStartDate] = useState('2026-06-10');
   const [endDate, setEndDate] = useState('2026-06-20');
   const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
@@ -46,13 +48,13 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
 
   return (
     <div className="bg-card border border-border rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-foreground mb-6">Bulk Rate Manager</h2>
+      <h2 className="text-2xl font-bold text-foreground mb-6">{t('bulkRate.bulkRateManager')}</h2>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Configuration */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-foreground/60 mb-2">Date Range</label>
+            <label className="block text-sm text-foreground/60 mb-2">{t('bulkRate.dateRange')}</label>
             <div className="flex gap-2">
               <input
                 type="date"
@@ -70,7 +72,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
           </div>
 
           <div>
-            <label className="block text-sm text-foreground/60 mb-2">Adjustment Type</label>
+            <label className="block text-sm text-foreground/60 mb-2">{t('bulkRate.adjustmentType')}</label>
             <div className="flex gap-2">
               {(['fixed', 'percentage'] as const).map(type => (
                 <button
@@ -82,7 +84,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
                       : 'bg-card border border-border text-foreground hover:bg-card/80'
                   }`}
                 >
-                  {type === 'fixed' ? '$Fixed' : '%Percentage'}
+                  {type === 'fixed' ? t('bulkRate.fixed') : t('bulkRate.percentage')}
                 </button>
               ))}
             </div>
@@ -90,7 +92,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
 
           <div>
             <label className="block text-sm text-foreground/60 mb-2">
-              {adjustmentType === 'fixed' ? 'Price Adjustment ($)' : 'Price Adjustment (%)'}
+              {t('bulkRate.priceAdjustment')}
             </label>
             <input
               type="number"
@@ -105,14 +107,14 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
             onClick={handleApply}
             className="w-full py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition"
           >
-            Apply Rate Update
+            {t('bulkRate.applyRateUpdate')}
           </button>
         </div>
 
         {/* Room Selection */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-foreground/60 mb-3">Select Rooms (or apply to all)</label>
+            <label className="block text-sm text-foreground/60 mb-3">{t('bulkRate.selectRoomsOrApplyAll')}</label>
             <div className="space-y-2">
               {rooms.map(room => (
                 <button
@@ -136,17 +138,17 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
       <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-sm text-foreground/60">Days Affected</p>
+            <p className="text-sm text-foreground/60">{t('bulkRate.daysAffected')}</p>
             <p className="text-2xl font-bold text-primary">
               {Math.max(1, Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)))}
             </p>
           </div>
           <div>
-            <p className="text-sm text-foreground/60">Rooms Selected</p>
+            <p className="text-sm text-foreground/60">{t('bulkRate.roomsSelected')}</p>
             <p className="text-2xl font-bold text-primary">{selectedRooms.length || 'All'}</p>
           </div>
           <div>
-            <p className="text-sm text-foreground/60">Bookings Affected</p>
+            <p className="text-sm text-foreground/60">{t('bulkRate.bookingsAffected')}</p>
             <p className="text-2xl font-bold text-accent">{calculateAffectedBookings()}</p>
           </div>
         </div>

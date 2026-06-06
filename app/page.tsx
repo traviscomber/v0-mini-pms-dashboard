@@ -172,7 +172,7 @@ function PMSContent(props: PMSContentProps) {
             {activeSection === 'settings' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{t('settings.notifications')}</h3>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -180,7 +180,7 @@ function PMSContent(props: PMSContentProps) {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-foreground group-hover:text-accent transition-colors">Email notifications</span>
+                      <span className="text-foreground group-hover:text-accent transition-colors">{t('settings.emailNotifications')}</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -188,19 +188,19 @@ function PMSContent(props: PMSContentProps) {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-foreground group-hover:text-accent transition-colors">SMS reminders</span>
+                      <span className="text-foreground group-hover:text-accent transition-colors">{t('settings.smsReminders')}</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
                         type="checkbox" 
                         className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
                       />
-                      <span className="text-foreground group-hover:text-primary transition-colors">Auto-confirm bookings</span>
+                      <span className="text-foreground group-hover:text-primary transition-colors">{t('settings.autoConfirmBookings')}</span>
                     </label>
                   </div>
                 </div>
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Preferences</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{t('settings.preferences')}</h3>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -208,7 +208,7 @@ function PMSContent(props: PMSContentProps) {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-foreground group-hover:text-primary transition-colors">Dark mode</span>
+                      <span className="text-foreground group-hover:text-primary transition-colors">{t('settings.darkMode')}</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input 
@@ -216,7 +216,7 @@ function PMSContent(props: PMSContentProps) {
                         className="w-5 h-5 rounded border-border bg-input checked:bg-secondary cursor-pointer" 
                         defaultChecked 
                       />
-                      <span className="text-foreground group-hover:text-secondary transition-colors">Analytics tracking</span>
+                      <span className="text-foreground group-hover:text-secondary transition-colors">{t('settings.analyticsTracking')}</span>
                     </label>
                   </div>
                 </div>

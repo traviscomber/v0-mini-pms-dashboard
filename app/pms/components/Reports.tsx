@@ -30,36 +30,36 @@ export default function Reports({ reservations }: ReportsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Total Revenue */}
         <div className="bg-card p-6 rounded-lg border border-border">
-          <h3 className="font-semibold text-foreground mb-2">Total Revenue</h3>
+          <h3 className="font-semibold text-foreground mb-2">{t('payment.totalRevenue')}</h3>
           <p className="text-4xl font-bold text-green-500">${totalRevenue.toFixed(0)}</p>
-          <p className="text-sm text-foreground/60 mt-2">{reservations.length} reservations</p>
+          <p className="text-sm text-foreground/60 mt-2">{reservations.length} {t('dashboard.reservations')}</p>
         </div>
 
         {/* Pending Payments */}
         <div className="bg-card p-6 rounded-lg border border-border">
-          <h3 className="font-semibold text-foreground mb-2">{t('reports.pending') ? 'Pending Payments' : t('alerts.pendingPayments')}</h3>
+          <h3 className="font-semibold text-foreground mb-2">{t('payment.pendingPayments')}</h3>
           <p className="text-4xl font-bold text-red-500">${pendingPayments.toFixed(0)}</p>
           <p className="text-sm text-foreground/60 mt-2">{reservations.filter(r => r.paymentStatus === 'Pending').length} {t('dashboard.unpaidBookings')}</p>
         </div>
 
         {/* Total Nights */}
         <div className="bg-card p-6 rounded-lg border border-border">
-          <h3 className="font-semibold text-foreground mb-2">{t('reports.totalNights') || 'Total Nights Booked'}</h3>
+          <h3 className="font-semibold text-foreground mb-2">{t('reports.totalNights')}</h3>
           <p className="text-4xl font-bold text-blue-500">{totalNights || 0}</p>
           <p className="text-sm text-foreground/60 mt-2">{totalNights > 0 ? (totalNights / 30).toFixed(1) : 0} {t('reports.monthsOccupancy')}</p>
         </div>
 
         {/* Average Booking Value */}
         <div className="bg-card p-6 rounded-lg border border-border">
-          <h3 className="font-semibold text-foreground mb-2">Average Booking</h3>
+          <h3 className="font-semibold text-foreground mb-2">{t('reports.avgBookingValue')}</h3>
           <p className="text-4xl font-bold text-purple-500">${reservations.length > 0 ? (totalRevenue / reservations.length).toFixed(0) : 0}</p>
-          <p className="text-sm text-foreground/60 mt-2">per reservation</p>
+          <p className="text-sm text-foreground/60 mt-2">{t('reports.perReservation')}</p>
         </div>
       </div>
 
       {/* Revenue by Channel */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="font-semibold text-foreground mb-4">Revenue by Channel</h3>
+        <h3 className="font-semibold text-foreground mb-4">{t('payment.revenueByChannel')}</h3>
         <div className="space-y-3">
           {Object.entries(revenueByChannel).map(([channel, revenue]) => {
             const percentage = totalRevenue > 0 ? (revenue / totalRevenue) * 100 : 0;
@@ -91,7 +91,7 @@ export default function Reports({ reservations }: ReportsProps) {
             Partial: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30', 
             Pending: 'bg-red-500/10 text-red-400 border-red-500/30' 
           };
-          const statusLabel = status === 'Paid' ? 'Paid' : status === 'Partial' ? 'Partial' : 'Pending';
+          const statusLabel = status === 'Paid' ? t('reports.paid') : status === 'Partial' ? t('reports.partial') : t('reports.pending');
           return (
             <div key={status} className={`p-6 rounded-lg border ${colors[status as keyof typeof colors]}`}>
               <p className="text-sm font-medium text-foreground/80 mb-2">{statusLabel}</p>

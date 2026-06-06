@@ -231,6 +231,38 @@ export const translations = {
       light: 'Light',
       dark: 'Dark',
     },
+    // Bulk Rate Manager
+    bulkRate: {
+      bulkRateManager: 'Bulk Rate Manager',
+      dateRange: 'Date Range',
+      adjustmentType: 'Adjustment Type',
+      fixed: '$Fixed',
+      percentage: '%Percentage',
+      priceAdjustment: 'Price Adjustment (%)',
+      applyRateUpdate: 'Apply Rate Update',
+      selectRoomsOrApplyAll: 'Select Rooms (or apply to all)',
+      daysAffected: 'Days Affected',
+      roomsSelected: 'Rooms Selected',
+      bookingsAffected: 'Bookings Affected',
+    },
+    // Cleaning & Maintenance  
+    schedule: {
+      todayCheckoutsCleaning: "Today's Checkouts - Cleaning Needed",
+      tomorrowCheckins: "Tomorrow's Check-Ins - Ready?",
+      blockDates: 'Block Dates (Maintenance/Cleaning)',
+      noCheckoutsToday: 'No checkouts today',
+      cleaningComplete: 'Cleaning Complete',
+    },
+    // Payment Table
+    paymentTable: {
+      guest: 'Guest',
+      amount: 'Amount',
+      status: 'Status',
+      action: 'Action',
+      markPaid: 'Mark Paid',
+      paymentBreakdown: 'Payment Breakdown',
+      fromConfirmedBookings: 'From confirmed bookings',
+    },
   },
   es: {
     // Navegación
@@ -461,6 +493,49 @@ export const translations = {
       toggleLanguageTheme: 'Alterna idioma y tema arriba',
       light: 'Claro',
       dark: 'Oscuro',
+    },
+    // Configuración
+    settings: {
+      title: 'Configuración',
+      notifications: 'Notificaciones',
+      preferences: 'Preferencias',
+      emailNotifications: 'Notificaciones por correo',
+      smsReminders: 'Recordatorios por SMS',
+      autoConfirmBookings: 'Confirmar reservas automáticamente',
+      darkMode: 'Modo oscuro',
+      analyticsTracking: 'Seguimiento de análisis',
+    },
+    // Gestor de Tarifas en Lote
+    bulkRate: {
+      bulkRateManager: 'Gestor de Tarifas en Lote',
+      dateRange: 'Rango de Fechas',
+      adjustmentType: 'Tipo de Ajuste',
+      fixed: '$Fijo',
+      percentage: '%Porcentaje',
+      priceAdjustment: 'Ajuste de Precio (%)',
+      applyRateUpdate: 'Aplicar Actualización de Tarifa',
+      selectRoomsOrApplyAll: 'Seleccionar Habitaciones (o aplicar a todas)',
+      daysAffected: 'Días Afectados',
+      roomsSelected: 'Habitaciones Seleccionadas',
+      bookingsAffected: 'Reservas Afectadas',
+    },
+    // Limpieza y Mantenimiento  
+    schedule: {
+      todayCheckoutsCleaning: 'Check-outs de Hoy - Limpieza Necesaria',
+      tomorrowCheckins: 'Check-Ins de Mañana - ¿Preparado?',
+      blockDates: 'Bloquear Fechas (Mantenimiento/Limpieza)',
+      noCheckoutsToday: 'Sin check-outs hoy',
+      cleaningComplete: 'Limpieza Completa',
+    },
+    // Tabla de Pagos
+    paymentTable: {
+      guest: 'Huésped',
+      amount: 'Cantidad',
+      status: 'Estado',
+      action: 'Acción',
+      markPaid: 'Marcar como Pagado',
+      paymentBreakdown: 'Desglose de Pagos',
+      fromConfirmedBookings: 'De reservas confirmadas',
     },
   },
 };
