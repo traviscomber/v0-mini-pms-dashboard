@@ -5,25 +5,25 @@ import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
 import { useLanguage } from './pms/LanguageContext';
-import EnhancedDashboard from './pms/components/EnhancedDashboard';
-import AdvancedCalendar from './pms/components/AdvancedCalendar';
+import SimplifiedDashboard from './pms/components/SimplifiedDashboard';
+import CalendarSection from './pms/components/CalendarSection';
+import InboxSection from './pms/components/InboxSection';
+import PropertySection from './pms/components/PropertySection';
+import AnalyticsSection from './pms/components/AnalyticsSection';
+import FinanceSection from './pms/components/FinanceSection';
+import CheckInsModal from './pms/components/CheckInsModal';
+import PaymentsModal from './pms/components/PaymentsModal';
 import BookingFlowModal from './pms/components/BookingFlowModal';
 import GuestManagement from './pms/components/GuestManagement';
 import PaymentManager from './pms/components/PaymentManager';
-import RoomManager from './pms/components/RoomManager';
-import BulkRateManager from './pms/components/BulkRateManager';
-import CleaningSchedule from './pms/components/CleaningSchedule';
-import OccupancyForecast from './pms/components/OccupancyForecast';
-import ReviewSystem from './pms/components/ReviewSystem';
-import WishlistManager from './pms/components/WishlistManager';
-import Reports from './pms/components/Reports';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
-  const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
+  const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'inbox' | 'property' | 'analytics' | 'finance' | 'settings'>('dashboard');
   const [showBookingModal, setShowBookingModal] = useState(false);
-  const [analyticsTab, setAnalyticsTab] = useState<'bookings' | 'reviews' | 'wishlist'>('bookings');
+  const [showCheckInsModal, setShowCheckInsModal] = useState(false);
+  const [showPaymentsModal, setShowPaymentsModal] = useState(false);
 
   return (
     <PMSContent 
@@ -35,8 +35,10 @@ export default function PMSApp() {
       setActiveSection={setActiveSection}
       showBookingModal={showBookingModal}
       setShowBookingModal={setShowBookingModal}
-      analyticsTab={analyticsTab}
-      setAnalyticsTab={setAnalyticsTab}
+      showCheckInsModal={showCheckInsModal}
+      setShowCheckInsModal={setShowCheckInsModal}
+      showPaymentsModal={showPaymentsModal}
+      setShowPaymentsModal={setShowPaymentsModal}
     />
   );
 }
@@ -50,8 +52,10 @@ interface PMSContentProps {
   setActiveSection: (section: any) => void;
   showBookingModal: boolean;
   setShowBookingModal: (show: boolean) => void;
-  analyticsTab: string;
-  setAnalyticsTab: (tab: any) => void;
+  showCheckInsModal: boolean;
+  setShowCheckInsModal: (show: boolean) => void;
+  showPaymentsModal: boolean;
+  setShowPaymentsModal: (show: boolean) => void;
 }
 
 function PMSContent(props: PMSContentProps) {
@@ -65,8 +69,10 @@ function PMSContent(props: PMSContentProps) {
     setActiveSection,
     showBookingModal,
     setShowBookingModal,
-    analyticsTab,
-    setAnalyticsTab
+    showCheckInsModal,
+    setShowCheckInsModal,
+    showPaymentsModal,
+    setShowPaymentsModal,
   } = props;
 
   const getPageTitle = () => {
@@ -74,8 +80,10 @@ function PMSContent(props: PMSContentProps) {
       dashboard: 'Dashboard',
       calendar: 'Calendar',
       reservations: 'Reservations',
-      rooms: 'Properties',
-      reports: 'Reports',
+      inbox: 'Messages',
+      property: 'Property',
+      analytics: 'Analytics',
+      finance: 'Finance',
       settings: 'Settings'
     };
     return titles[activeSection] || '';
@@ -111,8 +119,17 @@ function PMSContent(props: PMSContentProps) {
 
         <main className="flex-1 overflow-y-auto">
           <div className="p-8 space-y-8">
-            {activeSection === 'dashboard' && <EnhancedDashboard rooms={rooms} reservations={reservations} />}
-            {activeSection === 'calendar' && <AdvancedCalendar rooms={rooms} reservations={reservations} onDateRangeSelect={(start, end, roomId) => console.log('Selected:', start, end, roomId)} />}
+            {/* Dashboard - Simplified */}
+            {activeSection === 'dashboard' && (
+              <SimplifiedDashboard 
+                rooms={rooms} 
+                reservations={reservations}
+                onShowCheckIns={() => setShowCheckInsModal(true)}
+                onShowPayments={() => setShowPaymentsModal(true)}
+              />
+            )}
+
+            {/* Reservations - Manage Bookings */}
             {activeSection === 'reservations' && (
               <>
                 <div className="flex gap-4 mb-6">
@@ -120,7 +137,7 @@ function PMSContent(props: PMSContentProps) {
                     onClick={() => setShowBookingModal(true)}
                     className="px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition"
                   >
-                    + {getPageTitle() === 'Reservations' ? 'New Booking' : 'Nueva Reserva'}
+                    + New Booking
                   </button>
                 </div>
                 <div className="space-y-8">
@@ -136,39 +153,33 @@ function PMSContent(props: PMSContentProps) {
                 </div>
               </>
             )}
-            {activeSection === 'rooms' && (
-              <div className="space-y-8">
-                <RoomManager rooms={rooms} onUpdate={setRooms} />
-                <BulkRateManager rooms={rooms} reservations={reservations} />
-                <CleaningSchedule rooms={rooms} reservations={reservations} />
-                <OccupancyForecast rooms={rooms} reservations={reservations} />
-              </div>
-            )}
-            {activeSection === 'reports' && (
-              <div className="space-y-6">
-                {/* Analytics Tabs */}
-                <div className="flex gap-2 border-b border-border">
-                  {(['bookings', 'reviews', 'wishlists'] as const).map(tab => (
-                    <button
-                      key={tab}
-                      onClick={() => setAnalyticsTab(tab)}
-                      className={`px-4 py-2 font-medium transition ${
-                        analyticsTab === tab
-                          ? 'border-b-2 border-primary text-primary'
-                          : 'text-foreground/60 hover:text-foreground'
-                      }`}
-                    >
-                      {t(`tabs.${tab}`)}
-                    </button>
-                  ))}
-                </div>
 
-                {/* Tab Content */}
-                {analyticsTab === 'bookings' && <Reports reservations={reservations} />}
-                {analyticsTab === 'reviews' && <ReviewSystem rooms={rooms} />}
-                {analyticsTab === 'wishlists' && <WishlistManager rooms={rooms} />}
-              </div>
+            {/* Calendar */}
+            {activeSection === 'calendar' && (
+              <CalendarSection rooms={rooms} reservations={reservations} />
             )}
+
+            {/* Inbox */}
+            {activeSection === 'inbox' && (
+              <InboxSection reservations={reservations} />
+            )}
+
+            {/* Property */}
+            {activeSection === 'property' && (
+              <PropertySection rooms={rooms} />
+            )}
+
+            {/* Analytics */}
+            {activeSection === 'analytics' && (
+              <AnalyticsSection reservations={reservations} rooms={rooms} />
+            )}
+
+            {/* Finance */}
+            {activeSection === 'finance' && (
+              <FinanceSection reservations={reservations} />
+            )}
+
+            {/* Settings */}
             {activeSection === 'settings' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
@@ -226,7 +237,19 @@ function PMSContent(props: PMSContentProps) {
         </main>
       </div>
 
-      {/* Booking Modal */}
+      {/* Modals */}
+      <CheckInsModal 
+        reservations={reservations}
+        rooms={rooms}
+        isOpen={showCheckInsModal}
+        onClose={() => setShowCheckInsModal(false)}
+      />
+      <PaymentsModal 
+        reservations={reservations}
+        isOpen={showPaymentsModal}
+        onClose={() => setShowPaymentsModal(false)}
+        onMarkPaid={handlePaymentStatusChange}
+      />
       <BookingFlowModal
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}

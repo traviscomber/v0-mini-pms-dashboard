@@ -11,12 +11,14 @@ export default function PageHeader({ section }: PageHeaderProps) {
 
   const getPageInfo = () => {
     const pages: {[key: string]: {title: string; subtitle: string}} = {
-      dashboard: { title: t('nav.dashboard'), subtitle: t('dashboard.subtitle') },
-      calendar: { title: t('nav.calendar'), subtitle: t('calendar.title') },
-      reservations: { title: t('nav.reservations'), subtitle: t('reservations.title') },
-      rooms: { title: t('nav.properties'), subtitle: t('properties.title') },
-      reports: { title: t('nav.reports'), subtitle: t('reports.title') },
-      settings: { title: t('nav.settings'), subtitle: t('common.close') },
+      dashboard: { title: 'Dashboard', subtitle: 'Manage your rental business efficiently' },
+      calendar: { title: 'Calendar', subtitle: 'Manage rates and availability' },
+      reservations: { title: 'Reservations', subtitle: 'Track and manage bookings' },
+      inbox: { title: 'Messages', subtitle: 'Communicate with guests' },
+      property: { title: 'Property', subtitle: 'Edit listing details and photos' },
+      analytics: { title: 'Analytics', subtitle: 'View performance metrics' },
+      finance: { title: 'Finance', subtitle: 'Manage payments and payouts' },
+      settings: { title: 'Settings', subtitle: 'Configure your preferences' },
     };
     return pages[section] || { title: '', subtitle: '' };
   };

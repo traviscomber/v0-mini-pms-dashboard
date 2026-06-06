@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Home, BarChart3, Settings, BookOpen, DoorOpen, Sun, Moon } from 'lucide-react';
+import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
@@ -15,12 +15,14 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'dashboard', label: t('nav.dashboard'), icon: Home },
-    { id: 'calendar', label: t('nav.calendar'), icon: Calendar },
-    { id: 'reservations', label: t('nav.reservations'), icon: BookOpen },
-    { id: 'rooms', label: t('nav.properties'), icon: DoorOpen },
-    { id: 'reports', label: t('nav.reports'), icon: BarChart3 },
-    { id: 'settings', label: t('nav.settings'), icon: Settings },
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'calendar', label: 'Calendar', icon: Calendar },
+    { id: 'reservations', label: 'Reservations', icon: BookOpen },
+    { id: 'inbox', label: 'Inbox', icon: Mail },
+    { id: 'property', label: 'Property', icon: Building2 },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'finance', label: 'Finance', icon: CreditCard },
+    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
