@@ -129,7 +129,7 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
 
       {/* Block Dates */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-lg font-bold text-foreground mb-4">Block Dates (Maintenance/Cleaning)</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4">{t('schedule.blockDates')}</h3>
         <div className="space-y-3">
           {rooms.map(room => (
             <div key={room.id} className="flex items-center justify-between p-3 bg-background rounded-lg">
@@ -137,7 +137,7 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
                 <p className="font-semibold text-foreground">{room.name}</p>
               </div>
               <button className="px-4 py-2 bg-card border border-border text-foreground rounded-lg hover:bg-card/80 transition text-sm font-medium">
-                + Block Dates
+                {t('schedule.blockDatesButton')}
               </button>
             </div>
           ))}

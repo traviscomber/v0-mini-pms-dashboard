@@ -252,6 +252,15 @@ export const translations = {
       blockDates: 'Block Dates (Maintenance/Cleaning)',
       noCheckoutsToday: 'No checkouts today',
       cleaningComplete: 'Cleaning Complete',
+      blockDatesButton: '+ Block Dates',
+    },
+    // Occupancy Forecast
+    forecast: {
+      occupancyForecast: '30-Day Occupancy Forecast',
+      avgOccupancy: 'Avg Occupancy',
+      peakOccupancy: 'Peak Occupancy',
+      totalRooms: 'Total Rooms',
+      dailyOccupancyRate: 'Daily Occupancy Rate',
     },
     // Payment Table
     paymentTable: {
@@ -526,6 +535,15 @@ export const translations = {
       blockDates: 'Bloquear Fechas (Mantenimiento/Limpieza)',
       noCheckoutsToday: 'Sin check-outs hoy',
       cleaningComplete: 'Limpieza Completa',
+      blockDatesButton: '+ Bloquear Fechas',
+    },
+    // Pronóstico de Ocupación
+    forecast: {
+      occupancyForecast: 'Pronóstico de Ocupación 30 Días',
+      avgOccupancy: 'Ocupación Promedio',
+      peakOccupancy: 'Ocupación Máxima',
+      totalRooms: 'Total de Habitaciones',
+      dailyOccupancyRate: 'Tasa de Ocupación Diaria',
     },
     // Tabla de Pagos
     paymentTable: {

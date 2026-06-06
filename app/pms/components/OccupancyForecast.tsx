@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import { TrendingUp } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface OccupancyForecastProps {
   rooms: any[];
@@ -9,6 +10,7 @@ interface OccupancyForecastProps {
 }
 
 const OccupancyForecast = memo(({ rooms, reservations }: OccupancyForecastProps) => {
+  const { t } = useLanguage();
   const generateForecast = () => {
     const forecast = [];
     const startDate = new Date('2026-06-06');
@@ -43,28 +45,28 @@ const OccupancyForecast = memo(({ rooms, reservations }: OccupancyForecastProps)
     <div className="bg-card border border-border rounded-lg p-6">
       <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
         <TrendingUp className="text-accent" />
-        30-Day Occupancy Forecast
+        {t('forecast.occupancyForecast')}
       </h2>
 
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-primary/10 rounded-lg">
-          <p className="text-sm text-foreground/60">Avg Occupancy</p>
+          <p className="text-sm text-foreground/60">{t('forecast.avgOccupancy')}</p>
           <p className="text-3xl font-bold text-primary">{avgOccupancy}%</p>
         </div>
         <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm text-foreground/60">Peak Occupancy</p>
+          <p className="text-sm text-foreground/60">{t('forecast.peakOccupancy')}</p>
           <p className="text-3xl font-bold text-accent">{maxOccupancy}%</p>
         </div>
         <div className="p-4 bg-secondary/10 rounded-lg">
-          <p className="text-sm text-foreground/60">Total Rooms</p>
+          <p className="text-sm text-foreground/60">{t('forecast.totalRooms')}</p>
           <p className="text-3xl font-bold text-secondary">{rooms.length}</p>
         </div>
       </div>
 
       {/* Forecast Chart (CSS-based) */}
       <div className="space-y-3">
-        <p className="text-sm text-foreground/60">Daily Occupancy Rate</p>
+        <p className="text-sm text-foreground/60">{t('forecast.dailyOccupancyRate')}</p>
         <div className="space-y-2">
           {forecast.map((day, idx) => (
             <div key={idx} className="flex items-center gap-2">
