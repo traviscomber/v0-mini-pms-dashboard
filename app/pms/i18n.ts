@@ -57,9 +57,11 @@ export const translations = {
     properties: {
       title: 'Properties',
       addRoom: 'Add Room',
+      roomManagement: 'Room Management',
       rooms: 'Rooms',
       capacity: 'Capacity',
       nightly: 'Nightly Rate',
+      basePrice: 'Base Price',
       bulkPricing: 'Bulk Pricing',
       cleaning: 'Cleaning Schedule',
       forecast: 'Occupancy Forecast',
@@ -159,9 +161,11 @@ export const translations = {
     properties: {
       title: 'Propiedades',
       addRoom: 'Agregar Habitación',
+      roomManagement: 'Gestión de Habitaciones',
       rooms: 'Habitaciones',
       capacity: 'Capacidad',
       nightly: 'Tarifa Noche',
+      basePrice: 'Precio Base',
       bulkPricing: 'Precios en Lote',
       cleaning: 'Horario de Limpieza',
       forecast: 'Pronóstico de Ocupación',

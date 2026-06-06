@@ -2,6 +2,7 @@
 
 import { memo, useState } from 'react';
 import { Plus, Edit2, Trash2, X } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface RoomManagerProps {
   rooms: any[];
@@ -9,6 +10,7 @@ interface RoomManagerProps {
 }
 
 const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -46,12 +48,12 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
   return (
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Room Management</h2>
+        <h2 className="text-2xl font-bold text-foreground">{t('properties.roomManagement')}</h2>
         <button
           onClick={() => setIsOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
         >
-          <Plus size={20} /> Add Room
+          <Plus size={20} /> {t('properties.addRoom')}
         </button>
       </div>
 
@@ -88,7 +90,7 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-foreground/60 mb-1">Capacity</label>
+                  <label className="block text-sm text-foreground/60 mb-1">{t('properties.capacity')}</label>
                   <input
                     type="number"
                     value={formData.capacity}
@@ -98,7 +100,7 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-foreground/60 mb-1">Base Price</label>
+                  <label className="block text-sm text-foreground/60 mb-1">{t('properties.basePrice')}</label>
                   <input
                     type="number"
                     value={formData.basePrice}
@@ -153,11 +155,11 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-foreground/60">Capacity</span>
+                <span className="text-foreground/60">{t('properties.capacity')}</span>
                 <span className="font-semibold text-foreground">{room.capacity} guests</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-foreground/60">Base Price</span>
+                <span className="text-foreground/60">{t('properties.basePrice')}</span>
                 <span className="font-semibold text-accent">${room.basePrice}/night</span>
               </div>
             </div>
