@@ -12,6 +12,8 @@ import RoomManager from './pms/components/RoomManager';
 import BulkRateManager from './pms/components/BulkRateManager';
 import CleaningSchedule from './pms/components/CleaningSchedule';
 import OccupancyForecast from './pms/components/OccupancyForecast';
+import ReviewSystem from './pms/components/ReviewSystem';
+import WishlistManager from './pms/components/WishlistManager';
 import Reports from './pms/components/Reports';
 
 export default function PMSApp() {
@@ -19,6 +21,7 @@ export default function PMSApp() {
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [analyticsTab, setAnalyticsTab] = useState<'bookings' | 'reviews' | 'wishlist'>('bookings');
 
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     const id = Math.random().toString(36).substr(2, 9);
@@ -100,7 +103,31 @@ export default function PMSApp() {
                 <OccupancyForecast rooms={rooms} reservations={reservations} />
               </div>
             )}
-            {activeSection === 'reports' && <Reports reservations={reservations} />}
+            {activeSection === 'reports' && (
+              <div className="space-y-6">
+                {/* Analytics Tabs */}
+                <div className="flex gap-2 border-b border-border">
+                  {(['bookings', 'reviews', 'wishlist'] as const).map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setAnalyticsTab(tab)}
+                      className={`px-4 py-2 font-medium transition capitalize ${
+                        analyticsTab === tab
+                          ? 'border-b-2 border-primary text-primary'
+                          : 'text-foreground/60 hover:text-foreground'
+                      }`}
+                    >
+                      {tab === 'reviews' ? 'Guest Reviews' : tab === 'wishlist' ? 'Wishlists' : 'Bookings'}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Tab Content */}
+                {analyticsTab === 'bookings' && <Reports reservations={reservations} />}
+                {analyticsTab === 'reviews' && <ReviewSystem rooms={rooms} />}
+                {analyticsTab === 'wishlist' && <WishlistManager rooms={rooms} />}
+              </div>
+            )}
             {activeSection === 'settings' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
                 <div className="bg-card border border-border rounded-xl p-6 space-y-4">
