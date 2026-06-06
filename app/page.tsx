@@ -66,6 +66,18 @@ function PMSContent(props: PMSContentProps) {
     setAnalyticsTab
   } = props;
 
+  const getPageTitle = () => {
+    const titles: {[key: string]: string} = {
+      dashboard: 'Dashboard',
+      calendar: 'Calendar',
+      reservations: 'Reservations',
+      rooms: 'Properties',
+      reports: 'Reports',
+      settings: 'Settings'
+    };
+    return titles[activeSection] || '';
+  };
+
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     const id = Math.random().toString(36).substr(2, 9);
     setReservations([...reservations, { id, ...newRes }]);
@@ -82,18 +94,6 @@ function PMSContent(props: PMSContentProps) {
     setReservations(reservations.map(r => 
       r.id === reservationId ? { ...r, paymentStatus: status } : r
     ));
-  };
-
-  const getPageTitle = () => {
-    const titles: {[key: string]: string} = {
-      dashboard: 'Dashboard',
-      calendar: 'Calendar',
-      reservations: 'Reservations',
-      rooms: 'Properties',
-      reports: 'Reports',
-      settings: 'Settings'
-    };
-    return titles[activeSection] || '';
   };
 
   return (

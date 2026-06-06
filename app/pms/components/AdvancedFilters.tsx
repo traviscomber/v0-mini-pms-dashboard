@@ -2,6 +2,7 @@
 
 import { Filter, X } from 'lucide-react';
 import { memo, useState, useCallback } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 interface FiltersProps {
   rooms: any[];
@@ -24,6 +25,7 @@ const INITIAL_FILTERS: FilterState = {
 };
 
 const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) => {
+  const { t } = useLanguage();
   const [filters, setFilters] = useState<FilterState>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('pms-filters') : null;
     return saved ? JSON.parse(saved) : INITIAL_FILTERS;
@@ -97,7 +99,7 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
         aria-label="Toggle filters"
       >
         <Filter size={18} />
-        Filters
+        {t('dashboard.filters')}
       </button>
 
       {isOpen && (

@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 // Generate revenue trend data (daily for past 7 days)
 const generateRevenueData = (reservations: any[], referenceDate: string = '2026-06-06') => {
@@ -66,6 +67,7 @@ interface ChartsProps {
 }
 
 const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
+  const { t } = useLanguage();
   const revenueData = generateRevenueData(reservations, '2026-06-06');
   const occupancyData = generateOccupancyData(rooms, reservations);
   const statusData = generateBookingStatusData(reservations);
@@ -75,7 +77,7 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Revenue Trend */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Revenue Trend</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('dashboard.revenueTrend')}</h3>
         <div className="space-y-3">
           {revenueData.map((item, idx) => (
             <div key={idx}>
@@ -96,7 +98,7 @@ const DashboardCharts = memo(({ reservations, rooms }: ChartsProps) => {
 
       {/* Occupancy by Room */}
       <div className="bg-card p-6 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Occupancy by Room</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">{t('dashboard.occupancyByRoom')}</h3>
         <div className="space-y-3">
           {occupancyData.map((item, idx) => (
             <div key={idx}>

@@ -23,6 +23,9 @@ export const translations = {
       lowOccupancy: 'Low Occupancy',
       pendingPayments: 'Pending Payments',
       checkinsToday: "Check-ins Today",
+      checkoutsToday: "Check-outs Today",
+      revenueTrend: "Revenue Trend",
+      occupancyByRoom: "Occupancy by Room",
     },
     // Calendar
     calendar: {
@@ -83,6 +86,13 @@ export const translations = {
       english: 'English',
       spanish: 'Español',
     },
+    // Alerts
+    alerts: {
+      occupancy: 'Current occupancy is',
+      consider: 'Consider promotions.',
+      pending: 'Pending payment(s).',
+      checkInsToday: 'Check-ins today. Prepare rooms.',
+    },
   },
   es: {
     // Navegación
@@ -106,6 +116,9 @@ export const translations = {
       lowOccupancy: 'Ocupación Baja',
       pendingPayments: 'Pagos Pendientes',
       checkinsToday: 'Check-ins Hoy',
+      checkoutsToday: 'Check-outs Hoy',
+      revenueTrend: 'Tendencia de Ingresos',
+      occupancyByRoom: 'Ocupación por Habitación',
     },
     // Calendario
     calendar: {
@@ -165,6 +178,13 @@ export const translations = {
       language: 'Idioma',
       english: 'English',
       spanish: 'Español',
+    },
+    // Alertas
+    alerts: {
+      occupancy: 'La ocupación actual es',
+      consider: 'Considera promociones.',
+      pending: 'Pagos pendientes.',
+      checkInsToday: 'Check-ins hoy. Prepara las habitaciones.',
     },
   },
 };

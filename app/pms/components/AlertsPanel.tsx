@@ -2,6 +2,7 @@
 
 import { AlertCircle, TrendingDown, Clock, X } from 'lucide-react';
 import { memo, useState, useCallback } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 interface Alert {
   id: string;
@@ -16,7 +17,7 @@ interface AlertsProps {
   rooms: any[];
 }
 
-const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
+const generateAlerts = (reservations: any[], rooms: any[], t: any): Alert[] => {
   const alerts: Alert[] = [];
   
   // Check low occupancy
@@ -25,8 +26,8 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
     alerts.push({
       id: 'low-occupancy',
       type: 'warning',
-      title: 'Low Occupancy',
-      message: `Current occupancy is ${occupancyRate.toFixed(0)}%. Consider promotions.`,
+      title: t('dashboard.lowOccupancy'),
+      message: `${t('alerts.occupancy')} ${occupancyRate.toFixed(0)}%. ${t('alerts.consider')}`,
       icon: <TrendingDown className="text-orange-600" />,
     });
   }
@@ -37,8 +38,8 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
     alerts.push({
       id: 'pending-payments',
       type: 'critical',
-      title: 'Pending Payments',
-      message: `${pendingPayments} reservation(s) awaiting payment.`,
+      title: t('dashboard.pendingPayments'),
+      message: `${pendingPayments} ${t('alerts.pending')}`,
       icon: <AlertCircle className="text-red-600" />,
     });
   }
@@ -54,8 +55,8 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
     alerts.push({
       id: 'check-ins-today',
       type: 'info',
-      title: 'Check-ins Today',
-      message: `${checkInsToday} guest(s) checking in today. Prepare rooms.`,
+      title: t('dashboard.checkinsToday'),
+      message: `${checkInsToday} ${t('alerts.checkInsToday')}`,
       icon: <Clock className="text-blue-600" />,
     });
   }
@@ -64,7 +65,8 @@ const generateAlerts = (reservations: any[], rooms: any[]): Alert[] => {
 };
 
 const AlertsPanel = memo(({ reservations, rooms }: AlertsProps) => {
-  const [alerts, setAlerts] = useState(() => generateAlerts(reservations, rooms));
+  const { t } = useLanguage();
+  const [alerts, setAlerts] = useState(() => generateAlerts(reservations, rooms, t));
   const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
 
   const dismissAlert = useCallback((id: string) => {
