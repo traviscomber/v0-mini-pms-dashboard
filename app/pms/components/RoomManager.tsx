@@ -51,7 +51,7 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
         <h2 className="text-2xl font-bold text-foreground">{t('properties.roomManagement')}</h2>
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition"
         >
           <Plus size={20} /> {t('properties.addRoom')}
         </button>
@@ -119,7 +119,7 @@ const RoomManager = memo(({ rooms, onUpdate }: RoomManagerProps) => {
                 </button>
                 <button
                   onClick={editingId ? handleSaveEdit : handleAdd}
-                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition font-medium"
+                  className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition font-medium"
                 >
                   {editingId ? 'Save' : 'Add'}
                 </button>

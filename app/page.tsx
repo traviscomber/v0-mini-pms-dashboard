@@ -118,7 +118,7 @@ function PMSContent(props: PMSContentProps) {
                 <div className="flex gap-4 mb-6">
                   <button
                     onClick={() => setShowBookingModal(true)}
-                    className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium transition"
+                    className="px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition"
                   >
                     + {getPageTitle() === 'Reservations' ? 'New Booking' : 'Nueva Reserva'}
                   </button>

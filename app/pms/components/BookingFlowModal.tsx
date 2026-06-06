@@ -257,14 +257,14 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
           {step < 4 ? (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium"
+              className="flex items-center gap-2 px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium"
             >
               Next <ChevronRight size={20} />
             </button>
           ) : (
             <button
               onClick={handleConfirm}
-              className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 font-medium"
+              className="flex items-center gap-2 px-6 py-2 bg-accent text-black rounded-lg hover:bg-accent/90 font-medium"
             >
               <Check size={20} /> Confirm Booking
             </button>
