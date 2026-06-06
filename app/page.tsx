@@ -23,6 +23,49 @@ export default function PMSApp() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [analyticsTab, setAnalyticsTab] = useState<'bookings' | 'reviews' | 'wishlist'>('bookings');
 
+  return (
+    <PMSContent 
+      rooms={rooms}
+      setRooms={setRooms}
+      reservations={reservations}
+      setReservations={setReservations}
+      activeSection={activeSection}
+      setActiveSection={setActiveSection}
+      showBookingModal={showBookingModal}
+      setShowBookingModal={setShowBookingModal}
+      analyticsTab={analyticsTab}
+      setAnalyticsTab={setAnalyticsTab}
+    />
+  );
+}
+
+interface PMSContentProps {
+  rooms: any[];
+  setRooms: (rooms: any[]) => void;
+  reservations: any[];
+  setReservations: (reservations: any[]) => void;
+  activeSection: string;
+  setActiveSection: (section: any) => void;
+  showBookingModal: boolean;
+  setShowBookingModal: (show: boolean) => void;
+  analyticsTab: string;
+  setAnalyticsTab: (tab: any) => void;
+}
+
+function PMSContent(props: PMSContentProps) {
+  const {
+    rooms,
+    setRooms,
+    reservations,
+    setReservations,
+    activeSection,
+    setActiveSection,
+    showBookingModal,
+    setShowBookingModal,
+    analyticsTab,
+    setAnalyticsTab
+  } = props;
+
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     const id = Math.random().toString(36).substr(2, 9);
     setReservations([...reservations, { id, ...newRes }]);
@@ -42,15 +85,15 @@ export default function PMSApp() {
   };
 
   const getPageTitle = () => {
-    const titles = {
+    const titles: {[key: string]: string} = {
       dashboard: 'Dashboard',
-      calendar: 'Booking Calendar',
+      calendar: 'Calendar',
       reservations: 'Reservations',
       rooms: 'Properties',
       reports: 'Reports',
       settings: 'Settings'
     };
-    return titles[activeSection];
+    return titles[activeSection] || '';
   };
 
   return (
