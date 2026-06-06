@@ -8,10 +8,14 @@ import AdvancedCalendar from './pms/components/AdvancedCalendar';
 import BookingFlowModal from './pms/components/BookingFlowModal';
 import GuestManagement from './pms/components/GuestManagement';
 import PaymentManager from './pms/components/PaymentManager';
+import RoomManager from './pms/components/RoomManager';
+import BulkRateManager from './pms/components/BulkRateManager';
+import CleaningSchedule from './pms/components/CleaningSchedule';
+import OccupancyForecast from './pms/components/OccupancyForecast';
 import Reports from './pms/components/Reports';
 
 export default function PMSApp() {
-  const [rooms] = useState(demoData.rooms);
+  const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -89,30 +93,11 @@ export default function PMSApp() {
               </>
             )}
             {activeSection === 'rooms' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {rooms.map(room => (
-                  <div 
-                    key={room.id} 
-                    className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10"
-                  >
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors">{room.name}</h3>
-                        <p className="text-sm text-foreground/60 mt-1">{room.type}</p>
-                      </div>
-                      <div className="pt-4 space-y-3 border-t border-border">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-foreground/60">Capacity</span>
-                          <span className="font-semibold text-foreground">{room.capacity} guests</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-foreground/60">Nightly Rate</span>
-                          <span className="font-semibold text-accent">${room.basePrice}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="space-y-8">
+                <RoomManager rooms={rooms} onUpdate={setRooms} />
+                <BulkRateManager rooms={rooms} reservations={reservations} />
+                <CleaningSchedule rooms={rooms} reservations={reservations} />
+                <OccupancyForecast rooms={rooms} reservations={reservations} />
               </div>
             )}
             {activeSection === 'reports' && <Reports reservations={reservations} />}
