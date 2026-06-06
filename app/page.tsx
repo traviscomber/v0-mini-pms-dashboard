@@ -6,6 +6,11 @@ import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
 import { useLanguage } from './pms/LanguageContext';
 import SimplifiedDashboard from './pms/components/SimplifiedDashboard';
+import CalendarSection from './pms/components/CalendarSection';
+import InboxSection from './pms/components/InboxSection';
+import PropertySection from './pms/components/PropertySection';
+import AnalyticsSection from './pms/components/AnalyticsSection';
+import FinanceSection from './pms/components/FinanceSection';
 import CheckInsModal from './pms/components/CheckInsModal';
 import PaymentsModal from './pms/components/PaymentsModal';
 import BookingFlowModal from './pms/components/BookingFlowModal';
@@ -15,7 +20,7 @@ import PaymentManager from './pms/components/PaymentManager';
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
-  const [activeSection, setActiveSection] = useState<'dashboard' | 'reservations' | 'settings'>('dashboard');
+  const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'inbox' | 'property' | 'analytics' | 'finance' | 'settings'>('dashboard');
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showCheckInsModal, setShowCheckInsModal] = useState(false);
   const [showPaymentsModal, setShowPaymentsModal] = useState(false);
@@ -73,7 +78,12 @@ function PMSContent(props: PMSContentProps) {
   const getPageTitle = () => {
     const titles: {[key: string]: string} = {
       dashboard: 'Dashboard',
-      reservations: 'Manage Bookings',
+      calendar: 'Calendar',
+      reservations: 'Reservations',
+      inbox: 'Messages',
+      property: 'Property',
+      analytics: 'Analytics',
+      finance: 'Finance',
       settings: 'Settings'
     };
     return titles[activeSection] || '';
@@ -142,6 +152,31 @@ function PMSContent(props: PMSContentProps) {
                   />
                 </div>
               </>
+            )}
+
+            {/* Calendar */}
+            {activeSection === 'calendar' && (
+              <CalendarSection rooms={rooms} reservations={reservations} />
+            )}
+
+            {/* Inbox */}
+            {activeSection === 'inbox' && (
+              <InboxSection reservations={reservations} />
+            )}
+
+            {/* Property */}
+            {activeSection === 'property' && (
+              <PropertySection rooms={rooms} />
+            )}
+
+            {/* Analytics */}
+            {activeSection === 'analytics' && (
+              <AnalyticsSection reservations={reservations} rooms={rooms} />
+            )}
+
+            {/* Finance */}
+            {activeSection === 'finance' && (
+              <FinanceSection reservations={reservations} />
             )}
 
             {/* Settings */}
