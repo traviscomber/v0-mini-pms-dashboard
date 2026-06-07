@@ -18,12 +18,13 @@ import CommunicationTemplates from './pms/components/CommunicationTemplates';
 import FinancialReports from './pms/components/FinancialReports';
 import GuestMessaging from './pms/components/GuestMessaging';
 import TodayCommandCenter from './pms/components/TodayCommandCenter';
+import HousekeepingBoard from './pms/components/HousekeepingBoard';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
-type PageType = 'operations' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial';
+type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
@@ -144,6 +145,13 @@ export default function PMSApp() {
                 rooms={rooms}
                 tasks={tasks}
                 onSelectReservation={handleSelectReservation}
+              />
+            )}
+
+            {/* Housekeeping Board */}
+            {activeSection === 'housekeeping' && (
+              <HousekeepingBoard 
+                tasks={tasks}
               />
             )}
 

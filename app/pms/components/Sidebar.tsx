@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart } from 'lucide-react';
+import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
@@ -16,6 +16,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
 
   const menuItems = [
     { id: 'operations', label: 'Operations', icon: Home },
+    { id: 'housekeeping', label: 'Housekeeping', icon: ClipboardList },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
     { id: 'reservations', label: 'Reservations', icon: BookOpen },
     { id: 'reports', label: 'Reports', icon: BarChart3 },
