@@ -146,7 +146,7 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
             <span className="text-foreground/70">Booked</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gray-500/30 border border-gray-500 rounded"></div>
+            <div className="w-4 h-4 bg-card/500/30 border border-gray-500 rounded"></div>
             <span className="text-foreground/70">Blocked</span>
           </div>
         </div>

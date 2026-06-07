@@ -152,7 +152,7 @@ export default function CommunicationTemplates() {
     'check-in': 'bg-green-500/10 text-green-600',
     'post-stay': 'bg-purple-500/10 text-purple-600',
     'issue': 'bg-red-500/10 text-red-600',
-    'custom': 'bg-gray-500/10 text-gray-600',
+    'custom': 'bg-card/500/10 text-gray-600',
   };
 
   return (
