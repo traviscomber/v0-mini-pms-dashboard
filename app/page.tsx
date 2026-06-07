@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
@@ -12,7 +12,9 @@ import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import Reports from './pms/components/Reports';
 import ReservationList from './pms/components/ReservationList';
 import AlertBanner from './pms/components/AlertBanner';
+import FilterPanel from './pms/components/FilterPanel';
 import { useAlerts } from './pms/hooks/use-alerts';
+import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
@@ -24,9 +26,34 @@ export default function PMSApp() {
   const [activeSection, setActiveSection] = useState<PageType>('calendar');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
+  
+  // Load filters from localStorage on client side only
+  const [isLoaded, setIsLoaded] = useState(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = loadFiltersFromLocalStorage();
+      if (saved) setFilters(saved);
+      setIsLoaded(true);
+    }
+  }, []);
   
   // Generate alerts based on current data
   const alerts = useAlerts(reservations, rooms);
+  
+  // Apply filters to reservations
+  const filteredReservations = useMemo(() => 
+    applyFilters(reservations, filters),
+    [reservations, filters]
+  );
+  
+  // Save filters when they change
+  const handleFilterChange = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    if (typeof window !== 'undefined') {
+      saveFiltersToLocalStorage(newFilters);
+    }
+  };
 
   const handleSelectReservation = (reservation: Reservation) => {
     setSelectedReservation(reservation);
@@ -125,11 +152,18 @@ export default function PMSApp() {
 
             {/* Reservation List */}
             {activeSection === 'reservations' && (
-              <ReservationList
-                reservations={reservations}
-                rooms={rooms}
-                onSelectReservation={handleSelectReservation}
-              />
+              <div className="space-y-6">
+                <FilterPanel 
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  rooms={rooms}
+                />
+                <ReservationList
+                  reservations={filteredReservations}
+                  rooms={rooms}
+                  onSelectReservation={handleSelectReservation}
+                />
+              </div>
             )}
 
             {/* Reports & Analytics */}
