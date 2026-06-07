@@ -11,6 +11,8 @@ import OperationsDashboard from './pms/components/OperationsDashboard';
 import EnhancedDashboard from './pms/components/EnhancedDashboard';
 import Reports from './pms/components/Reports';
 import ReservationList from './pms/components/ReservationList';
+import AlertBanner from './pms/components/AlertBanner';
+import { useAlerts } from './pms/hooks/use-alerts';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
@@ -22,6 +24,9 @@ export default function PMSApp() {
   const [activeSection, setActiveSection] = useState<PageType>('calendar');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
+  // Generate alerts based on current data
+  const alerts = useAlerts(reservations, rooms);
 
   const handleSelectReservation = (reservation: Reservation) => {
     setSelectedReservation(reservation);
@@ -92,7 +97,12 @@ export default function PMSApp() {
         <PageHeader section={activeSection} />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="p-8 space-y-8">
+          <div className="p-8 space-y-6">
+            {/* Alerts Section */}
+            {alerts.length > 0 && (
+              <AlertBanner alerts={alerts} />
+            )}
+
             {/* Operations Dashboard */}
             {activeSection === 'operations' && (
               <OperationsDashboard
