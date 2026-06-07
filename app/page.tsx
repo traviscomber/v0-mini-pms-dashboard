@@ -22,12 +22,13 @@ import HousekeepingBoard from './pms/components/HousekeepingBoard';
 import PaymentLedger from './pms/components/PaymentLedger';
 import AuditLogViewer from './pms/components/AuditLogViewer';
 import UserManagement from './pms/components/UserManagement';
+import ConflictDetectionUI from './pms/components/ConflictDetectionUI';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
-type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger' | 'users' | 'audit';
+type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger' | 'users' | 'audit' | 'conflicts';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
@@ -239,6 +240,14 @@ export default function PMSApp() {
             {activeSection === 'audit' && (
               <AuditLogViewer
                 auditLogs={demoData.auditLogs}
+              />
+            )}
+
+            {/* Conflict Detection */}
+            {activeSection === 'conflicts' && (
+              <ConflictDetectionUI
+                rooms={rooms}
+                reservations={reservations}
               />
             )}
           </div>

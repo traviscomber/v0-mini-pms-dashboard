@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText } from 'lucide-react';
+import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText, AlertTriangle } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
@@ -26,6 +26,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
     { id: 'financial', label: 'Financial', icon: PieChart },
     { id: 'users', label: 'Users', icon: Users },
     { id: 'audit', label: 'Audit', icon: FileText },
+    { id: 'conflicts', label: 'Conflicts', icon: AlertTriangle },
   ];
 
   return (
