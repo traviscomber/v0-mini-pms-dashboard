@@ -19,9 +19,11 @@ export default function InboxSection({ reservations }: InboxProps) {
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     setMessages([
       ...messages,
-      { id: String(messages.length + 1), sender: 'host', text: newMessage, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+      { id: String(messages.length + 1), sender: 'host', text: newMessage, timestamp: timeStr }
     ]);
     setNewMessage('');
   };

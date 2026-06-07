@@ -102,7 +102,10 @@ const EnhancedDashboard = memo(({ rooms, reservations }: EnhancedDashboardProps)
       columns: [
         { key: 'guestName', label: 'Guest' },
         { key: 'roomId', label: 'Room' },
-        { key: 'checkInDate', label: 'Time', format: (v: string) => new Date(v).toLocaleTimeString() },
+        { key: 'checkInDate', label: 'Time', format: (v: string) => {
+          const date = new Date(v);
+          return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        }},
       ],
     });
   }, [filteredReservations]);

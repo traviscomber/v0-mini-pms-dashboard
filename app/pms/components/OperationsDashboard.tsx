@@ -101,7 +101,7 @@ export default function OperationsDashboard({
                     <Users className="w-4 h-4" />
                     {rooms.find(r => r.id === res.roomId)?.name}
                   </div>
-                  <div className="text-xs text-foreground/50 mt-1">{res.checkInDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                  <div className="text-xs text-foreground/50 mt-1">{String(res.checkInDate.getHours()).padStart(2, '0')}:{String(res.checkInDate.getMinutes()).padStart(2, '0')}</div>
                 </button>
               ))}
             </div>
