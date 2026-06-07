@@ -27,7 +27,7 @@ import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersT
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
-type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger';
+type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger' | 'users' | 'audit';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
@@ -225,6 +225,20 @@ export default function PMSApp() {
               <PaymentLedger 
                 reservations={reservations}
                 paymentEntries={demoData.paymentEntries}
+              />
+            )}
+
+            {/* User Management */}
+            {activeSection === 'users' && (
+              <UserManagement
+                users={users}
+              />
+            )}
+
+            {/* Audit Log Viewer */}
+            {activeSection === 'audit' && (
+              <AuditLogViewer
+                auditLogs={demoData.auditLogs}
               />
             )}
           </div>
