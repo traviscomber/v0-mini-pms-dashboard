@@ -14,12 +14,15 @@ import ReservationList from './pms/components/ReservationList';
 import AlertBanner from './pms/components/AlertBanner';
 import FilterPanel from './pms/components/FilterPanel';
 import ChannelManager from './pms/components/ChannelManager';
+import CommunicationTemplates from './pms/components/CommunicationTemplates';
+import FinancialReports from './pms/components/FinancialReports';
+import GuestMessaging from './pms/components/GuestMessaging';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
-type PageType = 'operations' | 'calendar' | 'reservations' | 'reports';
+type PageType = 'operations' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
@@ -184,6 +187,22 @@ export default function PMSApp() {
                 </div>
                 <ChannelManager />
               </div>
+            )}
+
+            {/* Guest Messaging */}
+            {activeSection === 'messaging' && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Communication Templates</h1>
+                  <p className="text-foreground/60">Manage pre-built message templates for guest communication</p>
+                </div>
+                <CommunicationTemplates />
+              </div>
+            )}
+
+            {/* Financial Reports */}
+            {activeSection === 'financial' && (
+              <FinancialReports />
             )}
           </div>
         </main>

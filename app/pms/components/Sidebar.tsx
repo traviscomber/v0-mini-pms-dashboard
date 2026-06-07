@@ -19,6 +19,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
     { id: 'calendar', label: 'Calendar', icon: Calendar },
     { id: 'reservations', label: 'Reservations', icon: BookOpen },
     { id: 'reports', label: 'Reports', icon: BarChart3 },
+    { id: 'messaging', label: 'Messaging', icon: Mail },
     { id: 'channels', label: 'Channels', icon: Link2 },
   ];
 
