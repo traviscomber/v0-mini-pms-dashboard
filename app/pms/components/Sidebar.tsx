@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList } from 'lucide-react';
+import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
@@ -24,6 +24,8 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
     { id: 'messaging', label: 'Communication', icon: Mail },
     { id: 'channels', label: 'Channels', icon: Link2 },
     { id: 'financial', label: 'Financial', icon: PieChart },
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'audit', label: 'Audit', icon: FileText },
   ];
 
   return (

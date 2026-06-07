@@ -20,6 +20,8 @@ import GuestMessaging from './pms/components/GuestMessaging';
 import TodayCommandCenter from './pms/components/TodayCommandCenter';
 import HousekeepingBoard from './pms/components/HousekeepingBoard';
 import PaymentLedger from './pms/components/PaymentLedger';
+import AuditLogViewer from './pms/components/AuditLogViewer';
+import UserManagement from './pms/components/UserManagement';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
