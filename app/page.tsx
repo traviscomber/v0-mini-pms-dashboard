@@ -23,6 +23,7 @@ import PaymentLedger from './pms/components/PaymentLedger';
 import AuditLogViewer from './pms/components/AuditLogViewer';
 import UserManagement from './pms/components/UserManagement';
 import ConflictDetectionUI from './pms/components/ConflictDetectionUI';
+import MobileHousekeepingView from './pms/components/MobileHousekeepingView';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
@@ -42,10 +43,12 @@ export default function PMSApp() {
   
   // Load filters from localStorage on client side only
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = loadFiltersFromLocalStorage();
       if (saved) setFilters(saved);
+      setIsMobile(window.innerWidth < 768);
       setIsLoaded(true);
     }
   }, []);
@@ -154,9 +157,21 @@ export default function PMSApp() {
 
             {/* Housekeeping Board */}
             {activeSection === 'housekeeping' && (
-              <HousekeepingBoard 
-                tasks={tasks}
-              />
+              isMobile ? (
+                <MobileHousekeepingView 
+                  tasks={tasks}
+                  onUpdateTask={(taskId, status) => {
+                    setTasks(tasks.map(t => t.id === taskId ? {...t, status} : t));
+                  }}
+                />
+              ) : (
+                <HousekeepingBoard 
+                  tasks={tasks}
+                  onUpdateTask={(taskId, status) => {
+                    setTasks(tasks.map(t => t.id === taskId ? {...t, status} : t));
+                  }}
+                />
+              )
             )}
 
             {/* Reservation Calendar */}
