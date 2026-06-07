@@ -8,59 +8,20 @@ import { useLanguage } from './pms/LanguageContext';
 import HorizontalTimeline from './pms/components/HorizontalTimeline';
 import ReservationDrawer from './pms/components/ReservationDrawer';
 import OperationsDashboard from './pms/components/OperationsDashboard';
+import EnhancedDashboard from './pms/components/EnhancedDashboard';
+import Reports from './pms/components/Reports';
+import ReservationList from './pms/components/ReservationList';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
+
+type PageType = 'operations' | 'calendar' | 'reservations' | 'reports';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
-  const [activeSection, setActiveSection] = useState<'operations' | 'calendar'>('operations');
+  const [activeSection, setActiveSection] = useState<PageType>('calendar');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  return (
-    <PMSContent 
-      rooms={rooms}
-      setRooms={setRooms}
-      reservations={reservations}
-      setReservations={setReservations}
-      activeSection={activeSection}
-      setActiveSection={setActiveSection}
-      selectedReservation={selectedReservation}
-      setSelectedReservation={setSelectedReservation}
-      isDrawerOpen={isDrawerOpen}
-      setIsDrawerOpen={setIsDrawerOpen}
-    />
-  );
-}
-
-interface PMSContentProps {
-  rooms: any[];
-  setRooms: (rooms: any[]) => void;
-  reservations: Reservation[];
-  setReservations: (reservations: Reservation[]) => void;
-  activeSection: string;
-  setActiveSection: (section: string) => void;
-  selectedReservation: Reservation | null;
-  setSelectedReservation: (reservation: Reservation | null) => void;
-  isDrawerOpen: boolean;
-  setIsDrawerOpen: (open: boolean) => void;
-}
-
-function PMSContent(props: PMSContentProps) {
-  const { t } = useLanguage();
-  const {
-    rooms,
-    setRooms,
-    reservations,
-    setReservations,
-    activeSection,
-    setActiveSection,
-    selectedReservation,
-    setSelectedReservation,
-    isDrawerOpen,
-    setIsDrawerOpen,
-  } = props;
 
   const handleSelectReservation = (reservation: Reservation) => {
     setSelectedReservation(reservation);
@@ -72,7 +33,6 @@ function PMSContent(props: PMSContentProps) {
   };
 
   const handleQuickBook = (roomId: string, checkInDate: Date, checkOutDate: Date) => {
-    // Create a quick booking modal or direct entry
     const newReservation: Omit<Reservation, 'id' | 'createdAt' | 'updatedAt'> = {
       roomId,
       guestId: 'guest-new',
@@ -94,7 +54,6 @@ function PMSContent(props: PMSContentProps) {
       return;
     }
 
-    // Open drawer with prefilled data for new booking
     const id = Math.random().toString(36).substr(2, 9);
     setSelectedReservation({
       id,
@@ -105,12 +64,21 @@ function PMSContent(props: PMSContentProps) {
     setIsDrawerOpen(true);
   };
 
-  const getPageTitle = () => {
-    const titles: {[key: string]: string} = {
-      operations: 'Today Operations',
-      calendar: 'Reservation Calendar',
-    };
-    return titles[activeSection] || '';
+  const handleAddReservation = (newRes: any) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    if (!hasConflict(newRes, reservations)) {
+      setReservations([
+        ...reservations,
+        {
+          id,
+          ...newRes,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ]);
+    } else {
+      alert('Conflict detected: Room is already booked for this date range');
+    }
   };
 
   return (
@@ -125,7 +93,7 @@ function PMSContent(props: PMSContentProps) {
 
         <main className="flex-1 overflow-y-auto">
           <div className="p-8 space-y-8">
-            {/* Today Operations Dashboard */}
+            {/* Operations Dashboard */}
             {activeSection === 'operations' && (
               <OperationsDashboard
                 reservations={reservations}
@@ -134,29 +102,31 @@ function PMSContent(props: PMSContentProps) {
               />
             )}
 
-            {/* Reservation Timeline Calendar */}
+            {/* Reservation Calendar */}
             {activeSection === 'calendar' && (
               <HorizontalTimeline
                 rooms={rooms}
                 reservations={reservations}
                 onSelectReservation={handleSelectReservation}
                 onQuickBook={handleQuickBook}
-                onAddReservation={(res) => {
-                  const id = Math.random().toString(36).substr(2, 9);
-                  if (!hasConflict(res, reservations)) {
-                    setReservations([
-                      ...reservations,
-                      {
-                        id,
-                        ...res,
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
-                      },
-                    ]);
-                  } else {
-                    alert('Conflict detected: Room is already booked for this date range');
-                  }
-                }}
+                onAddReservation={handleAddReservation}
+              />
+            )}
+
+            {/* Reservation List */}
+            {activeSection === 'reservations' && (
+              <ReservationList
+                reservations={reservations}
+                rooms={rooms}
+                onSelectReservation={handleSelectReservation}
+              />
+            )}
+
+            {/* Reports & Analytics */}
+            {activeSection === 'reports' && (
+              <Reports
+                reservations={reservations}
+                rooms={rooms}
               />
             )}
           </div>

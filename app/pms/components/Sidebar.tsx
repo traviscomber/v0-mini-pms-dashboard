@@ -17,6 +17,8 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const menuItems = [
     { id: 'operations', label: 'Operations', icon: Home },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
+    { id: 'reservations', label: 'Reservations', icon: BookOpen },
+    { id: 'reports', label: 'Reports', icon: BarChart3 },
   ];
 
   return (
