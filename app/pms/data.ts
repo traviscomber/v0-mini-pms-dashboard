@@ -1,4 +1,5 @@
-import { Reservation, Room, Guest, DemoData } from './types';
+import { Reservation, Room, Guest, DemoData, Task, User, PaymentEntry } from './types';
+import { generateTasksFromReservation } from './lib/task-utils';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -116,5 +117,68 @@ export const demoData: DemoData = {
     { id: 'guest-002', name: 'Sarah Johnson', email: 'sarah@example.com', phone: '+1-555-0102', totalBookings: 1 },
     { id: 'guest-003', name: 'Michael Chen', email: 'michael@example.com', phone: '+1-555-0103', totalBookings: 2 },
     { id: 'guest-004', name: 'Emma Wilson', email: 'emma@example.com', phone: '+1-555-0104', totalBookings: 3 },
+  ],
+  users: [
+    { id: 'user-001', name: 'Admin User', email: 'admin@property.com', role: 'owner', isActive: true, createdAt: new Date('2024-01-01'), updatedAt: new Date('2024-01-01') },
+    { id: 'user-002', name: 'Manager', email: 'manager@property.com', role: 'manager', isActive: true, createdAt: new Date('2024-01-05'), updatedAt: new Date('2024-01-05') },
+    { id: 'user-003', name: 'Front Desk', email: 'reception@property.com', role: 'reception', isActive: true, createdAt: new Date('2024-01-10'), updatedAt: new Date('2024-01-10') },
+    { id: 'user-004', name: 'Housekeeping Lead', email: 'hk@property.com', role: 'housekeeping', isActive: true, createdAt: new Date('2024-01-15'), updatedAt: new Date('2024-01-15') },
+    { id: 'user-005', name: 'Finance Officer', email: 'finance@property.com', role: 'finance', isActive: true, createdAt: new Date('2024-01-20'), updatedAt: new Date('2024-01-20') },
+  ],
+  tasks: [
+    // Tasks auto-generated from res-001 (John Smith)
+    ...generateTasksFromReservation({
+      id: 'res-001',
+      roomId: 'room-101',
+      guestId: 'guest-001',
+      guestName: 'John Smith',
+      guestEmail: 'john@example.com',
+      guestPhone: '+1-555-0101',
+      checkInDate: today,
+      checkOutDate: in3Days,
+      source: 'booking.com',
+      reservationStatus: 'confirmed',
+      paymentStatus: 'paid',
+      cleaningStatus: 'clean',
+      totalAmount: 450,
+      paidAmount: 450,
+      balanceDue: 0,
+      numberOfGuests: 2,
+      specialRequests: 'Late checkout if possible',
+      createdAt: new Date(today.getTime() - 86400000),
+      updatedAt: new Date(today.getTime() - 3600000),
+    }),
+    // Tasks auto-generated from res-002 (Sarah Johnson)
+    ...generateTasksFromReservation({
+      id: 'res-002',
+      roomId: 'room-102',
+      guestId: 'guest-002',
+      guestName: 'Sarah Johnson',
+      guestEmail: 'sarah@example.com',
+      guestPhone: '+1-555-0102',
+      checkInDate: tomorrow,
+      checkOutDate: in5Days,
+      source: 'airbnb',
+      reservationStatus: 'confirmed',
+      paymentStatus: 'partially_paid',
+      cleaningStatus: 'clean',
+      totalAmount: 480,
+      paidAmount: 300,
+      balanceDue: 180,
+      numberOfGuests: 2,
+      notes: 'First time guest',
+      createdAt: new Date(today.getTime() - 172800000),
+      updatedAt: new Date(today.getTime() - 7200000),
+    }),
+  ],
+  paymentEntries: [
+    { id: 'pay-001', reservationId: 'res-001', type: 'booking_deposit', amount: 450, method: 'credit_card', reference: 'CC-12345', recordedBy: 'user-003', recordedAt: new Date(today.getTime() - 86400000) },
+    { id: 'pay-002', reservationId: 'res-002', type: 'booking_deposit', amount: 300, method: 'online', reference: 'AIRBNB-789', recordedBy: 'user-003', recordedAt: new Date(today.getTime() - 172800000) },
+    { id: 'pay-003', reservationId: 'res-004', type: 'payment', amount: 100, method: 'credit_card', reference: 'CC-67890', recordedBy: 'user-005', recordedAt: new Date(today.getTime() - 345600000) },
+  ],
+  auditLogs: [
+    { id: 'audit-001', entityType: 'reservation', entityId: 'res-001', action: 'create', changes: { status: 'pending -> confirmed' }, performedBy: 'user-002', performedAt: new Date(today.getTime() - 86400000) },
+    { id: 'audit-002', entityType: 'task', entityId: 'task-res-001-checkin', action: 'create', changes: { status: 'created' }, performedBy: 'system', performedAt: new Date(today.getTime() - 86400000) },
+    { id: 'audit-003', entityType: 'payment', entityId: 'pay-001', action: 'create', changes: { amount: 450 }, performedBy: 'user-003', performedAt: new Date(today.getTime() - 86400000) },
   ],
 };
