@@ -19,12 +19,13 @@ import FinancialReports from './pms/components/FinancialReports';
 import GuestMessaging from './pms/components/GuestMessaging';
 import TodayCommandCenter from './pms/components/TodayCommandCenter';
 import HousekeepingBoard from './pms/components/HousekeepingBoard';
+import PaymentLedger from './pms/components/PaymentLedger';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
 import { hasConflict } from './pms/utils/conflict-detector';
 
-type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial';
+type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
@@ -215,6 +216,14 @@ export default function PMSApp() {
             {/* Financial Reports */}
             {activeSection === 'financial' && (
               <FinancialReports />
+            )}
+
+            {/* Payment Ledger */}
+            {activeSection === 'ledger' && (
+              <PaymentLedger 
+                reservations={reservations}
+                paymentEntries={demoData.paymentEntries}
+              />
             )}
           </div>
         </main>
