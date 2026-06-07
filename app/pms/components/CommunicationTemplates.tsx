@@ -251,7 +251,7 @@ export default function CommunicationTemplates() {
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm font-mono"
             />
             <p className="text-xs text-foreground/50 mt-2">
-              Available placeholders: {{'{guestName}'}} {{'{propertyName}'}} {{'{checkInDate}'}} {{'{checkOutDate}'}}
+              Available placeholders: {'{guestName}'} {'{propertyName}'} {'{checkInDate}'} {'{checkOutDate}'}
             </p>
           </div>
 
