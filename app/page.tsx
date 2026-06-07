@@ -17,6 +17,7 @@ import ChannelManager from './pms/components/ChannelManager';
 import CommunicationTemplates from './pms/components/CommunicationTemplates';
 import FinancialReports from './pms/components/FinancialReports';
 import GuestMessaging from './pms/components/GuestMessaging';
+import TodayCommandCenter from './pms/components/TodayCommandCenter';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
@@ -27,7 +28,9 @@ type PageType = 'operations' | 'calendar' | 'reservations' | 'reports' | 'channe
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
-  const [activeSection, setActiveSection] = useState<PageType>('calendar');
+  const [tasks, setTasks] = useState(demoData.tasks);
+  const [users, setUsers] = useState(demoData.users);
+  const [activeSection, setActiveSection] = useState<PageType>('operations');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
@@ -134,12 +137,13 @@ export default function PMSApp() {
               <AlertBanner alerts={alerts} />
             )}
 
-            {/* Operations Dashboard */}
+            {/* Operations Dashboard - Today Command Center */}
             {activeSection === 'operations' && (
-              <OperationsDashboard
+              <TodayCommandCenter
                 reservations={reservations}
                 rooms={rooms}
-                onViewReservation={handleSelectReservation}
+                tasks={tasks}
+                onSelectReservation={handleSelectReservation}
               />
             )}
 
