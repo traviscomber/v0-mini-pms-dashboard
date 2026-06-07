@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon } from 'lucide-react';
+import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText, AlertTriangle } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
@@ -15,14 +15,18 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'operations', label: 'Operations', icon: Home },
+    { id: 'housekeeping', label: 'Housekeeping', icon: ClipboardList },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
     { id: 'reservations', label: 'Reservations', icon: BookOpen },
-    { id: 'inbox', label: 'Inbox', icon: Mail },
-    { id: 'property', label: 'Property', icon: Building2 },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'finance', label: 'Finance', icon: CreditCard },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'reports', label: 'Reports', icon: BarChart3 },
+    { id: 'ledger', label: 'Ledger', icon: CreditCard },
+    { id: 'messaging', label: 'Communication', icon: Mail },
+    { id: 'channels', label: 'Channels', icon: Link2 },
+    { id: 'financial', label: 'Financial', icon: PieChart },
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'audit', label: 'Audit', icon: FileText },
+    { id: 'conflicts', label: 'Conflicts', icon: AlertTriangle },
   ];
 
   return (

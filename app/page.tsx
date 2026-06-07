@@ -1,110 +1,131 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
 import { useLanguage } from './pms/LanguageContext';
-import SimplifiedDashboard from './pms/components/SimplifiedDashboard';
-import CalendarSection from './pms/components/CalendarSection';
-import InboxSection from './pms/components/InboxSection';
-import PropertySection from './pms/components/PropertySection';
-import AnalyticsSection from './pms/components/AnalyticsSection';
-import FinanceSection from './pms/components/FinanceSection';
-import CheckInsModal from './pms/components/CheckInsModal';
-import PaymentsModal from './pms/components/PaymentsModal';
-import BookingFlowModal from './pms/components/BookingFlowModal';
-import GuestManagement from './pms/components/GuestManagement';
-import PaymentManager from './pms/components/PaymentManager';
+import HorizontalTimeline from './pms/components/HorizontalTimeline';
+import ReservationDrawer from './pms/components/ReservationDrawer';
+import OperationsDashboard from './pms/components/OperationsDashboard';
+import EnhancedDashboard from './pms/components/EnhancedDashboard';
+import Reports from './pms/components/Reports';
+import ReservationList from './pms/components/ReservationList';
+import AlertBanner from './pms/components/AlertBanner';
+import FilterPanel from './pms/components/FilterPanel';
+import ChannelManager from './pms/components/ChannelManager';
+import CommunicationTemplates from './pms/components/CommunicationTemplates';
+import FinancialReports from './pms/components/FinancialReports';
+import GuestMessaging from './pms/components/GuestMessaging';
+import TodayCommandCenter from './pms/components/TodayCommandCenter';
+import HousekeepingBoard from './pms/components/HousekeepingBoard';
+import PaymentLedger from './pms/components/PaymentLedger';
+import AuditLogViewer from './pms/components/AuditLogViewer';
+import UserManagement from './pms/components/UserManagement';
+import ConflictDetectionUI from './pms/components/ConflictDetectionUI';
+import MobileHousekeepingView from './pms/components/MobileHousekeepingView';
+import { useAlerts } from './pms/hooks/use-alerts';
+import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
+import { Reservation } from './pms/types';
+import { hasConflict } from './pms/utils/conflict-detector';
+
+type PageType = 'operations' | 'housekeeping' | 'calendar' | 'reservations' | 'reports' | 'channels' | 'templates' | 'financial' | 'ledger' | 'users' | 'audit' | 'conflicts';
 
 export default function PMSApp() {
   const [rooms, setRooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
-  const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'inbox' | 'property' | 'analytics' | 'finance' | 'settings'>('dashboard');
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const [showCheckInsModal, setShowCheckInsModal] = useState(false);
-  const [showPaymentsModal, setShowPaymentsModal] = useState(false);
-
-  return (
-    <PMSContent 
-      rooms={rooms}
-      setRooms={setRooms}
-      reservations={reservations}
-      setReservations={setReservations}
-      activeSection={activeSection}
-      setActiveSection={setActiveSection}
-      showBookingModal={showBookingModal}
-      setShowBookingModal={setShowBookingModal}
-      showCheckInsModal={showCheckInsModal}
-      setShowCheckInsModal={setShowCheckInsModal}
-      showPaymentsModal={showPaymentsModal}
-      setShowPaymentsModal={setShowPaymentsModal}
-    />
+  const [tasks, setTasks] = useState(demoData.tasks);
+  const [users, setUsers] = useState(demoData.users);
+  const [activeSection, setActiveSection] = useState<PageType>('operations');
+  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
+  
+  // Load filters from localStorage on client side only
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = loadFiltersFromLocalStorage();
+      if (saved) setFilters(saved);
+      setIsMobile(window.innerWidth < 768);
+      setIsLoaded(true);
+    }
+  }, []);
+  
+  // Generate alerts based on current data
+  const alerts = useAlerts(reservations, rooms);
+  
+  // Apply filters to reservations
+  const filteredReservations = useMemo(() => 
+    applyFilters(reservations, filters),
+    [reservations, filters]
   );
-}
+  
+  // Save filters when they change
+  const handleFilterChange = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    if (typeof window !== 'undefined') {
+      saveFiltersToLocalStorage(newFilters);
+    }
+  };
 
-interface PMSContentProps {
-  rooms: any[];
-  setRooms: (rooms: any[]) => void;
-  reservations: any[];
-  setReservations: (reservations: any[]) => void;
-  activeSection: string;
-  setActiveSection: (section: any) => void;
-  showBookingModal: boolean;
-  setShowBookingModal: (show: boolean) => void;
-  showCheckInsModal: boolean;
-  setShowCheckInsModal: (show: boolean) => void;
-  showPaymentsModal: boolean;
-  setShowPaymentsModal: (show: boolean) => void;
-}
+  const handleSelectReservation = (reservation: Reservation) => {
+    setSelectedReservation(reservation);
+    setIsDrawerOpen(true);
+  };
 
-function PMSContent(props: PMSContentProps) {
-  const { t } = useLanguage();
-  const {
-    rooms,
-    setRooms,
-    reservations,
-    setReservations,
-    activeSection,
-    setActiveSection,
-    showBookingModal,
-    setShowBookingModal,
-    showCheckInsModal,
-    setShowCheckInsModal,
-    showPaymentsModal,
-    setShowPaymentsModal,
-  } = props;
+  const handleUpdateReservation = (updated: Reservation) => {
+    setReservations(reservations.map(r => r.id === updated.id ? updated : r));
+  };
 
-  const getPageTitle = () => {
-    const titles: {[key: string]: string} = {
-      dashboard: 'Dashboard',
-      calendar: 'Calendar',
-      reservations: 'Reservations',
-      inbox: 'Messages',
-      property: 'Property',
-      analytics: 'Analytics',
-      finance: 'Finance',
-      settings: 'Settings'
+  const handleQuickBook = (roomId: string, checkInDate: Date, checkOutDate: Date) => {
+    const newReservation: Omit<Reservation, 'id' | 'createdAt' | 'updatedAt'> = {
+      roomId,
+      guestId: 'guest-new',
+      guestName: 'New Guest',
+      checkInDate,
+      checkOutDate,
+      source: 'direct',
+      reservationStatus: 'pending',
+      paymentStatus: 'pending',
+      cleaningStatus: 'clean',
+      totalAmount: 0,
+      paidAmount: 0,
+      balanceDue: 0,
+      numberOfGuests: 1,
     };
-    return titles[activeSection] || '';
-  };
 
-  const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
+    if (hasConflict(newReservation, reservations)) {
+      alert('Room is not available for this date range');
+      return;
+    }
+
     const id = Math.random().toString(36).substr(2, 9);
-    setReservations([...reservations, { id, ...newRes }]);
-    setShowBookingModal(false);
+    setSelectedReservation({
+      id,
+      ...newReservation,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    setIsDrawerOpen(true);
   };
 
-  const handleStatusChange = (reservationId: string, status: string) => {
-    setReservations(reservations.map(r => 
-      r.id === reservationId ? { ...r, status } : r
-    ));
-  };
-
-  const handlePaymentStatusChange = (reservationId: string, status: string) => {
-    setReservations(reservations.map(r => 
-      r.id === reservationId ? { ...r, paymentStatus: status } : r
-    ));
+  const handleAddReservation = (newRes: any) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    if (!hasConflict(newRes, reservations)) {
+      setReservations([
+        ...reservations,
+        {
+          id,
+          ...newRes,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ]);
+    } else {
+      alert('Conflict detected: Room is already booked for this date range');
+    }
   };
 
   return (
@@ -118,144 +139,146 @@ function PMSContent(props: PMSContentProps) {
         <PageHeader section={activeSection} />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="p-8 space-y-8">
-            {/* Dashboard - Simplified */}
-            {activeSection === 'dashboard' && (
-              <SimplifiedDashboard 
-                rooms={rooms} 
+          <div className="p-8 space-y-6">
+            {/* Alerts Section */}
+            {alerts.length > 0 && (
+              <AlertBanner alerts={alerts} />
+            )}
+
+            {/* Operations Dashboard - Today Command Center */}
+            {activeSection === 'operations' && (
+              <TodayCommandCenter
                 reservations={reservations}
-                onShowCheckIns={() => setShowCheckInsModal(true)}
-                onShowPayments={() => setShowPaymentsModal(true)}
+                rooms={rooms}
+                tasks={tasks}
+                onSelectReservation={handleSelectReservation}
               />
             )}
 
-            {/* Reservations - Manage Bookings */}
-            {activeSection === 'reservations' && (
-              <>
-                <div className="flex gap-4 mb-6">
-                  <button
-                    onClick={() => setShowBookingModal(true)}
-                    className="px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition"
-                  >
-                    + New Booking
-                  </button>
-                </div>
-                <div className="space-y-8">
-                  <GuestManagement 
-                    reservations={reservations} 
-                    rooms={rooms}
-                    onStatusChange={handleStatusChange}
-                  />
-                  <PaymentManager 
-                    reservations={reservations}
-                    onPaymentStatusChange={handlePaymentStatusChange}
-                  />
-                </div>
-              </>
+            {/* Housekeeping Board */}
+            {activeSection === 'housekeeping' && (
+              isMobile ? (
+                <MobileHousekeepingView 
+                  tasks={tasks}
+                  onUpdateTask={(taskId, status) => {
+                    setTasks(tasks.map(t => t.id === taskId ? {...t, status} : t));
+                  }}
+                />
+              ) : (
+                <HousekeepingBoard 
+                  tasks={tasks}
+                  onUpdateTask={(taskId, status) => {
+                    setTasks(tasks.map(t => t.id === taskId ? {...t, status} : t));
+                  }}
+                />
+              )
             )}
 
-            {/* Calendar */}
+            {/* Reservation Calendar */}
             {activeSection === 'calendar' && (
-              <CalendarSection rooms={rooms} reservations={reservations} />
+              <HorizontalTimeline
+                rooms={rooms}
+                reservations={reservations}
+                onSelectReservation={handleSelectReservation}
+                onQuickBook={handleQuickBook}
+                onAddReservation={handleAddReservation}
+              />
             )}
 
-            {/* Inbox */}
-            {activeSection === 'inbox' && (
-              <InboxSection reservations={reservations} />
-            )}
-
-            {/* Property */}
-            {activeSection === 'property' && (
-              <PropertySection rooms={rooms} />
-            )}
-
-            {/* Analytics */}
-            {activeSection === 'analytics' && (
-              <AnalyticsSection reservations={reservations} rooms={rooms} />
-            )}
-
-            {/* Finance */}
-            {activeSection === 'finance' && (
-              <FinanceSection reservations={reservations} />
-            )}
-
-            {/* Settings */}
-            {activeSection === 'settings' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-3xl">
-                <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">{t('settings.notifications')}</h3>
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
-                        defaultChecked 
-                      />
-                      <span className="text-foreground group-hover:text-accent transition-colors">{t('settings.emailNotifications')}</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 rounded border-border bg-input checked:bg-accent cursor-pointer" 
-                        defaultChecked 
-                      />
-                      <span className="text-foreground group-hover:text-accent transition-colors">{t('settings.smsReminders')}</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
-                      />
-                      <span className="text-foreground group-hover:text-primary transition-colors">{t('settings.autoConfirmBookings')}</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">{t('settings.preferences')}</h3>
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 rounded border-border bg-input checked:bg-primary cursor-pointer" 
-                        defaultChecked 
-                      />
-                      <span className="text-foreground group-hover:text-primary transition-colors">{t('settings.darkMode')}</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 rounded border-border bg-input checked:bg-secondary cursor-pointer" 
-                        defaultChecked 
-                      />
-                      <span className="text-foreground group-hover:text-secondary transition-colors">{t('settings.analyticsTracking')}</span>
-                    </label>
-                  </div>
-                </div>
+            {/* Reservation List */}
+            {activeSection === 'reservations' && (
+              <div className="space-y-6">
+                <FilterPanel 
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  rooms={rooms}
+                />
+                <ReservationList
+                  reservations={filteredReservations}
+                  rooms={rooms}
+                  onSelectReservation={handleSelectReservation}
+                />
               </div>
+            )}
+
+            {/* Reports & Analytics */}
+            {activeSection === 'reports' && (
+              <Reports
+                reservations={reservations}
+                rooms={rooms}
+              />
+            )}
+
+            {/* Channel Manager */}
+            {activeSection === 'channels' && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Channel Manager</h1>
+                  <p className="text-foreground/60">Connect and manage your booking channels (OTAs)</p>
+                </div>
+                <ChannelManager />
+              </div>
+            )}
+
+            {/* Guest Messaging */}
+            {activeSection === 'messaging' && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Communication Templates</h1>
+                  <p className="text-foreground/60">Manage pre-built message templates for guest communication</p>
+                </div>
+                <CommunicationTemplates />
+              </div>
+            )}
+
+            {/* Financial Reports */}
+            {activeSection === 'financial' && (
+              <FinancialReports />
+            )}
+
+            {/* Payment Ledger */}
+            {activeSection === 'ledger' && (
+              <PaymentLedger 
+                reservations={reservations}
+                paymentEntries={demoData.paymentEntries}
+              />
+            )}
+
+            {/* User Management */}
+            {activeSection === 'users' && (
+              <UserManagement
+                users={users}
+              />
+            )}
+
+            {/* Audit Log Viewer */}
+            {activeSection === 'audit' && (
+              <AuditLogViewer
+                auditLogs={demoData.auditLogs}
+              />
+            )}
+
+            {/* Conflict Detection */}
+            {activeSection === 'conflicts' && (
+              <ConflictDetectionUI
+                rooms={rooms}
+                reservations={reservations}
+              />
             )}
           </div>
         </main>
       </div>
 
-      {/* Modals */}
-      <CheckInsModal 
-        reservations={reservations}
+      {/* Reservation Drawer */}
+      <ReservationDrawer
+        reservation={selectedReservation}
+        isOpen={isDrawerOpen}
+        onClose={() => {
+          setIsDrawerOpen(false);
+          setSelectedReservation(null);
+        }}
+        onUpdate={handleUpdateReservation}
         rooms={rooms}
-        isOpen={showCheckInsModal}
-        onClose={() => setShowCheckInsModal(false)}
-      />
-      <PaymentsModal 
-        reservations={reservations}
-        isOpen={showPaymentsModal}
-        onClose={() => setShowPaymentsModal(false)}
-        onMarkPaid={handlePaymentStatusChange}
-      />
-      <BookingFlowModal
-        isOpen={showBookingModal}
-        onClose={() => setShowBookingModal(false)}
-        rooms={rooms}
-        reservations={reservations}
-        onConfirm={handleAddReservation}
       />
     </div>
   );
