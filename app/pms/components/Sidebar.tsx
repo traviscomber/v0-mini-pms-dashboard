@@ -15,14 +15,8 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'operations', label: 'Operations', icon: Home },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
-    { id: 'reservations', label: 'Reservations', icon: BookOpen },
-    { id: 'inbox', label: 'Inbox', icon: Mail },
-    { id: 'property', label: 'Property', icon: Building2 },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'finance', label: 'Finance', icon: CreditCard },
-    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
