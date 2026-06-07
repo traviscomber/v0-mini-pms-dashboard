@@ -13,6 +13,7 @@ import Reports from './pms/components/Reports';
 import ReservationList from './pms/components/ReservationList';
 import AlertBanner from './pms/components/AlertBanner';
 import FilterPanel from './pms/components/FilterPanel';
+import ChannelManager from './pms/components/ChannelManager';
 import { useAlerts } from './pms/hooks/use-alerts';
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, FilterOptions } from './pms/lib/filter-utils';
 import { Reservation } from './pms/types';
@@ -172,6 +173,17 @@ export default function PMSApp() {
                 reservations={reservations}
                 rooms={rooms}
               />
+            )}
+
+            {/* Channel Manager */}
+            {activeSection === 'channels' && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Channel Manager</h1>
+                  <p className="text-foreground/60">Connect and manage your booking channels (OTAs)</p>
+                </div>
+                <ChannelManager />
+              </div>
             )}
           </div>
         </main>
