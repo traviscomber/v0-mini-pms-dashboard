@@ -4,6 +4,7 @@ import { Users, TrendingUp, DollarSign, AlertCircle, LogIn, LogOut } from 'lucid
 import { useLanguage as useLanguage } from '../LanguageContext';
 import { useAutomation } from '../hooks/useAutomation';
 import AutomationDashboard from './AutomationDashboard';
+import SmartManagementHub from './SmartManagementHub';
 
 interface DashboardProps {
   rooms: any[];
@@ -102,16 +103,9 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* Automation Dashboard Section */}
+      {/* Smart Management Hub - Occupancy, Pricing, Notifications */}
       <div className="border-t border-border pt-6">
-        <h2 className="text-xl font-bold text-foreground mb-4">🤖 Automatización de Tareas</h2>
-        <AutomationDashboard
-          tasks={automation.tasks}
-          alerts={automation.alerts}
-          criticalTasks={automation.criticalTasks}
-          onTaskStatusChange={automation.updateTaskStatus}
-          onAlertDismiss={automation.dismissAlert}
-        />
+        <SmartManagementHub rooms={rooms} reservations={reservations} tasks={tasks} />
       </div>
     </div>
   );
