@@ -27,7 +27,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setLanguage = useCallback((lang: Language) => {
-    console.log('[v0-translation] Language changed to:', lang);
     setLanguageState(lang);
     try {
       localStorage.setItem('pms-language', lang);
@@ -38,11 +37,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback((key: string) => {
     const result = translate(language, key);
-    if (result !== key) {
-      // Translation found
-      return result;
-    }
-    console.warn(`[v0-translation] Missing key: ${key} for language: ${language}`);
     return result;
   }, [language]);
 

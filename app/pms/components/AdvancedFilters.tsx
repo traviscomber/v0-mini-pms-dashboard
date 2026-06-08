@@ -2,7 +2,7 @@
 
 import { Filter, X } from 'lucide-react';
 import { memo, useState, useCallback } from 'react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface FiltersProps {
   rooms: any[];

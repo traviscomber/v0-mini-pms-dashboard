@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface PageHeaderProps {
   section: string;

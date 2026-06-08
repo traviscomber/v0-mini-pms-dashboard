@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { DollarSign, Home, Users, AlertCircle, ChevronRight } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface SimplifiedDashboardProps {
   rooms: any[];

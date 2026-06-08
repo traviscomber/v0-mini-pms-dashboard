@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Upload, Trash2 } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface PropertyProps {
   rooms: any[];

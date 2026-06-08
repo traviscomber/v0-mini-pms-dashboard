@@ -1,15 +1,13 @@
 'use client';
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 import { Globe } from 'lucide-react';
 
 export default function LanguageToggle() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
 
   const handleLanguageChange = (lang: 'en' | 'es') => {
-    console.log('[v0-toggle] Changing language from', language, 'to', lang);
     setLanguage(lang);
-    console.log('[v0-toggle] Language change called');
   };
 
   return (

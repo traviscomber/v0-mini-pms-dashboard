@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 import RevenueChart from './Charts/RevenueChart';
 import OccupancyChart from './Charts/OccupancyChart';
 import BookingChart from './Charts/BookingChart';

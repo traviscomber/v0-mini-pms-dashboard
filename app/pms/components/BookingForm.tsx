@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface BookingFormProps {
   rooms: any[];

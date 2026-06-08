@@ -2,7 +2,7 @@
 
 import { AlertCircle, TrendingDown, Clock, X } from 'lucide-react';
 import { memo, useState, useCallback, useEffect } from 'react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface Alert {
   id: string;

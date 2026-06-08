@@ -1,7 +1,7 @@
 'use client';
 
 import { Users, TrendingUp, DollarSign, AlertCircle, LogIn, LogOut } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface DashboardProps {
   rooms: any[];

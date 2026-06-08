@@ -3,7 +3,7 @@
 import { AlertCircle, CheckCircle, Clock, DollarSign, Trash2, Users } from 'lucide-react';
 import { Reservation, Room } from '../types';
 import { getArrivals, getDepartures, getPendingPayments, getDirtyRooms } from '../utils/conflict-detector';
-import { useLanguage } from '../LanguageContext';
+import { useLanguageStore as useLanguage } from '../store/languageStore';
 
 interface OperationsDashboardProps {
   reservations: Reservation[];
