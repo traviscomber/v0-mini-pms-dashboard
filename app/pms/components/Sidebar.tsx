@@ -15,18 +15,18 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
   const { t } = useLanguage();
 
   const menuItems = [
-    { id: 'operations', label: 'Operations', icon: Home },
-    { id: 'housekeeping', label: 'Housekeeping', icon: ClipboardList },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-    { id: 'reservations', label: 'Reservations', icon: BookOpen },
-    { id: 'reports', label: 'Reports', icon: BarChart3 },
-    { id: 'ledger', label: 'Ledger', icon: CreditCard },
-    { id: 'messaging', label: 'Communication', icon: Mail },
-    { id: 'channels', label: 'Channels', icon: Link2 },
-    { id: 'financial', label: 'Financial', icon: PieChart },
-    { id: 'users', label: 'Users', icon: Users },
-    { id: 'audit', label: 'Audit', icon: FileText },
-    { id: 'conflicts', label: 'Conflicts', icon: AlertTriangle },
+    { id: 'operations', labelKey: 'operations.title', icon: Home },
+    { id: 'housekeeping', labelKey: 'housekeeping.title', icon: ClipboardList },
+    { id: 'calendar', labelKey: 'calendar.title', icon: Calendar },
+    { id: 'reservations', labelKey: 'reservations.title', icon: BookOpen },
+    { id: 'reports', labelKey: 'reports.title', icon: BarChart3 },
+    { id: 'ledger', labelKey: 'ledger.title', icon: CreditCard },
+    { id: 'messaging', labelKey: 'communication.title', icon: Mail },
+    { id: 'channels', labelKey: 'channels.title', icon: Link2 },
+    { id: 'financial', labelKey: 'financeSection.financialOverview', icon: PieChart },
+    { id: 'users', labelKey: 'users.title', icon: Users },
+    { id: 'audit', labelKey: 'audit.title', icon: FileText },
+    { id: 'conflicts', labelKey: 'conflicts.title', icon: AlertTriangle },
   ];
 
   return (
@@ -53,7 +53,7 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
               }`}
             >
               <Icon size={20} />
-              <span className="font-medium">{item.label}</span>
+              <span className="font-medium">{t(item.labelKey)}</span>
             </button>
           );
         })}
