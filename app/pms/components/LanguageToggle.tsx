@@ -1,10 +1,10 @@
 'use client';
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '../hooks/useLanguage';
 import { Globe } from 'lucide-react';
 
 export default function LanguageToggle() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-2">

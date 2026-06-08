@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface ReportsProps {
   reservations: any[];

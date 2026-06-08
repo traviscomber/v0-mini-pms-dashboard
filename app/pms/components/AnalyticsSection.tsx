@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { TrendingUp, Users, DollarSign, AlertCircle } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface AnalyticsProps {
   reservations: any[];

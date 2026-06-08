@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Send } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface InboxProps {
   reservations: any[];

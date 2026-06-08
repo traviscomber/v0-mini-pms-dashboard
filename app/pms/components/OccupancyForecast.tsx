@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { TrendingUp } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface OccupancyForecastProps {
   rooms: any[];

@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { CreditCard, Check, AlertCircle, Clock } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface PaymentManagerProps {
   reservations: any[];

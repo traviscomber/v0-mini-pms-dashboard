@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo, useCallback } from 'react';
 import { Language, t as translate } from './i18n';
 
 interface LanguageContextType {
@@ -12,12 +12,38 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('en');
 
-  const t = (key: string) => translate(language, key);
+  // Load language from localStorage on mount (client-side only)
+  useEffect(() => {
+    try {
+      const savedLanguage = localStorage.getItem('pms-language') as Language | null;
+      if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
+        setLanguageState(savedLanguage);
+      }
+    } catch (err) {
+      // localStorage not available or other error
+    }
+  }, []);
+
+  const setLanguage = useCallback((lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('pms-language', lang);
+    } catch (err) {
+      // localStorage not available
+    }
+  }, []);
+
+  const t = useCallback((key: string) => {
+    const result = translate(language, key);
+    return result;
+  }, [language]);
+
+  const value = useMemo(() => ({ language, setLanguage, t }), [language, setLanguage, t]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

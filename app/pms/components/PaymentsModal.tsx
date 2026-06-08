@@ -1,7 +1,7 @@
 'use client';
 
 import { X, DollarSign } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface PaymentsModalProps {
   reservations: any[];

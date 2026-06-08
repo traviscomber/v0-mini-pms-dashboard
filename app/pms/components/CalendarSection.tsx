@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Lock, AlertCircle } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface CalendarProps {
   rooms: any[];

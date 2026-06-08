@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, memo } from 'react';
 import { Users, TrendingUp, DollarSign, AlertCircle, LogIn, LogOut } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 import DashboardCharts from './Charts';
 import DetailModal from './DetailModal';
 import AlertsPanel from './AlertsPanel';

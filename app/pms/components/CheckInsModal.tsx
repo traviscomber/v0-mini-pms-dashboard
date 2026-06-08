@@ -1,7 +1,7 @@
 'use client';
 
 import { X, CheckCircle, Clock, MapPin } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface CheckInsModalProps {
   reservations: any[];

@@ -2,7 +2,7 @@
 
 import { memo, useState } from 'react';
 import { Plus, Edit2, Trash2, X } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface RoomManagerProps {
   rooms: any[];

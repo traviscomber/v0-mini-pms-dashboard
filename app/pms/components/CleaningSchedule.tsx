@@ -2,7 +2,7 @@
 
 import { memo, useState } from 'react';
 import { CheckCircle2, Clock, AlertCircle } from 'lucide-react';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface CleaningScheduleProps {
   rooms: any[];

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { demoData } from './pms/data';
 import Sidebar from './pms/components/Sidebar';
 import PageHeader from './pms/components/PageHeader';
-import { useLanguage } from './pms/LanguageContext';
+import { useLanguageSimple } from './pms/hooks/useLanguageSimple';
 import HorizontalTimeline from './pms/components/HorizontalTimeline';
 import ReservationDrawer from './pms/components/ReservationDrawer';
 import OperationsDashboard from './pms/components/OperationsDashboard';
