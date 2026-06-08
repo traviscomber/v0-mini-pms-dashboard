@@ -2,15 +2,38 @@
 
 import { Users, TrendingUp, DollarSign, AlertCircle, LogIn, LogOut } from 'lucide-react';
 import { useLanguage as useLanguage } from '../LanguageContext';
+import { useAutomation } from '../hooks/useAutomation';
+import AutomationDashboard from './AutomationDashboard';
 
 interface DashboardProps {
   rooms: any[];
   reservations: any[];
+  tasks?: any[];
+  alerts?: any[];
+  onTasksChange?: (tasks: any[]) => void;
+  onAlertsChange?: (alerts: any[]) => void;
 }
 
-export default function Dashboard({ rooms, reservations }: DashboardProps) {
+export default function Dashboard({ 
+  rooms, 
+  reservations, 
+  tasks = [], 
+  alerts = [],
+  onTasksChange,
+  onAlertsChange 
+}: DashboardProps) {
   const { t } = useLanguage();
   const today = new Date().toISOString().split('T')[0];
+
+  // Initialize automation hook
+  const automation = useAutomation(
+    reservations,
+    tasks,
+    alerts,
+    onTasksChange,
+    onAlertsChange,
+    { autoGenerateTasks: true, autoCreateAlerts: true, autoUpdateCleaningStatus: true }
+  );
   
   const totalRevenue = reservations.reduce((sum, r) => sum + r.totalPrice, 0);
   const occupiedNights = reservations.reduce((sum, r) => {
@@ -77,6 +100,18 @@ export default function Dashboard({ rooms, reservations }: DashboardProps) {
             <p className="text-foreground/50">{t('operations.noEventsToday')}</p>
           )}
         </div>
+      </div>
+
+      {/* Automation Dashboard Section */}
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold text-foreground mb-4">🤖 Automatización de Tareas</h2>
+        <AutomationDashboard
+          tasks={automation.tasks}
+          alerts={automation.alerts}
+          criticalTasks={automation.criticalTasks}
+          onTaskStatusChange={automation.updateTaskStatus}
+          onAlertDismiss={automation.dismissAlert}
+        />
       </div>
     </div>
   );
