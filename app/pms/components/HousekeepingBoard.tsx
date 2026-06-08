@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Task, TaskStatus } from '../types';
 import { groupTasksByStatus } from '../lib/task-utils';
 import { GripVertical, CheckCircle2, Clock, AlertCircle, Trash2 } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface HousekeepingBoardProps {
   tasks: Task[];
@@ -12,10 +13,10 @@ interface HousekeepingBoardProps {
 }
 
 const statusConfig = {
-  pending: { label: 'Pending', color: 'bg-amber-500/20', textColor: 'text-amber-700', icon: Clock },
-  in_progress: { label: 'In Progress', color: 'bg-blue-500/20', textColor: 'text-blue-700', icon: AlertCircle },
-  completed: { label: 'Completed', color: 'bg-green-500/20', textColor: 'text-green-700', icon: CheckCircle2 },
-  cancelled: { label: 'Cancelled', color: 'bg-gray-500/20', textColor: 'text-gray-700', icon: Trash2 },
+  pending: { labelKey: 'housekeeping.pending', color: 'bg-amber-500/20', textColor: 'text-amber-700', icon: Clock },
+  in_progress: { labelKey: 'housekeeping.inProgress', color: 'bg-blue-500/20', textColor: 'text-blue-700', icon: AlertCircle },
+  completed: { labelKey: 'housekeeping.completed', color: 'bg-green-500/20', textColor: 'text-green-700', icon: CheckCircle2 },
+  cancelled: { labelKey: 'housekeeping.cancelled', color: 'bg-gray-500/20', textColor: 'text-gray-700', icon: Trash2 },
 };
 
 export default function HousekeepingBoard({
@@ -23,6 +24,7 @@ export default function HousekeepingBoard({
   onUpdateTask,
   onDeleteTask,
 }: HousekeepingBoardProps) {
+  const { t } = useLanguage();
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
   const tasksByStatus = groupTasksByStatus(tasks.filter((t) => t.type === 'cleaning'));
 
@@ -55,7 +57,7 @@ export default function HousekeepingBoard({
         {/* Column Header */}
         <div className="flex items-center gap-2 mb-4">
           <Icon className={`w-5 h-5 ${config.textColor}`} />
-          <h3 className="font-semibold">{config.label}</h3>
+          <h3 className="font-semibold">{t(config.labelKey)}</h3>
           <span className="ml-auto bg-foreground/10 text-foreground/60 text-sm font-medium px-2 py-1 rounded">
             {columnTasks.length}
           </span>

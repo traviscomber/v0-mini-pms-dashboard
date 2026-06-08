@@ -1,6 +1,7 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface ReservationListProps {
   reservations: any[];
@@ -17,24 +18,26 @@ const badgeColor = (type: string, value: string) => {
 };
 
 export default function ReservationList({ reservations, onDelete }: ReservationListProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-card rounded-lg border border-border shadow-sm overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-card/50 border-b border-border">
           <tr>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">Guest</th>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">Room</th>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">Dates</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">Source</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">Payment</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">Cleaning</th>
-            <th className="px-4 py-3 text-right font-semibold text-foreground">Total</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">Action</th>
+            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.guestName')}</th>
+            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.room')}</th>
+            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.dates')}</th>
+            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.source')}</th>
+            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.payment')}</th>
+            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.cleaning')}</th>
+            <th className="px-4 py-3 text-right font-semibold text-foreground">{t('reservations.total')}</th>
+            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.action')}</th>
           </tr>
         </thead>
         <tbody>
           {reservations.length === 0 ? (
-            <tr><td colSpan={8} className="px-4 py-8 text-center text-foreground/50">No reservations yet</td></tr>
+            <tr><td colSpan={8} className="px-4 py-8 text-center text-foreground/50">{t('reservations.noReservations')}</td></tr>
           ) : (
             reservations.map((res, idx) => (
               <tr key={res.id} className={idx % 2 === 0 ? 'bg-card' : 'bg-card/50'}>
