@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { demoData } from './data';
+import { useLanguage } from './LanguageContext';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import BookingCalendar from './components/BookingCalendar';
@@ -14,6 +15,7 @@ export default function PMSApp() {
   const [rooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
+  const { language } = useLanguage();
 
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     setReservations([...reservations, newRes]);
@@ -36,7 +38,7 @@ export default function PMSApp() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background" key={language}>
       <Sidebar 
         activeSection={activeSection}
         setActiveSection={setActiveSection}
