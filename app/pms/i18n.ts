@@ -554,6 +554,103 @@ export const translations = {
       success: 'Success',
       warning: 'Warning',
     },
+
+    // ===== CRUD OPERATIONS =====
+    crud: {
+      create: 'Create',
+      read: 'Read',
+      update: 'Update',
+      delete: 'Delete',
+      add: 'Add',
+      edit: 'Edit',
+      remove: 'Remove',
+      save: 'Save',
+      cancel: 'Cancel',
+      close: 'Close',
+      back: 'Back',
+      next: 'Next',
+      submit: 'Submit',
+      search: 'Search',
+      filter: 'Filter',
+      sort: 'Sort',
+      export: 'Export',
+      import: 'Import',
+      confirmDelete: 'Are you sure you want to delete this?',
+      deleteSuccess: 'Deleted successfully',
+      createSuccess: 'Created successfully',
+      updateSuccess: 'Updated successfully',
+      loading: 'Loading...',
+      noResults: 'No results found',
+    },
+
+    // ===== PROPERTY MANAGEMENT =====
+    property: {
+      title: 'Properties',
+      subtitle: 'Property Management',
+      addProperty: 'Add Property',
+      propertyName: 'Name',
+      location: 'Location',
+      city: 'City',
+      country: 'Country',
+      totalRooms: 'Total Rooms',
+      amenities: 'Amenities',
+      isActive: 'Active',
+    },
+
+    // ===== ROOM MANAGEMENT =====
+    rooms: {
+      title: 'Rooms',
+      subtitle: 'Room Management',
+      addRoom: 'Add Room',
+      roomNumber: 'Number',
+      roomType: 'Type',
+      capacity: 'Capacity',
+      basePrice: 'Price',
+      status: 'Status',
+    },
+
+    // ===== GUEST MANAGEMENT =====
+    guests: {
+      title: 'Guests',
+      subtitle: 'Guest Management',
+      addGuest: 'Add Guest',
+      guestName: 'Name',
+      email: 'Email',
+      phone: 'Phone',
+      totalBookings: 'Bookings',
+    },
+
+    // ===== RESERVATION MANAGEMENT =====
+    reservations: {
+      title: 'Reservations',
+      subtitle: 'Reservation Management',
+      addReservation: 'New Reservation',
+      checkInDate: 'Check-in',
+      checkOutDate: 'Check-out',
+      guestName: 'Guest',
+      totalAmount: 'Total',
+      status: 'Status',
+    },
+
+    // ===== PAYMENT MANAGEMENT =====
+    payments: {
+      title: 'Payments',
+      subtitle: 'Payment Management',
+      recordPayment: 'Record Payment',
+      amount: 'Amount',
+      method: 'Method',
+      reference: 'Reference',
+    },
+
+    // ===== TASK MANAGEMENT =====
+    tasks: {
+      title: 'Tasks',
+      subtitle: 'Task Management',
+      addTask: 'New Task',
+      taskTitle: 'Title',
+      priority: 'Priority',
+      status: 'Status',
+    },
   },
 
   es: {
@@ -1104,8 +1201,110 @@ export const translations = {
       success: 'Éxito',
       warning: 'Advertencia',
     },
+
+    // ===== CRUD OPERATIONS =====
+    crud: {
+      create: 'Crear',
+      read: 'Leer',
+      update: 'Actualizar',
+      delete: 'Eliminar',
+      add: 'Agregar',
+      edit: 'Editar',
+      remove: 'Quitar',
+      save: 'Guardar',
+      cancel: 'Cancelar',
+      close: 'Cerrar',
+      back: 'Volver',
+      next: 'Siguiente',
+      submit: 'Enviar',
+      search: 'Buscar',
+      filter: 'Filtrar',
+      sort: 'Ordenar',
+      export: 'Exportar',
+      import: 'Importar',
+      confirmDelete: '¿Estás seguro de que quieres eliminar esto?',
+      deleteSuccess: 'Eliminado exitosamente',
+      createSuccess: 'Creado exitosamente',
+      updateSuccess: 'Actualizado exitosamente',
+      loading: 'Cargando...',
+      noResults: 'Sin resultados',
+    },
+
+    // ===== GESTIÓN DE PROPIEDADES =====
+    property: {
+      title: 'Propiedades',
+      subtitle: 'Gestión de Propiedades',
+      addProperty: 'Agregar Propiedad',
+      propertyName: 'Nombre',
+      location: 'Ubicación',
+      city: 'Ciudad',
+      country: 'País',
+      totalRooms: 'Total Habitaciones',
+      amenities: 'Amenidades',
+      isActive: 'Activo',
+    },
+
+    // ===== GESTIÓN DE HABITACIONES =====
+    rooms: {
+      title: 'Habitaciones',
+      subtitle: 'Gestión de Habitaciones',
+      addRoom: 'Agregar Habitación',
+      roomNumber: 'Número',
+      roomType: 'Tipo',
+      capacity: 'Capacidad',
+      basePrice: 'Precio',
+      status: 'Estado',
+    },
+
+    // ===== GESTIÓN DE HUÉSPEDES =====
+    guests: {
+      title: 'Huéspedes',
+      subtitle: 'Gestión de Huéspedes',
+      addGuest: 'Agregar Huésped',
+      guestName: 'Nombre',
+      email: 'Correo',
+      phone: 'Teléfono',
+      totalBookings: 'Reservaciones',
+    },
+
+    // ===== GESTIÓN DE RESERVACIONES =====
+    reservations: {
+      title: 'Reservaciones',
+      subtitle: 'Gestión de Reservaciones',
+      addReservation: 'Nueva Reservación',
+      checkInDate: 'Check-in',
+      checkOutDate: 'Check-out',
+      guestName: 'Huésped',
+      totalAmount: 'Total',
+      status: 'Estado',
+    },
+
+    // ===== GESTIÓN DE PAGOS =====
+    payments: {
+      title: 'Pagos',
+      subtitle: 'Gestión de Pagos',
+      recordPayment: 'Registrar Pago',
+      amount: 'Cantidad',
+      method: 'Método',
+      reference: 'Referencia',
+    },
+
+    // ===== GESTIÓN DE TAREAS =====
+    tasks: {
+      title: 'Tareas',
+      subtitle: 'Gestión de Tareas',
+      addTask: 'Nueva Tarea',
+      taskTitle: 'Título',
+      priority: 'Prioridad',
+      status: 'Estado',
+    },
   },
 };
+
+// Helper function to safely get nested translation keys
+function getNestedValue(obj: any, path: string): any {
+  return path.split('.').reduce((current, prop) => current?.[prop], obj);
+}
 
 export function t(language: Language, key: string, variables?: Record<string, string | number>): string {
   const keys = key.split('.');
