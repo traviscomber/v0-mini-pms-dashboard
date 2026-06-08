@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Reservation, Task, Room } from '../types';
 import { Clock, AlertCircle, CheckCircle2, Users, Home, DollarSign } from 'lucide-react';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
+import { useLanguage } from '../LanguageContext';
 
 interface TodayCommandCenterProps {
   reservations: Reservation[];
@@ -18,6 +19,7 @@ export default function TodayCommandCenter({
   tasks,
   onSelectReservation,
 }: TodayCommandCenterProps) {
+  const { t } = useLanguage();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -54,7 +56,7 @@ export default function TodayCommandCenter({
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-red-700">
-                {criticalTasks.length} Critical Task{criticalTasks.length !== 1 ? 's' : ''}
+                {criticalTasks.length} {criticalTasks.length === 1 ? t('operations.criticalTaskPlural') : `${t('operations.criticalTaskPlural')}s`}
               </p>
               <div className="space-y-1 mt-2">
                 {criticalTasks.slice(0, 3).map((task) => (
@@ -63,7 +65,7 @@ export default function TodayCommandCenter({
                   </p>
                 ))}
                 {criticalTasks.length > 3 && (
-                  <p className="text-sm text-red-600">+{criticalTasks.length - 3} more</p>
+                  <p className="text-sm text-red-600">{t('operations.moreItems', { count: criticalTasks.length - 3 })}</p>
                 )}
               </div>
             </div>
@@ -74,23 +76,23 @@ export default function TodayCommandCenter({
       {/* Key Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Check-Ins Today</p>
+          <p className="text-xs text-foreground/60">{t('operations.checkInsToday')}</p>
           <p className="text-2xl font-bold text-primary mt-1">{checkIns.length}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Check-Outs Today</p>
+          <p className="text-xs text-foreground/60">{t('operations.checkOutsToday')}</p>
           <p className="text-2xl font-bold text-accent mt-1">{checkOuts.length}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Occupied Rooms</p>
+          <p className="text-xs text-foreground/60">{t('operations.occupiedRooms')}</p>
           <p className="text-2xl font-bold text-secondary mt-1">{occupiedRooms}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Pending Payment</p>
+          <p className="text-xs text-foreground/60">{t('operations.pendingPayments')}</p>
           <p className="text-2xl font-bold text-destructive mt-1">${totalBalance.toFixed(0)}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Tasks Due</p>
+          <p className="text-xs text-foreground/60">{t('operations.tasksDue')}</p>
           <p className="text-2xl font-bold mt-1">{todayTasks.length}</p>
         </div>
       </div>
@@ -100,7 +102,7 @@ export default function TodayCommandCenter({
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Users className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold">Check-Ins Today ({checkIns.length})</h3>
+            <h3 className="font-semibold">{t('operations.checkInBoard')} ({checkIns.length})</h3>
           </div>
           <div className="space-y-2">
             {checkIns.map((res) => (
@@ -113,13 +115,13 @@ export default function TodayCommandCenter({
                   <div>
                     <p className="font-medium">{res.guestName}</p>
                     <p className="text-sm text-foreground/60">
-                      Room {rooms.find((r) => r.id === res.roomId)?.name}
+                      {t('operations.roomLabel')} {rooms.find((r) => r.id === res.roomId)?.name}
                     </p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-semibold">${res.totalAmount.toFixed(2)}</p>
                     <p className="text-xs text-foreground/60">
-                      {res.numberOfGuests} {res.numberOfGuests === 1 ? 'guest' : 'guests'}
+                      {res.numberOfGuests} {res.numberOfGuests === 1 ? t('operations.guest') : t('operations.guests')}
                     </p>
                   </div>
                 </div>
@@ -134,7 +136,7 @@ export default function TodayCommandCenter({
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Clock className="w-5 h-5 text-accent" />
-            <h3 className="font-semibold">Check-Outs Today ({checkOuts.length})</h3>
+            <h3 className="font-semibold">{t('operations.checkOutBoard')} ({checkOuts.length})</h3>
           </div>
           <div className="space-y-2">
             {checkOuts.map((res) => (
@@ -148,20 +150,20 @@ export default function TodayCommandCenter({
                     <p className="font-medium">{res.guestName}</p>
                     <p className="text-sm text-foreground/60">
                       {res.cleaningStatus === 'dirty' ? (
-                        <span className="text-amber-600">Room needs cleaning</span>
+                        <span className="text-amber-600">{t('operations.roomNeedsGuestCleaning')}</span>
                       ) : (
-                        <span className="text-green-600">Room clean</span>
+                        <span className="text-green-600">{t('operations.roomClean')}</span>
                       )}
                     </p>
                   </div>
                   <div className="text-right">
                     {res.balanceDue > 0 && (
                       <p className="text-sm font-semibold text-destructive">
-                        ${res.balanceDue.toFixed(2)} due
+                        {t('operations.balanceDue', { amount: `$${res.balanceDue.toFixed(2)}` })}
                       </p>
                     )}
                     {res.paymentStatus === 'paid' && (
-                      <p className="text-sm font-semibold text-green-600">Paid</p>
+                      <p className="text-sm font-semibold text-green-600">{t('operations.paid')}</p>
                     )}
                   </div>
                 </div>
@@ -174,25 +176,25 @@ export default function TodayCommandCenter({
       {/* Task Status Overview */}
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Pending</p>
+          <p className="text-xs text-foreground/60">{t('operations.pending')}</p>
           <p className="text-2xl font-bold text-amber-600 mt-1">
             {tasksByStatus.pending.length}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">In Progress</p>
+          <p className="text-xs text-foreground/60">{t('housekeeping.inProgress')}</p>
           <p className="text-2xl font-bold text-blue-600 mt-1">
             {tasksByStatus.in_progress.length}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Completed</p>
+          <p className="text-xs text-foreground/60">{t('housekeeping.completed')}</p>
           <p className="text-2xl font-bold text-green-600 mt-1">
             {tasksByStatus.completed.length}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-foreground/60">Completion %</p>
+          <p className="text-xs text-foreground/60">{t('operations.completionPercent')}</p>
           <p className="text-2xl font-bold mt-1">
             {todayTasks.length > 0
               ? Math.round((tasksByStatus.completed.length / todayTasks.length) * 100)
@@ -207,7 +209,7 @@ export default function TodayCommandCenter({
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <DollarSign className="w-5 h-5 text-destructive" />
-            <h3 className="font-semibold">Outstanding Payments ({pendingPayments.length})</h3>
+            <h3 className="font-semibold">{t('operations.outstandingPayments')} ({pendingPayments.length})</h3>
           </div>
           <div className="space-y-2">
             {pendingPayments.map((res) => (
@@ -216,7 +218,7 @@ export default function TodayCommandCenter({
                   <div>
                     <p className="font-medium">{res.guestName}</p>
                     <p className="text-sm text-foreground/60">
-                      Check-out: {new Date(res.checkOutDate).toLocaleDateString()}
+                      {t('operations.checkOut')}: {new Date(res.checkOutDate).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -224,7 +226,7 @@ export default function TodayCommandCenter({
                       ${res.balanceDue.toFixed(2)}
                     </p>
                     <p className="text-xs text-foreground/60">
-                      {res.paymentStatus === 'partially_paid' ? 'Partial' : 'Pending'}
+                      {res.paymentStatus === 'partially_paid' ? t('operations.partial') : t('operations.pending')}
                     </p>
                   </div>
                 </div>
