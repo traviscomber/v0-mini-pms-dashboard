@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { demoData } from './data';
-import { useLanguage } from './LanguageContext';
+import { useSimpleLanguage } from './hooks/useSimpleLanguage';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import BookingCalendar from './components/BookingCalendar';
@@ -14,7 +14,7 @@ export default function PMSApp() {
   const [rooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
-  const { language } = useLanguage();
+  const { language } = useSimpleLanguage();
 
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     setReservations([...reservations, newRes]);
