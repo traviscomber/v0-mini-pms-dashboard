@@ -12,6 +12,30 @@ export const translations = {
       pms: 'PMS',
       roomManagement: 'Room Management',
       toggleLanguageTheme: 'Toggle Language & Theme',
+      light: 'Light Mode',
+      dark: 'Dark Mode',
+      proTip: 'Pro Tip',
+    },
+
+    property: {
+      roomManagement: 'Property Management System',
+    },
+
+    // ===== COMMON UI =====
+    common: {
+      filters: 'Filters',
+      noTasks: 'No tasks',
+      noData: 'No data available',
+      dragTasks: 'Drag tasks between columns to update their status. Cleaning tasks are automatically generated when guests check out.',
+      lowOccupancy: 'Low Occupancy',
+      lowOccupancyMsg: 'Current occupancy is {occupancy}%. Consider promotional offers.',
+      criticalTask: 'Critical Task',
+      checkIn: 'Check-in',
+      paid: 'Paid',
+      partiallyPaid: 'Partially Paid',
+      pending: 'Pending',
+      clean: 'Clean',
+      needsCleaning: 'Needs Cleaning',
     },
 
     // ===== OPERATIONS SECTION =====
@@ -83,6 +107,11 @@ export const translations = {
       priority: 'Priority',
       dueDate: 'Due Date',
       notes: 'Notes',
+      preArrivalCleaning: 'Pre-arrival cleaning',
+      postCheckoutCleaning: 'Post-checkout cleaning',
+      deepCleanRoomBefore: 'Deep clean room before guest arrival',
+      cleaningTasksAuto: 'Cleaning tasks are automatically generated when guests check out.',
+      noTasksAvailable: 'No tasks available',
     },
 
     // ===== CALENDAR SECTION =====
@@ -533,6 +562,30 @@ export const translations = {
       pms: 'PMS',
       roomManagement: 'Gestión de Habitaciones',
       toggleLanguageTheme: 'Cambiar Idioma y Tema',
+      light: 'Modo Claro',
+      dark: 'Modo Oscuro',
+      proTip: 'Consejo Pro',
+    },
+
+    property: {
+      roomManagement: 'Sistema de Gestión de Propiedades',
+    },
+
+    // ===== COMMON UI =====
+    common: {
+      filters: 'Filtros',
+      noTasks: 'Sin tareas',
+      noData: 'Sin datos disponibles',
+      dragTasks: 'Arrastra tareas entre columnas para actualizar su estado. Las tareas de limpieza se generan automáticamente cuando los huéspedes se alojan.',
+      lowOccupancy: 'Baja Ocupación',
+      lowOccupancyMsg: 'La ocupación actual es del {occupancy}%. Considera ofertas promocionales.',
+      criticalTask: 'Tarea Crítica',
+      checkIn: 'Check-in',
+      paid: 'Pagado',
+      partiallyPaid: 'Pagado Parcialmente',
+      pending: 'Pendiente',
+      clean: 'Limpio',
+      needsCleaning: 'Necesita Limpieza',
     },
 
     // ===== OPERATIONS SECTION =====
@@ -604,6 +657,11 @@ export const translations = {
       priority: 'Prioridad',
       dueDate: 'Fecha de Vencimiento',
       notes: 'Notas',
+      preArrivalCleaning: 'Limpieza pre-llegada',
+      postCheckoutCleaning: 'Limpieza post-checkout',
+      deepCleanRoomBefore: 'Limpieza profunda de la habitación antes de la llegada del huésped',
+      cleaningTasksAuto: 'Las tareas de limpieza se generan automáticamente cuando los huéspedes se alojan.',
+      noTasksAvailable: 'Sin tareas disponibles',
     },
 
     // ===== CALENDAR SECTION =====

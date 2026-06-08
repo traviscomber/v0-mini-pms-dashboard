@@ -12,7 +12,9 @@ interface SidebarProps {
 
 export default function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
   const { isDark, toggleTheme } = useTheme();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+
+  console.log('[v0-sidebar] Rendering with language:', language);
 
   const menuItems = [
     { id: 'operations', labelKey: 'operations.title', icon: Home },
