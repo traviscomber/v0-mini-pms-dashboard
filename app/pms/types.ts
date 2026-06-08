@@ -1,8 +1,16 @@
-// Property/Installation model for multi-property management
+import { Language } from './i18n';
+
+// Bilingual support for all string fields
+export interface BilingualText {
+  en: string;
+  es: string;
+}
+
+// Property/Installation model with bilingual support
 export interface Property {
   id: string;
-  name: string;
-  description?: string;
+  name: BilingualText;
+  description?: BilingualText;
   location: {
     address: string;
     city: string;
@@ -11,20 +19,46 @@ export interface Property {
     coordinates?: { lat: number; lng: number };
   };
   totalRooms: number;
-  amenities: string[];
+  amenities: BilingualText[];
   maxGuests: number;
   timezone: string;
   currency: string;
+  checkInTime: string;
+  checkOutTime: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Normalized Reservation model for operations-first PMS
-export type ReservationStatus = 'confirmed' | 'pending' | 'cancelled' | 'completed';
-export type PaymentStatus = 'paid' | 'partially_paid' | 'pending' | 'overdue';
-export type CleaningStatus = 'clean' | 'dirty' | 'in_progress' | 'inspected';
-export type ReservationSource = 'booking.com' | 'airbnb' | 'direct' | 'phone' | 'expedia' | 'vrbo';
+// Room types with bilingual names
+export type RoomTypeKey = 'room' | 'apartment' | 'suite' | 'cabin' | 'studio' | 'villa';
+
+export interface Room {
+  id: string;
+  propertyId: string;
+  name: BilingualText;
+  roomNumber: string;
+  type: RoomTypeKey;
+  capacity: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  basePrice: number;
+  seasonalPrices?: { season: string; price: number }[];
+  amenities: BilingualText[];
+  images?: string[];
+  status: 'available' | 'maintenance' | 'blocked' | 'reserved';
+  lastCleaned?: Date;
+  nextMaintenance?: Date;
+  notes?: BilingualText;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Normalized Reservation model with translations
+export type ReservationStatus = 'confirmed' | 'pending' | 'cancelled' | 'completed' | 'no_show';
+export type PaymentStatus = 'paid' | 'partially_paid' | 'pending' | 'overdue' | 'refunded';
+export type CleaningStatus = 'clean' | 'dirty' | 'in_progress' | 'inspected' | 'ready';
+export type ReservationSource = 'booking.com' | 'airbnb' | 'direct' | 'phone' | 'expedia' | 'vrbo' | 'other';
 
 export interface Reservation {
   id: string;
@@ -44,28 +78,8 @@ export interface Reservation {
   paidAmount: number;
   balanceDue: number;
   numberOfGuests: number;
-  specialRequests?: string;
-  notes?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface Room {
-  id: string;
-  propertyId: string;
-  name: string;
-  roomNumber: string;
-  type: 'room' | 'apartment' | 'suite' | 'cabin' | 'studio' | 'villa';
-  capacity: number;
-  bedrooms?: number;
-  bathrooms?: number;
-  basePrice: number;
-  seasonalPrices?: { season: string; price: number }[];
-  amenities: string[];
-  images?: string[];
-  status: 'available' | 'maintenance' | 'blocked' | 'reserved';
-  lastCleaned?: Date;
-  nextMaintenance?: Date;
+  specialRequests?: BilingualText;
+  notes?: BilingualText;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -78,6 +92,99 @@ export interface Guest {
   phone: string;
   nationality?: string;
   idType?: string;
+  idNumber?: string;
+  totalBookings: number;
+  totalSpent: number;
+  isVIP: boolean;
+  preferredLanguage?: Language;
+  preferences?: BilingualText;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type PaymentMethod = 'credit_card' | 'bank_transfer' | 'cash' | 'check' | 'online' | 'crypto' | 'other';
+export type PaymentType = 'deposit' | 'payment' | 'refund' | 'adjustment' | 'tax' | 'service_fee';
+
+export interface Payment {
+  id: string;
+  reservationId: string;
+  propertyId: string;
+  guestId: string;
+  method: PaymentMethod;
+  type: PaymentType;
+  amount: number;
+  currency: string;
+  reference?: string;
+  invoiceNumber?: string;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type TaskStatus = 'todo' | 'in_progress' | 'completed' | 'blocked';
+export type TaskPriority = 'low' | 'medium' | 'high' | 'critical';
+export type TaskType = 'cleaning' | 'maintenance' | 'guest_request' | 'admin' | 'checkout' | 'checkin';
+
+export interface Task {
+  id: string;
+  propertyId: string;
+  roomId?: string;
+  reservationId?: string;
+  title: BilingualText;
+  description?: BilingualText;
+  type: TaskType;
+  status: TaskStatus;
+  priority: TaskPriority;
+  assignedTo?: string;
+  dueDate: Date;
+  completedAt?: Date;
+  notes?: BilingualText;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type AlertLevel = 'info' | 'warning' | 'critical';
+export type AlertType = 'low_occupancy' | 'pending_payment' | 'checkin_today' | 'checkout_today' | 'maintenance_needed' | 'guest_request';
+
+export interface Alert {
+  id: string;
+  propertyId: string;
+  type: AlertType;
+  level: AlertLevel;
+  title: BilingualText;
+  message: BilingualText;
+  relatedEntity?: { type: 'reservation' | 'room' | 'guest' | 'task'; id: string };
+  isActive: boolean;
+  dismissedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type UserRole = 'admin' | 'manager' | 'reception' | 'housekeeping' | 'finance' | 'guest';
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+  propertyIds: string[];
+  isActive: boolean;
+  lastLogin?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AuditLog {
+  id: string;
+  propertyId: string;
+  userId: string;
+  userName: string;
+  action: string;
+  entityType: 'property' | 'room' | 'reservation' | 'guest' | 'payment' | 'task' | 'user';
+  entityId: string;
+  changes?: Record<string, any>;
+  timestamp: Date;
+}
   idNumber?: string;
   totalBookings: number;
   totalSpent?: number;
