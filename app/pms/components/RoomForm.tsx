@@ -1,133 +1,188 @@
 'use client';
 
 import { useState } from 'react';
-import { Room } from '../types';
+import { Room, RoomTypeKey, BilingualText } from '../types';
 import { useLanguage } from '../hooks/useLanguage';
 import { X } from 'lucide-react';
 
+const ROOM_TYPES: { value: RoomTypeKey; label: string }[] = [
+  { value: 'room', label: 'Standard Room' },
+  { value: 'apartment', label: 'Apartment' },
+  { value: 'suite', label: 'Suite' },
+  { value: 'cabin', label: 'Cabin' },
+  { value: 'studio', label: 'Studio' },
+  { value: 'villa', label: 'Villa' },
+];
+
 interface RoomFormProps {
-  room?: Room;
   propertyId: string;
-  onSubmit: (room: Room) => void;
+  room?: Room;
+  onSave: (room: Omit<Room, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onCancel: () => void;
 }
 
-export default function RoomForm({ room, propertyId, onSubmit, onCancel }: RoomFormProps) {
+export default function RoomForm({ propertyId, room, onSave, onCancel }: RoomFormProps) {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState<Room>(
-    room || {
-      id: `room-${Date.now()}`,
-      propertyId,
-      name: '',
-      roomNumber: '',
-      type: 'room',
-      capacity: 2,
-      bedrooms: 1,
-      bathrooms: 1,
-      basePrice: 100,
-      amenities: [],
-      status: 'available',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-  );
-
-  const [amenityInput, setAmenityInput] = useState('');
-
-  const roomTypes = ['room', 'apartment', 'suite', 'cabin', 'studio', 'villa'];
-
-  const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-      updatedAt: new Date(),
-    }));
-  };
-
-  const handleAddAmenity = () => {
-    if (amenityInput.trim()) {
-      setFormData((prev) => ({
-        ...prev,
-        amenities: [...prev.amenities, amenityInput],
-      }));
-      setAmenityInput('');
-    }
-  };
-
-  const handleRemoveAmenity = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      amenities: prev.amenities.filter((_, i) => i !== index),
-    }));
-  };
+  const [formData, setFormData] = useState({
+    name_en: room?.name.en || '',
+    name_es: room?.name.es || '',
+    roomNumber: room?.roomNumber || '',
+    type: (room?.type as RoomTypeKey) || 'room',
+    capacity: room?.capacity || 1,
+    bedrooms: room?.bedrooms || 1,
+    bathrooms: room?.bathrooms || 1,
+    basePrice: room?.basePrice || 100,
+    notes_en: room?.notes?.en || '',
+    notes_es: room?.notes?.es || '',
+    status: room?.status || 'available',
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const newRoom: Omit<Room, 'id' | 'createdAt' | 'updatedAt'> = {
+      propertyId,
+      name: { en: formData.name_en, es: formData.name_es },
+      roomNumber: formData.roomNumber,
+      type: formData.type,
+      capacity: formData.capacity,
+      bedrooms: formData.bedrooms,
+      bathrooms: formData.bathrooms,
+      basePrice: formData.basePrice,
+      notes: { en: formData.notes_en, es: formData.notes_es },
+      amenities: room?.amenities || [],
+      status: formData.status as any,
+    };
+
+    onSave(newRoom);
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-card border border-border rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-foreground">
-            {room ? t('crud.update') : t('crud.create')} {t('rooms.title')}
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-card border border-border rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-card border-b border-border flex items-center justify-between p-6">
+          <h2 className="text-xl font-semibold text-foreground">
+            {room ? t('common.edit') : t('common.create')} Room
           </h2>
           <button onClick={onCancel} className="text-foreground/60 hover:text-foreground">
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Room Name - Bilingual */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {t('rooms.roomName')}
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Room Name (English)
               </label>
               <input
                 type="text"
-                value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+                value={formData.name_en}
+                onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
                 required
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Ocean View Suite"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {t('rooms.roomNumber')}
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Nombre de Habitación (Español)
               </label>
+              <input
+                type="text"
+                value={formData.name_es}
+                onChange={(e) => setFormData({ ...formData, name_es: e.target.value })}
+                required
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Suite con Vista al Océano"
+              />
+            </div>
+          </div>
+
+          {/* Room Number and Type */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Room Number</label>
               <input
                 type="text"
                 value={formData.roomNumber}
-                onChange={(e) => handleChange('roomNumber', e.target.value)}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+                onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
                 required
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., 101"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {t('rooms.roomType')}
-              </label>
+              <label className="block text-sm font-medium text-foreground mb-2">Room Type</label>
               <select
                 value={formData.type}
-                onChange={(e) => handleChange('type', e.target.value)}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+                onChange={(e) => setFormData({ ...formData, type: e.target.value as RoomTypeKey })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               >
-                {roomTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
+                {ROOM_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
                   </option>
                 ))}
               </select>
             </div>
+          </div>
+
+          {/* Capacity and Beds */}
+          <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {t('rooms.status')}
-              </label>
+              <label className="block text-sm font-medium text-foreground mb-2">Capacity (Guests)</label>
+              <input
+                type="number"
+                min="1"
+                value={formData.capacity}
+                onChange={(e) => setFormData({ ...formData, capacity: parseInt(e.target.value) })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Bedrooms</label>
+              <input
+                type="number"
+                min="1"
+                value={formData.bedrooms}
+                onChange={(e) => setFormData({ ...formData, bedrooms: parseInt(e.target.value) })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Bathrooms</label>
+              <input
+                type="number"
+                min="1"
+                step="0.5"
+                value={formData.bathrooms}
+                onChange={(e) => setFormData({ ...formData, bathrooms: parseFloat(e.target.value) })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          </div>
+
+          {/* Price and Status */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Base Price (per night)</label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.basePrice}
+                onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Status</label>
               <select
                 value={formData.status}
-                onChange={(e) => handleChange('status', e.target.value)}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="available">Available</option>
                 <option value="maintenance">Maintenance</option>
@@ -137,99 +192,42 @@ export default function RoomForm({ room, propertyId, onSubmit, onCancel }: RoomF
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          {/* Notes - Bilingual */}
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {t('rooms.capacity')}
-              </label>
-              <input
-                type="number"
-                min="1"
-                value={formData.capacity}
-                onChange={(e) => handleChange('capacity', parseInt(e.target.value))}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+              <label className="block text-sm font-medium text-foreground mb-2">Notes (English)</label>
+              <textarea
+                value={formData.notes_en}
+                onChange={(e) => setFormData({ ...formData, notes_en: e.target.value })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                rows={3}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                Bedrooms
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={formData.bedrooms}
-                onChange={(e) => handleChange('bedrooms', parseInt(e.target.value))}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                Bathrooms
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={formData.bathrooms}
-                onChange={(e) => handleChange('bathrooms', parseInt(e.target.value))}
-                className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
+              <label className="block text-sm font-medium text-foreground mb-2">Notas (Español)</label>
+              <textarea
+                value={formData.notes_es}
+                onChange={(e) => setFormData({ ...formData, notes_es: e.target.value })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                rows={3}
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
-              {t('rooms.basePrice')}
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={formData.basePrice}
-              onChange={(e) => handleChange('basePrice', parseFloat(e.target.value))}
-              className="w-full bg-background border border-border rounded px-3 py-2 text-foreground"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {t('rooms.amenities')}
-            </label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={amenityInput}
-                onChange={(e) => setAmenityInput(e.target.value)}
-                className="flex-1 bg-background border border-border rounded px-3 py-2 text-foreground"
-                placeholder="WiFi, Pool, etc."
-              />
-              <button
-                type="button"
-                onClick={handleAddAmenity}
-                className="bg-primary text-white px-4 py-2 rounded hover:opacity-90"
-              >
-                Add
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {formData.amenities.map((amenity, idx) => (
-                <span key={idx} className="bg-primary/20 text-primary text-sm px-3 py-1 rounded flex items-center gap-2">
-                  {amenity}
-                  <button type="button" onClick={() => handleRemoveAmenity(idx)} className="text-primary/60">×</button>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex gap-4 pt-4">
+          {/* Buttons */}
+          <div className="flex justify-end gap-3 pt-6 border-t border-border">
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 bg-background border border-border text-foreground px-4 py-2 rounded hover:bg-background/80"
+              className="px-4 py-2 text-foreground border border-border rounded-md hover:bg-background/80"
             >
-              {t('crud.cancel')}
+              Cancel
             </button>
-            <button type="submit" className="flex-1 bg-primary text-white px-4 py-2 rounded hover:opacity-90">
-              {t('crud.save')}
+            <button
+              type="submit"
+              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+            >
+              Save Room
             </button>
           </div>
         </form>
