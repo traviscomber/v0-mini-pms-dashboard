@@ -2,7 +2,7 @@
 
 import { memo, useState, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface DateCellProps {
   date: Date;

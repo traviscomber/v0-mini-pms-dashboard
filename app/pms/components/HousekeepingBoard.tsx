@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Task, TaskStatus } from '../types';
 import { groupTasksByStatus } from '../lib/task-utils';
 import { GripVertical, CheckCircle2, Clock, AlertCircle, Trash2 } from 'lucide-react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface HousekeepingBoardProps {
   tasks: Task[];

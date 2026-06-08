@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Download, DollarSign, CreditCard, TrendingUp } from 'lucide-react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface FinanceProps {
   reservations: any[];

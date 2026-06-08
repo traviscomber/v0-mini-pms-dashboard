@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 import { Globe } from 'lucide-react';
 
 export default function LanguageToggle() {

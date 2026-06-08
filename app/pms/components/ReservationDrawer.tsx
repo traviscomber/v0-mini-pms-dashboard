@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { X, Check, AlertCircle } from 'lucide-react';
 import { Reservation } from '../types';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface ReservationDrawerProps {
   reservation: Reservation | null;

@@ -2,7 +2,7 @@
 
 import { memo, useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Calendar, Users } from 'lucide-react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface Reservation {
   id: string;

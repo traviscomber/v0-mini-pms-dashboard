@@ -2,7 +2,7 @@
 
 import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText, AlertTriangle } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 import LanguageToggle from './LanguageToggle';
 
 interface SidebarProps {
@@ -12,7 +12,7 @@ interface SidebarProps {
 
 export default function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
   const { isDark, toggleTheme } = useTheme();
-  const { language, t } = useLanguageStore();
+  const { language, t } = useLanguage();
 
   const menuItems = [
     { id: 'operations', labelKey: 'operations.title', icon: Home },

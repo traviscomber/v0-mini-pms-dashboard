@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 import { MessageSquare, Plus, Edit2, Trash2, Send, Copy } from 'lucide-react';
 
 interface Template {

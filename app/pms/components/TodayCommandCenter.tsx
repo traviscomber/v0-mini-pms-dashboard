@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { Reservation, Task, Room } from '../types';
 import { Clock, AlertCircle, CheckCircle2, Users, Home, DollarSign } from 'lucide-react';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface TodayCommandCenterProps {
   reservations: Reservation[];

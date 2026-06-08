@@ -2,7 +2,7 @@
 
 import { memo, useState } from 'react';
 import { DollarSign, Calendar } from 'lucide-react';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface BulkRateManagerProps {
   rooms: any[];

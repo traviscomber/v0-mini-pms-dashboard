@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { Reservation, Room } from '../types';
 import { getReservationsForDate, hasConflict } from '../utils/conflict-detector';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
+import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface HorizontalTimelineProps {
   rooms: Room[];
