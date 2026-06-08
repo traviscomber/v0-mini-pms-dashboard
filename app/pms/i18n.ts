@@ -261,6 +261,43 @@ export const translations = {
       netProfit: 'Net Profit',
     },
 
+    // ===== PAYMENT SECTION =====
+    payment: {
+      totalRevenue: 'Total Revenue',
+      pendingPayments: 'Pending Payments',
+      revenueByChannel: 'Revenue by Channel',
+      paymentMethod: 'Payment Method',
+      creditCard: 'Credit Card',
+      bankTransfer: 'Bank Transfer',
+      cash: 'Cash',
+      check: 'Check',
+      online: 'Online',
+      refundPayment: 'Refund Payment',
+    },
+
+    // ===== REPORTS SECTION =====
+    reports: {
+      title: 'Reports',
+      analytics: 'Analytics',
+      occupancyReport: 'Occupancy Report',
+      revenueReport: 'Revenue Report',
+      bookingReport: 'Booking Report',
+      paymentReport: 'Payment Report',
+      guestReport: 'Guest Report',
+      generateReport: 'Generate Report',
+      exportPDF: 'Export PDF',
+      exportCSV: 'Export CSV',
+      dateRange: 'Date Range',
+      selectPeriod: 'Select Period',
+      totalNights: 'Total Nights',
+      monthsOccupancy: 'Months of Occupancy',
+      avgBookingValue: 'Average Booking Value',
+      perReservation: 'Per Reservation',
+      paid: 'Paid',
+      partial: 'Partial',
+      pending: 'Pending',
+    },
+
     // ===== USERS SECTION =====
     users: {
       title: 'Users',
@@ -424,6 +461,8 @@ export const translations = {
       upcomingReservations: 'Upcoming Reservations',
       staffPerformance: 'Staff Performance',
       systemHealth: 'System Health',
+      reservations: 'Reservations',
+      unpaidBookings: 'Unpaid Bookings',
     },
 
     // ===== DATE & TIME =====
@@ -730,6 +769,43 @@ export const translations = {
       netProfit: 'Ganancia Neta',
     },
 
+    // ===== PAYMENT SECTION =====
+    payment: {
+      totalRevenue: 'Ingresos Totales',
+      pendingPayments: 'Pagos Pendientes',
+      revenueByChannel: 'Ingresos por Canal',
+      paymentMethod: 'Método de Pago',
+      creditCard: 'Tarjeta de Crédito',
+      bankTransfer: 'Transferencia Bancaria',
+      cash: 'Efectivo',
+      check: 'Cheque',
+      online: 'En Línea',
+      refundPayment: 'Reembolsar Pago',
+    },
+
+    // ===== REPORTS SECTION =====
+    reports: {
+      title: 'Reportes',
+      analytics: 'Análisis',
+      occupancyReport: 'Reporte de Ocupación',
+      revenueReport: 'Reporte de Ingresos',
+      bookingReport: 'Reporte de Reservas',
+      paymentReport: 'Reporte de Pagos',
+      guestReport: 'Reporte de Huéspedes',
+      generateReport: 'Generar Reporte',
+      exportPDF: 'Exportar PDF',
+      exportCSV: 'Exportar CSV',
+      dateRange: 'Rango de Fechas',
+      selectPeriod: 'Seleccionar Período',
+      totalNights: 'Total de Noches',
+      monthsOccupancy: 'Meses de Ocupación',
+      avgBookingValue: 'Valor Promedio de Reserva',
+      perReservation: 'Por Reservación',
+      paid: 'Pagado',
+      partial: 'Parcial',
+      pending: 'Pendiente',
+    },
+
     // ===== USERS SECTION =====
     users: {
       title: 'Usuarios',
@@ -893,6 +969,8 @@ export const translations = {
       upcomingReservations: 'Próximas Reservaciones',
       staffPerformance: 'Desempeño del Personal',
       systemHealth: 'Salud del Sistema',
+      reservations: 'Reservaciones',
+      unpaidBookings: 'Reservas Sin Pagar',
     },
 
     // ===== DATE & TIME =====
