@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo, useCallback } from 'react';
 import { Language, t as translate } from './i18n';
 
 interface LanguageContextType {
@@ -26,7 +26,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const setLanguage = (lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     console.log('[v0-translation] Language changed to:', lang);
     setLanguageState(lang);
     try {
@@ -34,9 +34,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       // localStorage not available
     }
-  };
+  }, []);
 
-  const t = (key: string) => {
+  const t = useCallback((key: string) => {
     const result = translate(language, key);
     if (result !== key) {
       // Translation found
@@ -44,10 +44,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
     console.warn(`[v0-translation] Missing key: ${key} for language: ${language}`);
     return result;
-  };
+  }, [language]);
+
+  const value = useMemo(() => ({ language, setLanguage, t }), [language, setLanguage, t]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

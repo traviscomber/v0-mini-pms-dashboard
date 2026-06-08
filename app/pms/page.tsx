@@ -8,6 +8,7 @@ import BookingCalendar from './components/BookingCalendar';
 import BookingForm from './components/BookingForm';
 import ReservationList from './components/ReservationList';
 import Reports from './components/Reports';
+import LanguageTest from './components/LanguageTest';
 
 export default function PMSApp() {
   const [rooms] = useState(demoData.rooms);
@@ -47,6 +48,7 @@ export default function PMSApp() {
             <h1 className="text-4xl font-bold text-foreground">{getPageTitle()}</h1>
             <p className="text-muted-foreground">Manage your rental business efficiently</p>
           </div>
+          <LanguageTest />
         </header>
 
         <main className="flex-1 overflow-y-auto">
