@@ -2,8 +2,7 @@
 
 import { Calendar, Home, BarChart3, Settings, BookOpen, Mail, Building2, CreditCard, Sun, Moon, Link2, PieChart, ClipboardList, Users, FileText, AlertTriangle } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
-import { useLanguageStore as useLanguage } from '../store/languageStore';
-import { useLanguageSync } from '../store/useLanguageSync';
+import { useLanguage } from '../hooks/useLanguage';
 import LanguageToggle from './LanguageToggle';
 
 interface SidebarProps {

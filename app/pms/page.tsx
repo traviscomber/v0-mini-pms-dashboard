@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { demoData } from './data';
-import { useLanguageStore } from './store/languageStore';
+import { useLanguage } from './hooks/useLanguage';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import BookingCalendar from './components/BookingCalendar';
@@ -14,7 +14,19 @@ export default function PMSApp() {
   const [rooms] = useState(demoData.rooms);
   const [reservations, setReservations] = useState(demoData.reservations);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'calendar' | 'reservations' | 'rooms' | 'reports' | 'settings'>('dashboard');
-  const { language } = useLanguageStore();
+  const { language, setLanguage } = useLanguage();
+  const [renderKey, setRenderKey] = useState(0);
+
+  useEffect(() => {
+    const handleLanguageChange = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      console.log('[v0-pms-page] Language changed to:', customEvent.detail.language);
+      setRenderKey(prev => prev + 1); // Force full re-render
+    };
+    
+    window.addEventListener('language-changed', handleLanguageChange);
+    return () => window.removeEventListener('language-changed', handleLanguageChange);
+  }, []);
 
   const handleAddReservation = (newRes: typeof demoData.reservations[0]) => {
     setReservations([...reservations, newRes]);
@@ -37,7 +49,7 @@ export default function PMSApp() {
   };
 
   return (
-    <div className="flex h-screen bg-background" key={language}>
+    <div className="flex h-screen bg-background" key={`${language}-${renderKey}`}>
       <Sidebar 
         activeSection={activeSection}
         setActiveSection={setActiveSection}
