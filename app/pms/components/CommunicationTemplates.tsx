@@ -157,11 +157,6 @@ export default function CommunicationTemplates() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Communication Templates</h1>
-        <p className="text-foreground/60">Pre-built message templates for common guest communications</p>
-      </div>
-
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-lg p-6">
