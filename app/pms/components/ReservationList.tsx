@@ -1,59 +1,107 @@
 'use client';
 
-import { Trash2 } from 'lucide-react';
-import { useLanguage as useLanguage } from '../LanguageContext';
+import { Reservation } from '../types';
+import { useLanguage } from '../hooks/useLanguage';
+import { Edit2, Trash2, Calendar, User } from 'lucide-react';
+import { formatDate } from '../lib/date-utils';
 
 interface ReservationListProps {
-  reservations: any[];
+  reservations: Reservation[];
+  onEdit: (reservation: Reservation) => void;
   onDelete: (id: string) => void;
+  onAdd: () => void;
 }
 
-const badgeColor = (type: string, value: string) => {
-  const colors: Record<string, Record<string, string>> = {
-    payment: { Paid: 'bg-green-500/20 text-green-300', Partial: 'bg-orange-500/20 text-orange-300', Pending: 'bg-red-500/20 text-red-300' },
-    cleaning: { Clean: 'bg-green-500/20 text-green-300', 'Needs cleaning': 'bg-orange-500/20 text-orange-300', 'In progress': 'bg-blue-500/20 text-blue-300' },
-    source: { Direct: 'bg-blue-500/20 text-blue-300', 'Booking.com': 'bg-orange-500/20 text-orange-300', Airbnb: 'bg-red-500/20 text-red-300', Website: 'bg-green-500/20 text-green-300', Phone: 'bg-purple-500/20 text-purple-300' },
-  };
-  return colors[type]?.[value] || 'bg-foreground/10 text-foreground/70';
-};
-
-export default function ReservationList({ reservations, onDelete }: ReservationListProps) {
+export default function ReservationList({ reservations, onEdit, onDelete, onAdd }: ReservationListProps) {
   const { t } = useLanguage();
 
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      confirmed: 'bg-green-500/20 text-green-300',
+      pending: 'bg-yellow-500/20 text-yellow-300',
+      cancelled: 'bg-red-500/20 text-red-300',
+      completed: 'bg-blue-500/20 text-blue-300',
+    };
+    return colors[status] || 'bg-gray-500/20 text-gray-300';
+  };
+
   return (
-    <div className="bg-card rounded-lg border border-border shadow-sm overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead className="bg-card/50 border-b border-border">
-          <tr>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.guestName')}</th>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.room')}</th>
-            <th className="px-4 py-3 text-left font-semibold text-foreground">{t('reservations.dates')}</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.source')}</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.payment')}</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.cleaning')}</th>
-            <th className="px-4 py-3 text-right font-semibold text-foreground">{t('reservations.total')}</th>
-            <th className="px-4 py-3 text-center font-semibold text-foreground">{t('reservations.action')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reservations.length === 0 ? (
-            <tr><td colSpan={8} className="px-4 py-8 text-center text-foreground/50">{t('reservations.noReservations')}</td></tr>
-          ) : (
-            reservations.map((res, idx) => (
-              <tr key={res.id} className={idx % 2 === 0 ? 'bg-card' : 'bg-card/50'}>
-                <td className="px-4 py-3 text-foreground font-medium">{res.guestName}</td>
-                <td className="px-4 py-3 text-foreground/80">{res.roomId}</td>
-                <td className="px-4 py-3 text-foreground/80 text-xs">{res.checkIn} → {res.checkOut}</td>
-                <td className="px-4 py-3 text-center"><span className={`text-xs font-semibold px-2 py-1 rounded ${badgeColor('source', res.source)}`}>{res.source}</span></td>
-                <td className="px-4 py-3 text-center"><span className={`text-xs font-semibold px-2 py-1 rounded ${badgeColor('payment', res.paymentStatus)}`}>{res.paymentStatus}</span></td>
-                <td className="px-4 py-3 text-center"><span className={`text-xs font-semibold px-2 py-1 rounded ${badgeColor('cleaning', res.cleaningStatus)}`}>{res.cleaningStatus}</span></td>
-                <td className="px-4 py-3 text-right text-foreground font-bold">${res.totalPrice}</td>
-                <td className="px-4 py-3 text-center"><button onClick={() => onDelete(res.id)} className="text-red-400 hover:text-red-300"><Trash2 size={18} /></button></td>
+    <div className="space-y-4 p-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">{t('reservations.title')}</h1>
+          <p className="text-foreground/60">{t('reservations.subtitle')}</p>
+        </div>
+        <button
+          onClick={onAdd}
+          className="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
+        >
+          {t('crud.add')} {t('reservations.title')}
+        </button>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="text-left py-3 px-4 font-semibold text-foreground">Guest</th>
+              <th className="text-left py-3 px-4 font-semibold text-foreground">Dates</th>
+              <th className="text-center py-3 px-4 font-semibold text-foreground">Status</th>
+              <th className="text-right py-3 px-4 font-semibold text-foreground">Amount</th>
+              <th className="text-right py-3 px-4 font-semibold text-foreground">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservations.map((res) => (
+              <tr key={res.id} className="border-b border-border hover:bg-background/50">
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-foreground/60" />
+                    <div>
+                      <p className="text-foreground font-medium">{res.guestName}</p>
+                      <p className="text-xs text-foreground/60">{res.guestEmail}</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-1 text-foreground/70">
+                    <Calendar className="w-4 h-4" />
+                    <span>{formatDate(res.checkInDate)} - {formatDate(res.checkOutDate)}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-center">
+                  <span className={`text-xs px-2 py-1 rounded ${getStatusColor(res.reservationStatus)}`}>
+                    {res.reservationStatus}
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-right font-semibold text-foreground">
+                  ${res.totalAmount}
+                </td>
+                <td className="py-3 px-4 flex justify-end gap-2">
+                  <button
+                    onClick={() => onEdit(res)}
+                    className="p-2 hover:bg-blue-500/20 rounded transition"
+                  >
+                    <Edit2 className="w-4 h-4 text-blue-300" />
+                  </button>
+                  <button
+                    onClick={() => onDelete(res.id)}
+                    className="p-2 hover:bg-red-500/20 rounded transition"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-300" />
+                  </button>
+                </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {reservations.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-foreground/60">{t('crud.noResults')}</p>
+        </div>
+      )}
     </div>
   );
 }
