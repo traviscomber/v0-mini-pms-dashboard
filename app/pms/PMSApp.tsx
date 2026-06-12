@@ -6,6 +6,7 @@ import AlertBanner from "./components/AlertBanner";
 import AuditLogViewer from "./components/AuditLogViewer";
 import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
+import OnboardingWizard from "./components/OnboardingWizard";
 import ChannelManager from "./components/ChannelManager";
 import CommunicationTemplates from "./components/CommunicationTemplates";
 import ConflictDetectionUI from "./components/ConflictDetectionUI";
@@ -51,6 +52,7 @@ export default function PMSApp() {
     isLoading,
     mode,
     paymentEntries,
+    refresh,
     reservations,
     rooms,
     setPaymentEntries,
@@ -63,6 +65,7 @@ export default function PMSApp() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
   const [isMobile, setIsMobile] = useState(false);
+  const [propertyName, setPropertyName] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -74,6 +77,14 @@ export default function PMSApp() {
 
       setIsMobile(window.innerWidth < 768);
     }
+
+    // Fetch the active property name for the onboarding wizard greeting
+    fetch("/api/viewer", { credentials: "include" })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.activeProperty?.name) setPropertyName(data.activeProperty.name);
+      })
+      .catch(() => {/* ignore */});
   }, []);
 
   const alerts = useAlerts(reservations, rooms);
@@ -336,6 +347,14 @@ export default function PMSApp() {
         onUpdate={handleUpdateReservation}
         rooms={rooms}
       />
+
+      {/* Onboarding wizard — shown once, when no rooms exist after load */}
+      {!isLoading && rooms.length === 0 && !liveError && (
+        <OnboardingWizard
+          propertyName={propertyName}
+          onComplete={() => void refresh()}
+        />
+      )}
     </div>
   );
 }
