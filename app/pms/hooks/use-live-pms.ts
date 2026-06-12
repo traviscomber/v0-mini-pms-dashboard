@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { demoData } from "@/app/pms/data";
 import type { ReservationInput, Reservation as ApiReservation, Room as ApiRoom } from "@/lib/pms/types";
 
-const defaultPropertyId = demoData.properties[0]?.id ?? "prop-live";
+const defaultPropertyId = "";
 
 function toDate(value: string | Date | undefined) {
   if (!value) {
@@ -216,22 +215,12 @@ export function createOperationalTasks(reservations: ReturnType<typeof adaptRese
   ]);
 }
 
-function createFallbackState() {
-  return {
-    mode: "demo" as const,
-    paymentEntries: demoData.paymentEntries,
-    reservations: demoData.reservations,
-    rooms: demoData.rooms,
-    tasks: demoData.tasks,
-  };
-}
-
 export function useLivePms() {
-  const [rooms, setRooms] = useState<any[]>(createFallbackState().rooms);
-  const [reservations, setReservations] = useState<any[]>(createFallbackState().reservations);
-  const [tasks, setTasks] = useState<any[]>(createFallbackState().tasks);
-  const [paymentEntries, setPaymentEntries] = useState<any[]>(createFallbackState().paymentEntries);
-  const [mode, setMode] = useState<"demo" | "live">("demo");
+  const [rooms, setRooms] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [paymentEntries, setPaymentEntries] = useState<any[]>([]);
+  const [mode, setMode] = useState<"live">("live");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -260,12 +249,9 @@ export function useLivePms() {
       setPaymentEntries(createPaymentEntries(nextReservations));
       setMode("live");
     } catch (cause) {
-      setRooms(createFallbackState().rooms);
-      setReservations(createFallbackState().reservations);
-      setTasks(createFallbackState().tasks);
-      setPaymentEntries(createFallbackState().paymentEntries);
-      setMode("demo");
-      setError(cause instanceof Error ? cause.message : "Unable to load live PMS data.");
+      const errorMessage = cause instanceof Error ? cause.message : "Unable to load live PMS data.";
+      setError(errorMessage);
+      throw cause;
     } finally {
       setIsLoading(false);
     }

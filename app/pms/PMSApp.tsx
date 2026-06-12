@@ -21,7 +21,6 @@ import ReservationList from "./components/ReservationList";
 import Sidebar from "./components/Sidebar";
 import TodayCommandCenter from "./components/TodayCommandCenter";
 import UserManagement from "./components/UserManagement";
-import { demoData } from "./data";
 import { useAlerts } from "./hooks/use-alerts";
 import { createOperationalTasks, createPaymentEntries, useLivePms } from "./hooks/use-live-pms";
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, type FilterOptions } from "./lib/filter-utils";
@@ -57,7 +56,6 @@ export default function PMSApp() {
     setTasks,
     tasks,
   } = useLivePms();
-  const [users] = useState(demoData.users);
   const [activeSection, setActiveSection] = useState<PageType>("operations");
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -140,7 +138,7 @@ export default function PMSApp() {
       paidAmount: 0,
       paymentStatus: "pending",
       payment_status: "pending",
-      propertyId: room?.propertyId ?? demoData.properties[0]?.id ?? "prop-live",
+      propertyId: room?.propertyId ?? "",
       reservationStatus: "pending",
       roomId,
       room_id: roomId,
@@ -305,9 +303,9 @@ export default function PMSApp() {
               <PaymentLedger reservations={reservations} paymentEntries={paymentEntries} />
             ) : null}
 
-            {activeSection === "users" ? <UserManagement users={users} /> : null}
+            {activeSection === "users" ? <UserManagement users={[]} /> : null}
 
-            {activeSection === "audit" ? <AuditLogViewer auditLogs={demoData.auditLogs} /> : null}
+            {activeSection === "audit" ? <AuditLogViewer auditLogs={[]} /> : null}
 
             {activeSection === "conflicts" ? (
               <ConflictDetectionUI rooms={rooms} reservations={reservations} />
