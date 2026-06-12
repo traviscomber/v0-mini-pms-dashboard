@@ -36,7 +36,7 @@ export default function CheckInsModal({
         {/* Header */}
         <div className="sticky top-0 flex items-center justify-between p-6 border-b border-border bg-card">
           <h2 className="text-2xl font-bold text-foreground">
-            {t('schedule.todayCheckoutsCleaning')?.split('-')[0] || "Today's Check-ins"}
+            {t('schedule.todayCheckoutsCleaning')}
           </h2>
           <button
             onClick={onClose}
@@ -51,7 +51,7 @@ export default function CheckInsModal({
           {todayCheckIns.length === 0 ? (
             <div className="text-center py-8">
               <CheckCircle className="w-12 h-12 text-chart-2 mx-auto mb-3" />
-              <p className="text-foreground/60">{t('schedule.noCheckoutsToday') || 'No check-ins today'}</p>
+              <p className="text-foreground/60">{t('schedule.noCheckoutsToday')}</p>
             </div>
           ) : (
             todayCheckIns.map((reservation) => {
@@ -78,16 +78,16 @@ export default function CheckInsModal({
                     </div>
                     <div className="flex items-center gap-2 text-sm text-foreground/60">
                       <Clock className="w-4 h-4" />
-                      <span>{reservation.adults} {t('filters.adults') || 'adults'}</span>
+                      <span>{reservation.adults} {t('filters.adults')}</span>
                     </div>
                   </div>
 
                   <div className="flex gap-3 pt-2">
                     <button className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition text-sm">
-                      {t('common.confirm') || 'Check-in'}
+                      {t('common.checkIn')}
                     </button>
                     <button className="flex-1 px-4 py-2 bg-card border border-border rounded-lg text-foreground hover:bg-background font-medium transition text-sm">
-                      {t('common.message') || 'Message'}
+                      {t('common.message')}
                     </button>
                   </div>
                 </div>

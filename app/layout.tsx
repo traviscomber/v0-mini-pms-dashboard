@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'N3uralia PMS',
-  description: 'Enterprise property management platform. Reservations, revenue, and operations — unified.',
+  description: 'Enterprise property management platform. Reservations, revenue, and operations unified.',
   generator: 'v0.app',
   icons: {
     icon: [

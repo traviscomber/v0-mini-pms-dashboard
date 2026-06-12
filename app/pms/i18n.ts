@@ -21,12 +21,20 @@ export const translations = {
       roomManagement: 'Property Management System',
     },
 
+    roomMgmt: {
+      dailyOccupancy: 'Occupancy Rate',
+      totalRooms: 'Total Rooms',
+      popularRooms: 'Most Popular Room',
+    },
+
     // ===== COMMON UI =====
     common: {
       filters: 'Filters',
+      actions: 'Quick Actions',
       noTasks: 'No tasks',
       noData: 'No data available',
       dragTasks: 'Drag tasks between columns to update their status. Cleaning tasks are automatically generated when guests check out.',
+      message: 'Message',
       lowOccupancy: 'Low Occupancy',
       lowOccupancyMsg: 'Current occupancy is {occupancy}%. Consider promotional offers.',
       criticalTask: 'Critical Task',
@@ -133,6 +141,29 @@ export const translations = {
       booked: 'Booked',
       saveChanges: 'Save Changes',
       bulkUpdate: 'Bulk Update',
+    },
+
+    schedule: {
+      todayCheckoutsCleaning: "Today's Check-ins",
+      noCheckoutsToday: 'No check-ins today',
+    },
+
+    filters: {
+      checkInFrom: 'Check-in From',
+      checkOutTo: 'Check-out To',
+      roomType: 'Room Type',
+      allTypes: 'All Types',
+      paymentStatus: 'Payment Status',
+      allStatuses: 'All Statuses',
+      bookingStatus: 'Booking Status',
+      guestName: 'Guest Name',
+      email: 'Email',
+      room: 'Room',
+      checkInDate: 'Check-in Date',
+      checkOutDate: 'Check-out Date',
+      applyFilters: 'Apply Filters',
+      reset: 'Reset',
+      adults: 'adults',
     },
 
     // ===== RESERVATIONS SECTION =====
@@ -426,6 +457,8 @@ export const translations = {
 
     // ===== COMMON UI ELEMENTS =====
     common: {
+      filters: 'Filters',
+      actions: 'Quick Actions',
       save: 'Save',
       cancel: 'Cancel',
       delete: 'Delete',
@@ -433,6 +466,8 @@ export const translations = {
       add: 'Add',
       close: 'Close',
       confirm: 'Confirm',
+      checkIn: 'Check-in',
+      message: 'Message',
       back: 'Back',
       next: 'Next',
       previous: 'Previous',
@@ -673,12 +708,20 @@ export const translations = {
       roomManagement: 'Sistema de Gestión de Propiedades',
     },
 
+    roomMgmt: {
+      dailyOccupancy: 'Tasa de Ocupación',
+      totalRooms: 'Total de Habitaciones',
+      popularRooms: 'Habitación Más Popular',
+    },
+
     // ===== COMMON UI =====
     common: {
       filters: 'Filtros',
+      actions: 'Acciones Rápidas',
       noTasks: 'Sin tareas',
       noData: 'Sin datos disponibles',
       dragTasks: 'Arrastra tareas entre columnas para actualizar su estado. Las tareas de limpieza se generan automáticamente cuando los huéspedes se alojan.',
+      message: 'Mensaje',
       lowOccupancy: 'Baja Ocupación',
       lowOccupancyMsg: 'La ocupación actual es del {occupancy}%. Considera ofertas promocionales.',
       criticalTask: 'Tarea Crítica',
@@ -785,6 +828,29 @@ export const translations = {
       booked: 'Reservado',
       saveChanges: 'Guardar Cambios',
       bulkUpdate: 'Actualización en Lote',
+    },
+
+    schedule: {
+      todayCheckoutsCleaning: 'Check-ins de hoy',
+      noCheckoutsToday: 'No hay check-ins hoy',
+    },
+
+    filters: {
+      checkInFrom: 'Check-in Desde',
+      checkOutTo: 'Check-out Hasta',
+      roomType: 'Tipo de Habitación',
+      allTypes: 'Todos los Tipos',
+      paymentStatus: 'Estado del Pago',
+      allStatuses: 'Todos los Estados',
+      bookingStatus: 'Estado de la Reserva',
+      guestName: 'Nombre del Huésped',
+      email: 'Correo',
+      room: 'Habitación',
+      checkInDate: 'Fecha de Check-in',
+      checkOutDate: 'Fecha de Check-out',
+      applyFilters: 'Aplicar Filtros',
+      reset: 'Restablecer',
+      adults: 'adultos',
     },
 
     // ===== RESERVATIONS SECTION =====
@@ -1078,6 +1144,8 @@ export const translations = {
 
     // ===== COMMON UI ELEMENTS =====
     common: {
+      filters: 'Filtros',
+      actions: 'Acciones Rápidas',
       save: 'Guardar',
       cancel: 'Cancelar',
       delete: 'Eliminar',
@@ -1085,6 +1153,8 @@ export const translations = {
       add: 'Agregar',
       close: 'Cerrar',
       confirm: 'Confirmar',
+      checkIn: 'Check-in',
+      message: 'Mensaje',
       back: 'Atrás',
       next: 'Siguiente',
       previous: 'Anterior',
@@ -1317,18 +1387,18 @@ function getNestedValue(obj: any, path: string): any {
 }
 
 export function t(language: Language, key: string, variables?: Record<string, string | number>): string {
-  const keys = key.split('.');
-  let current: any = translations[language];
+  const resolve = (lang: Language) => getNestedValue(translations[lang], key);
+  const keyParts = key.split('.');
+  const lastPart = keyParts[keyParts.length - 1] ?? key;
+  const humanizedKey =
+    lastPart
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase()) ?? key;
 
-  for (const k of keys) {
-    if (current && typeof current === 'object') {
-      current = current[k];
-    } else {
-      return key; // Return key if not found
-    }
-  }
-
-  let result = typeof current === 'string' ? current : key;
+  const current = resolve(language);
+  const fallback = typeof current === 'string' ? current : resolve('en');
+  let result = typeof fallback === 'string' ? fallback : humanizedKey;
 
   // Replace variables if provided
   if (variables) {

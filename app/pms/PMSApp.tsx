@@ -328,7 +328,7 @@ export default function PMSApp() {
               <div className="space-y-6">
                 <div>
                   <h1 className="text-3xl font-bold">Automation</h1>
-                  <p className="text-foreground/60">Rules that run automatically — no manual work needed.</p>
+                  <p className="text-foreground/60">Rules that run automatically - no manual work needed.</p>
                 </div>
                 <AutomationDashboard tasks={tasks} alerts={alerts} criticalTasks={[]} />
               </div>
