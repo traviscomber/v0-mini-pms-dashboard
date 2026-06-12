@@ -128,7 +128,7 @@ export function LoginShell({
       <header
         style={{
           position: "relative", zIndex: 10,
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid var(--border)",
           background: "rgba(9,9,13,0.75)", backdropFilter: "blur(14px)",
           animation: "lp-fadein 0.5s ease both",
         }}
@@ -153,9 +153,9 @@ export function LoginShell({
             {["Features", "Pricing", "Support"].map((l) => (
               <a
                 key={l} href="#"
-                style={{ fontSize: "0.8125rem", color: "#64748b", textDecoration: "none" }}
+                style={{ fontSize: "0.8125rem", color: "var(--muted-foreground)", textDecoration: "none" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#f8fafc")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#64748b")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted-foreground)")}
               >
                 {l}
               </a>
@@ -220,7 +220,7 @@ export function LoginShell({
             </span>
           </h1>
 
-          <p style={{ fontSize: "1.0625rem", lineHeight: 1.65, color: "#94a3b8", maxWidth: 480, margin: 0 }}>
+          <p style={{ fontSize: "1.0625rem", lineHeight: 1.65, color: "var(--muted-foreground)", maxWidth: 480, margin: 0 }}>
             AI-powered operations for boutique hotels and vacation rentals. Manage properties,
             maximize revenue, and delight guests — from one unified workspace.
           </p>
@@ -251,8 +251,8 @@ export function LoginShell({
                   }}
                 />
                 <div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#e2e8f0", margin: 0 }}>{f.title}</p>
-                  <p style={{ fontSize: "0.8rem", color: "#64748b", lineHeight: 1.5, margin: "0.15rem 0 0" }}>{f.description}</p>
+                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--card-foreground)", margin: 0 }}>{f.title}</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--muted-foreground)", lineHeight: 1.5, margin: "0.15rem 0 0" }}>{f.description}</p>
                 </div>
               </li>
             ))}
@@ -263,10 +263,10 @@ export function LoginShell({
         <section style={{ animation: "lp-fade-up 0.65s ease 0.2s both" }} aria-label="Authentication">
           <div
             style={{
-              borderRadius: 20, border: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(14,16,24,0.92)", backdropFilter: "blur(24px)",
+              borderRadius: 20, border: "1px solid var(--border)",
+              background: "var(--card)", backdropFilter: "blur(24px)",
               padding: "2rem",
-              boxShadow: "0 0 0 1px rgba(255,255,255,0.04) inset, 0 32px 80px rgba(0,0,0,0.55)",
+              boxShadow: "0 0 0 1px var(--input) inset, 0 32px 80px rgba(0,0,0,0.55)",
               display: "flex", flexDirection: "column", gap: "1.25rem",
             }}
           >
@@ -275,7 +275,7 @@ export function LoginShell({
               role="tablist"
               style={{
                 display: "flex", padding: 4, borderRadius: 10,
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)",
+                background: "var(--input)", border: "1px solid var(--border)",
               }}
             >
               {(["signin", "signup"] as const).map((t) => (
@@ -287,8 +287,8 @@ export function LoginShell({
                   suppressHydrationWarning
                   style={{
                     flex: 1, padding: "0.55rem 1rem", border: "none", borderRadius: 7,
-                    background: tab === t ? "rgba(255,255,255,0.09)" : "transparent",
-                    color: tab === t ? "#f8fafc" : "#64748b",
+                    background: tab === t ? "var(--input)" : "transparent",
+                    color: tab === t ? "#f8fafc" : "var(--muted-foreground)",
                     fontSize: "0.8125rem", fontWeight: tab === t ? 600 : 500,
                     cursor: "pointer", transition: "all 0.2s",
                     boxShadow: tab === t ? "0 1px 6px rgba(0,0,0,0.3)" : "none",
@@ -306,7 +306,7 @@ export function LoginShell({
                 style={{
                   borderRadius: 10, padding: "0.75rem 1rem", fontSize: "0.8125rem",
                   border: "1px solid rgba(251,191,36,0.25)", background: "rgba(251,191,36,0.07)",
-                  color: "#fde68a",
+                  color: "var(--primary)",
                 }}
               >
                 {message}
@@ -318,7 +318,7 @@ export function LoginShell({
                 style={{
                   borderRadius: 10, padding: "0.75rem 1rem", fontSize: "0.8125rem",
                   border: "1px solid rgba(248,113,113,0.25)", background: "rgba(248,113,113,0.06)",
-                  color: "#fca5a5",
+                  color: "var(--destructive)",
                 }}
               >
                 Supabase is not configured. Add environment variables to enable authentication.
@@ -349,10 +349,10 @@ export function LoginShell({
               </form>
             )}
 
-            <p style={{ fontSize: "0.7rem", color: "#475569", textAlign: "center", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.7rem", color: "var(--muted-foreground)", textAlign: "center", lineHeight: 1.5 }}>
               By continuing you agree to our{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Terms</a>{" "}and{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Privacy Policy</a>.
+              <a href="#" style={{ color: "var(--muted-foreground)", textDecoration: "underline" }}>Terms</a>{" "}and{" "}
+              <a href="#" style={{ color: "var(--muted-foreground)", textDecoration: "underline" }}>Privacy Policy</a>.
             </p>
           </div>
         </section>
@@ -363,7 +363,7 @@ export function LoginShell({
           position: "relative", zIndex: 10,
           borderTop: "1px solid rgba(255,255,255,0.05)",
           padding: "1.125rem 2rem", textAlign: "center",
-          fontSize: "0.7rem", color: "#334155",
+          fontSize: "0.7rem", color: "var(--muted-foreground)",
         }}
       >
         © 2025 N3uralia — Enterprise hospitality platform
@@ -410,7 +410,7 @@ function StatCard({ stat, delay }: { stat: typeof STATS[number]; delay: number }
       onMouseLeave={() => setHovered(false)}
       style={{
         flex: 1, minWidth: 100, padding: "1rem 1.125rem", borderRadius: 12,
-        border: hovered ? "1px solid rgba(251,191,36,0.2)" : "1px solid rgba(255,255,255,0.07)",
+        border: hovered ? "1px solid rgba(251,191,36,0.2)" : "1px solid var(--input)",
         background: hovered ? "rgba(251,191,36,0.04)" : "rgba(255,255,255,0.03)",
         display: "flex", flexDirection: "column", gap: "0.2rem",
         animation: `lp-stat-in 0.5s ease ${delay}s both`,
@@ -418,8 +418,8 @@ function StatCard({ stat, delay }: { stat: typeof STATS[number]; delay: number }
       }}
     >
       <span style={{ fontSize: "1.4rem", fontWeight: 700, color: "#f8fafc", letterSpacing: "-0.02em" }}>{stat.value}</span>
-      <span style={{ fontSize: "0.685rem", textTransform: "uppercase", letterSpacing: "0.07em", color: "#64748b" }}>{stat.label}</span>
-      <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#4ade80" }}>{stat.delta}</span>
+      <span style={{ fontSize: "0.685rem", textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--muted-foreground)" }}>{stat.label}</span>
+      <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--secondary)" }}>{stat.delta}</span>
     </div>
   );
 }
@@ -432,7 +432,7 @@ interface AuthInputProps {
 function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLength }: AuthInputProps) {
   const [focused, setFocused] = useState(false);
   return (
-    <label style={{ display: "flex", flexDirection: "column", gap: "0.375rem", fontSize: "0.8125rem", fontWeight: 500, color: "#cbd5e1" }}>
+    <label style={{ display: "flex", flexDirection: "column", gap: "0.375rem", fontSize: "0.8125rem", fontWeight: 500, color: "var(--muted-foreground)" }}>
       <span>{label}</span>
       <input
         type={type} name={name} required suppressHydrationWarning
@@ -441,15 +441,15 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
         onBlur={() => setFocused(false)}
         style={{
           width: "100%", padding: "0.75rem 1rem", borderRadius: 10,
-          border: focused ? "1px solid rgba(251,191,36,0.5)" : "1px solid rgba(255,255,255,0.1)",
-          background: focused ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+          border: focused ? "1px solid rgba(251,191,36,0.5)" : "1px solid var(--border)",
+          background: focused ? "var(--input)" : "var(--input)",
           color: "#f8fafc", fontSize: "0.875rem", outline: "none",
           transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
           boxShadow: focused ? "0 0 0 3px rgba(251,191,36,0.1)" : "none",
           caretColor: "#fbbf24", boxSizing: "border-box",
         }}
       />
-      {hint && <span style={{ fontSize: "0.71rem", color: "#475569" }}>{hint}</span>}
+      {hint && <span style={{ fontSize: "0.71rem", color: "var(--muted-foreground)" }}>{hint}</span>}
     </label>
   );
 }
@@ -465,8 +465,8 @@ function AuthButton({ label }: { label: string }) {
       style={{
         width: "100%", marginTop: "0.25rem", padding: "0.825rem 1rem",
         border: "none", borderRadius: 10,
-        background: "linear-gradient(135deg,#fbbf24 0%,#f97316 100%)",
-        color: "#0a0a0a", fontSize: "0.875rem", fontWeight: 700,
+        background: "linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%)",
+        color: "var(--primary-foreground)", fontSize: "0.875rem", fontWeight: 700,
         letterSpacing: "0.01em", cursor: "pointer",
         transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
         opacity: hovered ? 0.9 : 1,
