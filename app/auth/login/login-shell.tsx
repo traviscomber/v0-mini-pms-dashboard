@@ -284,6 +284,7 @@ export function LoginShell({
                   role="tab"
                   aria-selected={tab === t}
                   onClick={() => setTab(t)}
+                  suppressHydrationWarning
                   style={{
                     flex: 1, padding: "0.55rem 1rem", border: "none", borderRadius: 7,
                     background: tab === t ? "rgba(255,255,255,0.09)" : "transparent",
