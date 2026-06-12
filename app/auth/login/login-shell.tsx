@@ -11,16 +11,16 @@ interface LoginShellProps {
 }
 
 const STATS = [
-  { label: "Occupancy rate", value: "94%",  delta: "+12%" },
-  { label: "Avg nightly rate", value: "$287", delta: "+8%"  },
-  { label: "Revenue / month", value: "$41k", delta: "+23%" },
+  { label: "Revenue increase", value: "+28%", delta: "in year 1" },
+  { label: "Occupancy rate", value: "94%", delta: "year-round" },
+  { label: "Freed up time", value: "-12h", delta: "per week" },
 ];
 
 const FEATURES = [
-  { title: "Dynamic Pricing",  description: "AI adjusts rates in real time based on demand, events, and competition." },
-  { title: "Unified Inbox",    description: "OTA messages, reviews, and tasks in one streamlined place."              },
-  { title: "Housekeeping",     description: "Auto-assign tasks on checkout. Track status room by room."              },
-  { title: "Revenue Reports",  description: "Visual P&L, channel mix, and forecasting at a glance."                 },
+  { title: "AI-Driven Pricing", description: "Rates adjust automatically. No more leaving money on the table." },
+  { title: "Total Automation", description: "Housekeeping, messaging, payments — one system, zero chaos." },
+  { title: "Real Data", description: "Every metric matters. See exactly where revenue comes from." },
+  { title: "No Integration Nightmare", description: "OTA sync, guest comms, payments all built-in." },
 ];
 
 export function LoginShell({
@@ -196,7 +196,7 @@ export function LoginShell({
                 flexShrink: 0, animation: "lp-pulse 2s ease-in-out infinite",
               }}
             />
-            Live dashboard
+            Used by 1000+ operators
           </div>
 
           {/* Heading */}
@@ -207,7 +207,7 @@ export function LoginShell({
               lineHeight: 1.1, letterSpacing: "-0.03em", margin: 0,
             }}
           >
-            Property Management
+            Stop Managing Chaos.
             <span
               style={{
                 display: "block",
@@ -216,14 +216,13 @@ export function LoginShell({
                 backgroundClip: "text",
               }}
             >
-              Reimagined
+              Start Growing Revenue.
             </span>
           </h1>
 
           <p style={{ fontSize: "1.0625rem", lineHeight: 1.65, color: "#94a3b8", maxWidth: 480, margin: 0 }}>
-            AI-powered operations for boutique hotels and vacation rentals. Manage properties,
-            maximize revenue, and delight guests — from one unified workspace.
-          </p>
+            Purpose-built for property operators. Pricing that adapts. Automation that scales.
+            Analytics that matter. Used by 1000+ hosts across 45 countries.
 
           {/* Stats */}
           <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
@@ -331,7 +330,7 @@ export function LoginShell({
                 <input type="hidden" name="next" value={next} />
                 <AuthInput label="Email"    name="email"    type="email"    placeholder="you@property.com" autoComplete="email" />
                 <AuthInput label="Password" name="password" type="password" placeholder="••••••••"          autoComplete="current-password" />
-                <AuthButton label="Sign in to workspace" />
+                <AuthButton label="Unlock your dashboard" />
               </form>
             )}
 
@@ -345,41 +344,9 @@ export function LoginShell({
                   placeholder="At least 8 characters" autoComplete="new-password"
                   hint="Minimum 8 characters" minLength={8}
                 />
-                <AuthButton label="Create account" />
+                <AuthButton label="Start 14-day trial" />
               </form>
-            )}
-
-            <p style={{ fontSize: "0.7rem", color: "#475569", textAlign: "center", lineHeight: 1.5 }}>
-              By continuing you agree to our{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Terms</a>{" "}and{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Privacy Policy</a>.
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer
-        style={{
-          position: "relative", zIndex: 10,
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          padding: "1.125rem 2rem", textAlign: "center",
-          fontSize: "0.7rem", color: "#334155",
-        }}
-      >
-        © 2025 N3uralia — Enterprise hospitality platform
-      </footer>
-
-      <style>{`
-        @keyframes lp-fadein     { from { opacity:0 } to { opacity:1 } }
-        @keyframes lp-fade-up    { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
-        @keyframes lp-slide-right{ from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:translateX(0) } }
-        @keyframes lp-pulse      { 0%,100%{ box-shadow:0 0 0 0 rgba(251,191,36,0.6) } 50%{ box-shadow:0 0 0 5px rgba(251,191,36,0) } }
-        @keyframes lp-stat-in    { from { opacity:0; transform:scale(0.95) } to { opacity:1; transform:scale(1) } }
-        
-        .lp-grid { 
-          grid-template-columns: 1fr;
-          padding: 3.5rem 1.5rem;
-        }
+            }}
         
         .lp-hero { 
           display: none;
