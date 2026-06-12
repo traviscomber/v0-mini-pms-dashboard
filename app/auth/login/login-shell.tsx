@@ -1,4 +1,3 @@
-// v2 - outcome focused landing page
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -347,39 +346,12 @@ export function LoginShell({
                 />
                 <AuthButton label="Start 14-day trial" />
               </form>
-            )}
-
-            <p style={{ fontSize: "0.7rem", color: "#475569", textAlign: "center", lineHeight: 1.5 }}>
-              By continuing you agree to our{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Terms</a>{" "}and{" "}
-              <a href="#" style={{ color: "#64748b", textDecoration: "underline" }}>Privacy Policy</a>.
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer
-        style={{
-          position: "relative", zIndex: 10,
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          padding: "1.125rem 2rem", textAlign: "center",
-          fontSize: "0.7rem", color: "#334155",
-        }}
-      >
-        © 2025 N3uralia — Enterprise hospitality platform
-      </footer>
-
-      <style>{`
-        @keyframes lp-fadein     { from { opacity:0 } to { opacity:1 } }
-        @keyframes lp-fade-up    { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
-        @keyframes lp-slide-right{ from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:translateX(0) } }
-        @keyframes lp-pulse      { 0%,100%{ box-shadow:0 0 0 0 rgba(251,191,36,0.6) } 50%{ box-shadow:0 0 0 5px rgba(251,191,36,0) } }
-        @keyframes lp-stat-in    { from { opacity:0; transform:scale(0.95) } to { opacity:1; transform:scale(1) } }
+            }}
         
-        .lp-grid { 
-          grid-template-columns: 1fr;
-          padding: 3.5rem 1.5rem;
+        .lp-hero { 
+          display: none;
         }
+        
         @media (min-width: 960px) {
           .lp-grid { 
             grid-template-columns: 1fr 440px !important;
