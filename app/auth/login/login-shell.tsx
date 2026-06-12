@@ -34,6 +34,7 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -77,11 +78,17 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
     };
     draw();
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
-  }, []);
+  }, [mounted]);
 
   return (
-    <div style={{ minHeight:"100svh", display:"flex", flexDirection:"column", background:"#09090d", color:"#f8fafc", fontFamily:"var(--font-sans)", position:"relative", overflow:"hidden", opacity: mounted ? 1 : 0, transition:"opacity 0.55s ease" }}>
-      <canvas ref={canvasRef} aria-hidden="true" style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none", zIndex:0 }} />
+    <div suppressHydrationWarning style={{ minHeight:"100svh", display:"flex", flexDirection:"column", background:"#09090d", color:"#f8fafc", fontFamily:"var(--font-sans)", position:"relative", overflow:"hidden" }}>
+      {/* fade-in overlay rendered only client-side to avoid hydration mismatch */}
+      {!mounted && (
+        <div aria-hidden="true" style={{ position:"absolute", inset:0, background:"#09090d", zIndex:999, pointerEvents:"none" }} />
+      )}
+      {mounted && (
+        <canvas ref={canvasRef} aria-hidden="true" style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none", zIndex:0 }} />
+      )}
       <div aria-hidden="true" style={{ position:"absolute", top:-200, left:-200, width:800, height:800, borderRadius:"50%", background:"radial-gradient(circle, rgba(251,191,36,0.09) 0%, transparent 65%)", pointerEvents:"none", zIndex:0 }} />
 
       {/* Header */}
