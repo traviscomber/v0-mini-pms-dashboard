@@ -49,68 +49,50 @@
 }
 
 :root {
-  /* N3uralia Sacred Royal Palette — Deep Purple + Burgundy + Indigo + Cream */
+  /* N3uralia Royal Purple Palette — Compliant with Brandbook Structure */
+  /* Primary: Royal Purple (replaces Gold) | Secondary: Deep Violet | Accent: Amethyst */
   
-  /* Background: Deep charcoal navy with purple undertone */
   --background: oklch(0.10 0.01 280);
   --foreground: oklch(0.96 0 0);
-  
-  /* Card: Subtle plum-tinted dark surface */
   --card: oklch(0.15 0.015 280);
   --card-foreground: oklch(0.96 0 0);
-  
-  /* Popover: Card-like with slight depth */
   --popover: oklch(0.17 0.015 280);
   --popover-foreground: oklch(0.96 0 0);
   
-  /* Primary: Rich deep burgundy (sacred, reverent) */
-  --primary: oklch(0.48 0.22 340);
+  /* Primary: Royal Purple — regal authority */
+  --primary: oklch(0.52 0.24 280);
   --primary-foreground: oklch(0.96 0 0);
   
-  /* Secondary: Deep purple indigo (spiritual depth) */
-  --secondary: oklch(0.42 0.18 280);
+  /* Secondary: Deep Violet — prosperity */
+  --secondary: oklch(0.48 0.22 320);
   --secondary-foreground: oklch(0.96 0 0);
   
-  /* Muted: Slate-purple */
   --muted: oklch(0.30 0.04 280);
   --muted-foreground: oklch(0.72 0.01 0);
   
-  /* Accent: Lavender-plum (subtle refinement) */
-  --accent: oklch(0.56 0.15 310);
+  /* Accent: Bright Amethyst — luxury detail */
+  --accent: oklch(0.58 0.20 290);
   --accent-foreground: oklch(0.15 0.01 280);
-  
-  /* Destructive: Deep crimson */
   --destructive: oklch(0.52 0.24 15);
-  
-  /* Borders and inputs */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 6%);
-  
-  /* Ring: Deep burgundy focus */
-  --ring: oklch(0.48 0.22 340);
-  
-  /* Chart colors: Jewel tones */
-  --chart-1: oklch(0.48 0.22 340);
-  --chart-2: oklch(0.42 0.18 280);
-  --chart-3: oklch(0.56 0.15 310);
-  --chart-4: oklch(0.54 0.20 350);
-  --chart-5: oklch(0.50 0.20 320);
-  
-  /* Border radius */
+  --ring: oklch(0.52 0.24 280);
+  --chart-1: oklch(0.52 0.24 280);
+  --chart-2: oklch(0.48 0.22 320);
+  --chart-3: oklch(0.58 0.20 290);
+  --chart-4: oklch(0.54 0.22 310);
+  --chart-5: oklch(0.50 0.20 300);
   --radius: 0.625rem;
-  
-  /* Sidebar */
   --sidebar: oklch(0.15 0.015 280);
   --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.48 0.22 340);
+  --sidebar-primary: oklch(0.52 0.24 280);
   --sidebar-primary-foreground: oklch(0.96 0 0);
-  --sidebar-accent: oklch(0.42 0.18 280);
+  --sidebar-accent: oklch(0.48 0.22 320);
   --sidebar-accent-foreground: oklch(0.96 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.48 0.22 340);
+  --sidebar-ring: oklch(0.52 0.24 280);
 }
 
-/* Dark class mirrors root */
 .dark {
   --background: oklch(0.10 0.01 280);
   --foreground: oklch(0.96 0 0);
@@ -118,32 +100,32 @@
   --card-foreground: oklch(0.96 0 0);
   --popover: oklch(0.17 0.015 280);
   --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.48 0.22 340);
+  --primary: oklch(0.52 0.24 280);
   --primary-foreground: oklch(0.96 0 0);
-  --secondary: oklch(0.42 0.18 280);
+  --secondary: oklch(0.48 0.22 320);
   --secondary-foreground: oklch(0.96 0 0);
   --muted: oklch(0.30 0.04 280);
   --muted-foreground: oklch(0.72 0.01 0);
-  --accent: oklch(0.56 0.15 310);
+  --accent: oklch(0.58 0.20 290);
   --accent-foreground: oklch(0.15 0.01 280);
   --destructive: oklch(0.52 0.24 15);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 6%);
-  --ring: oklch(0.48 0.22 340);
-  --chart-1: oklch(0.48 0.22 340);
-  --chart-2: oklch(0.42 0.18 280);
-  --chart-3: oklch(0.56 0.15 310);
-  --chart-4: oklch(0.54 0.20 350);
-  --chart-5: oklch(0.50 0.20 320);
+  --ring: oklch(0.52 0.24 280);
+  --chart-1: oklch(0.52 0.24 280);
+  --chart-2: oklch(0.48 0.22 320);
+  --chart-3: oklch(0.58 0.20 290);
+  --chart-4: oklch(0.54 0.22 310);
+  --chart-5: oklch(0.50 0.20 300);
   --radius: 0.625rem;
   --sidebar: oklch(0.15 0.015 280);
   --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.48 0.22 340);
+  --sidebar-primary: oklch(0.52 0.24 280);
   --sidebar-primary-foreground: oklch(0.96 0 0);
-  --sidebar-accent: oklch(0.42 0.18 280);
+  --sidebar-accent: oklch(0.48 0.22 320);
   --sidebar-accent-foreground: oklch(0.96 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.48 0.22 340);
+  --sidebar-ring: oklch(0.52 0.24 280);
 }
 
 @layer base {

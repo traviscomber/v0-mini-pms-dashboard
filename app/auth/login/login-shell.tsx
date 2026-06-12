@@ -69,7 +69,7 @@ export function LoginShell({
             ctx.beginPath();
             ctx.moveTo(dots[i].x, dots[i].y);
             ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.strokeStyle = `oklch(0.48 0.22 340 / ${0.07 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `oklch(0.52 0.24 280 / ${0.07 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.7;
             ctx.stroke();
           }
@@ -81,7 +81,7 @@ export function LoginShell({
         if (d.y < 0) d.y = h; if (d.y > h) d.y = 0;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `oklch(0.48 0.22 340 / ${d.alpha})`;
+        ctx.fillStyle = `oklch(0.52 0.24 280 / ${d.alpha})`;
         ctx.fill();
       });
       animId = requestAnimationFrame(draw);
@@ -119,7 +119,7 @@ export function LoginShell({
         style={{
           position: "absolute", top: -200, left: -200,
           width: 800, height: 800, borderRadius: "50%",
-          background: "radial-gradient(circle, oklch(0.48 0.22 340 / 0.09) 0%, transparent 65%)",
+          background: "radial-gradient(circle, oklch(0.52 0.24 280 / 0.09) 0%, transparent 65%)",
           pointerEvents: "none", zIndex: 0,
         }}
       />
@@ -142,7 +142,7 @@ export function LoginShell({
           <span
             style={{
               fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em",
-              background: "linear-gradient(90deg,oklch(0.48 0.22 340),oklch(0.56 0.15 310))",
+              background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}
@@ -185,14 +185,14 @@ export function LoginShell({
             style={{
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               padding: "0.4rem 0.9rem", borderRadius: 99,
-              border: "1px solid oklch(0.48 0.22 340 / 0.25)", background: "oklch(0.48 0.22 340 / 0.07)",
-              fontSize: "0.7rem", fontWeight: 600, color: "oklch(0.48 0.22 340)",
+              border: "1px solid oklch(0.52 0.24 280 / 0.25)", background: "oklch(0.52 0.24 280 / 0.07)",
+              fontSize: "0.7rem", fontWeight: 600, color: "oklch(0.52 0.24 280)",
               letterSpacing: "0.07em", textTransform: "uppercase", width: "fit-content",
             }}
           >
             <span
               style={{
-                width: 7, height: 7, borderRadius: "50%", background: "oklch(0.48 0.22 340)",
+                width: 7, height: 7, borderRadius: "50%", background: "oklch(0.52 0.24 280)",
                 flexShrink: 0, animation: "lp-pulse 2s ease-in-out infinite",
               }}
             />
@@ -211,7 +211,7 @@ export function LoginShell({
             <span
               style={{
                 display: "block",
-                background: "linear-gradient(90deg,oklch(0.48 0.22 340),oklch(0.56 0.15 310))",
+                background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
@@ -246,8 +246,8 @@ export function LoginShell({
                   aria-hidden="true"
                   style={{
                     flexShrink: 0, marginTop: 4, width: 7, height: 7,
-                    borderRadius: "50%", background: "oklch(0.48 0.22 340)",
-                    boxShadow: "0 0 8px oklch(0.48 0.22 340 / 0.6)",
+                    borderRadius: "50%", background: "oklch(0.52 0.24 280)",
+                    boxShadow: "0 0 8px oklch(0.52 0.24 280 / 0.6)",
                   }}
                 />
                 <div>
@@ -305,7 +305,7 @@ export function LoginShell({
                 role="alert"
                 style={{
                   borderRadius: 10, padding: "0.75rem 1rem", fontSize: "0.8125rem",
-                  border: "1px solid oklch(0.48 0.22 340 / 0.25)", background: "oklch(0.48 0.22 340 / 0.07)",
+                  border: "1px solid oklch(0.52 0.24 280 / 0.25)", background: "oklch(0.52 0.24 280 / 0.07)",
                   color: "var(--primary)",
                 }}
               >
@@ -373,7 +373,7 @@ export function LoginShell({
         @keyframes lp-fadein     { from { opacity:0 } to { opacity:1 } }
         @keyframes lp-fade-up    { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
         @keyframes lp-slide-right{ from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:translateX(0) } }
-        @keyframes lp-pulse      { 0%,100%{ box-shadow:0 0 0 0 oklch(0.48 0.22 340 / 0.6) } 50%{ box-shadow:0 0 0 5px oklch(0.48 0.22 340 / 0) } }
+        @keyframes lp-pulse      { 0%,100%{ box-shadow:0 0 0 0 oklch(0.52 0.24 280 / 0.6) } 50%{ box-shadow:0 0 0 5px oklch(0.52 0.24 280 / 0) } }
         @keyframes lp-stat-in    { from { opacity:0; transform:scale(0.95) } to { opacity:1; transform:scale(1) } }
         
         .lp-grid { 
@@ -410,8 +410,8 @@ function StatCard({ stat, delay }: { stat: typeof STATS[number]; delay: number }
       onMouseLeave={() => setHovered(false)}
       style={{
         flex: 1, minWidth: 100, padding: "1rem 1.125rem", borderRadius: 12,
-        border: hovered ? "1px solid oklch(0.48 0.22 340 / 0.2)" : "1px solid var(--input)",
-        background: hovered ? "oklch(0.48 0.22 340 / 0.04)" : "var(--input)",
+        border: hovered ? "1px solid oklch(0.52 0.24 280 / 0.2)" : "1px solid var(--input)",
+        background: hovered ? "oklch(0.52 0.24 280 / 0.04)" : "var(--input)",
         display: "flex", flexDirection: "column", gap: "0.2rem",
         animation: `lp-stat-in 0.5s ease ${delay}s both`,
         transition: "border-color 0.25s, background 0.25s", cursor: "default",
@@ -441,12 +441,12 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
         onBlur={() => setFocused(false)}
         style={{
           width: "100%", padding: "0.75rem 1rem", borderRadius: 10,
-          border: focused ? "1px solid oklch(0.48 0.22 340 / 0.5)" : "1px solid var(--border)",
+          border: focused ? "1px solid oklch(0.52 0.24 280 / 0.5)" : "1px solid var(--border)",
           background: focused ? "var(--input)" : "var(--input)",
           color: "var(--foreground)", fontSize: "0.875rem", outline: "none",
           transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
-          boxShadow: focused ? "0 0 0 3px oklch(0.48 0.22 340 / 0.1)" : "none",
-          caretColor: "oklch(0.48 0.22 340)", boxSizing: "border-box",
+          boxShadow: focused ? "0 0 0 3px oklch(0.52 0.24 280 / 0.1)" : "none",
+          caretColor: "oklch(0.52 0.24 280)", boxSizing: "border-box",
         }}
       />
       {hint && <span style={{ fontSize: "0.71rem", color: "var(--muted-foreground)" }}>{hint}</span>}
@@ -471,7 +471,7 @@ function AuthButton({ label }: { label: string }) {
         transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
         opacity: hovered ? 0.9 : 1,
         transform: hovered ? "translateY(-1px)" : "translateY(0)",
-        boxShadow: hovered ? "0 8px 32px oklch(0.48 0.22 340 / 0.35)" : "0 4px 20px oklch(0.48 0.22 340 / 0.2)",
+        boxShadow: hovered ? "0 8px 32px oklch(0.52 0.24 280 / 0.35)" : "0 4px 20px oklch(0.52 0.24 280 / 0.2)",
       }}
     >
       {label}
