@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import AlertBanner from "./components/AlertBanner";
 import AuditLogViewer from "./components/AuditLogViewer";
+import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
 import ChannelManager from "./components/ChannelManager";
 import CommunicationTemplates from "./components/CommunicationTemplates";
@@ -39,7 +40,8 @@ type PageType =
   | "ledger"
   | "users"
   | "audit"
-  | "conflicts";
+  | "conflicts"
+  | "automation";
 
 export default function PMSApp() {
   const {
@@ -309,6 +311,16 @@ export default function PMSApp() {
 
             {activeSection === "conflicts" ? (
               <ConflictDetectionUI rooms={rooms} reservations={reservations} />
+            ) : null}
+
+            {activeSection === "automation" ? (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Automation</h1>
+                  <p className="text-foreground/60">Rules that run automatically — no manual work needed.</p>
+                </div>
+                <AutomationDashboard tasks={tasks} alerts={alerts} criticalTasks={[]} />
+              </div>
             ) : null}
           </div>
         </main>

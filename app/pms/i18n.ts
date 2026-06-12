@@ -397,6 +397,11 @@ export const translations = {
       filterByDate: 'Filter by Date',
     },
 
+    // ===== AUTOMATION SECTION =====
+    automation: {
+      title: 'Automation',
+    },
+
     // ===== CONFLICTS SECTION =====
     conflicts: {
       title: 'Conflicts',
@@ -1042,6 +1047,11 @@ export const translations = {
       filterByUser: 'Filtrar por Usuario',
       filterByAction: 'Filtrar por Acción',
       filterByDate: 'Filtrar por Fecha',
+    },
+
+    // ===== AUTOMATION SECTION =====
+    automation: {
+      title: 'Automatización',
     },
 
     // ===== CONFLICTS SECTION =====
