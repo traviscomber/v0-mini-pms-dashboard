@@ -31,161 +31,221 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(420px,1fr)]">
-        <section className="space-y-6 rounded-3xl border border-border bg-card p-8 shadow-sm lg:p-10">
-          <div className="space-y-4">
-            <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-              Sprint 1 foundation
-            </span>
-            <h1 className="text-4xl font-bold tracking-tight text-card-foreground sm:text-5xl">
-              Turn this PMS into a real hospitality platform.
-            </h1>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Authentication, roles, workspace onboarding, and multi-property foundations now live here. Once
-              Supabase is configured, the app stops behaving like a public demo and starts acting like an actual
-              hospitality workspace.
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <article className="rounded-2xl border border-border bg-background/70 p-5">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">What this adds</h2>
-              <ul className="mt-4 space-y-3 text-sm text-card-foreground">
-                <li>Email/password auth with protected PMS routes</li>
-                <li>Workspace onboarding for organization + property</li>
-                <li>RLS-ready multi-tenant schema and role model</li>
-                <li>Proxy-based session refresh for Next.js 16</li>
-              </ul>
-            </article>
-
-            <article className="rounded-2xl border border-border bg-background/70 p-5">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">What comes next</h2>
-              <ul className="mt-4 space-y-3 text-sm text-card-foreground">
-                <li>Map legacy room/reservation data into the tenant schema</li>
-                <li>Staff permissions, owner dashboards, and audit trails</li>
-                <li>Payments, automations, and OTA integrations</li>
-                <li>Housekeeping, messaging, and revenue workflows</li>
-              </ul>
-            </article>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-background/70 p-5 text-sm text-muted-foreground">
-            <p>
-              If you have not configured Supabase yet, the current public demo still works. Once you add the auth env
-              vars and run the SQL migration, this login becomes the real front door of the product.
-            </p>
-          </div>
-        </section>
-
-        <section className="space-y-6">
-          {params.message && (
-            <div className="rounded-2xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-primary">
-              {params.message}
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
+      {/* Header */}
+      <header className="border-b border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                N3uralia
+              </span>
             </div>
-          )}
+            <nav className="hidden md:flex gap-8">
+              <a href="#" className="text-sm text-slate-400 hover:text-white transition">Features</a>
+              <a href="#" className="text-sm text-slate-400 hover:text-white transition">Docs</a>
+              <a href="#" className="text-sm text-slate-400 hover:text-white transition">Support</a>
+            </nav>
+          </div>
+        </div>
+      </header>
 
-          {!hasSupabaseAuthConfig() && (
-            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-              Supabase auth is not configured yet. Add `NEXT_PUBLIC_SUPABASE_URL` and
-              `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, then apply the migration file before using protected mode.
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Left Section - Hero */}
+          <div className="hidden md:flex flex-col justify-center space-y-8">
+            <div className="space-y-6">
+              <div className="inline-block">
+                <span className="inline-flex items-center px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-sm font-medium text-amber-300">
+                  ✨ Enterprise Ready
+                </span>
+              </div>
+              
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-white">
+                Property Management
+                <span className="block bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                  Reimagined
+                </span>
+              </h1>
+              
+              <p className="text-xl text-slate-300 leading-relaxed max-w-lg">
+                Modern AI-powered operations platform for boutique hotels, hostels, and vacation rentals. Manage properties, maximize revenue, and delight guests—all from one unified dashboard.
+              </p>
             </div>
-          )}
 
-          <div className="grid gap-6">
-            <form action={signInAction} className="space-y-5 rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-semibold text-card-foreground">Sign in</h2>
-                <p className="text-sm text-muted-foreground">Use your team account to access your workspace.</p>
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="space-y-2 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="text-sm text-slate-400">Dynamic Pricing</p>
+                <p className="text-lg font-semibold text-white">AI-Optimized Rates</p>
+                <p className="text-xs text-slate-400">+25% Revenue</p>
+              </div>
+              <div className="space-y-2 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="text-sm text-slate-400">Guest Experience</p>
+                <p className="text-lg font-semibold text-white">24/7 Automation</p>
+                <p className="text-xs text-slate-400">100% Uptime</p>
+              </div>
+              <div className="space-y-2 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="text-sm text-slate-400">Real-time Analytics</p>
+                <p className="text-lg font-semibold text-white">Live Insights</p>
+                <p className="text-xs text-slate-400">Instant Alerts</p>
+              </div>
+              <div className="space-y-2 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="text-sm text-slate-400">Multi-Property</p>
+                <p className="text-lg font-semibold text-white">Scale Instantly</p>
+                <p className="text-xs text-slate-400">Unlimited Growth</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Section - Auth Forms */}
+          <div className="space-y-6">
+            {params.message && (
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+                {params.message}
+              </div>
+            )}
+
+            {!hasSupabaseAuthConfig() && (
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                ⚠️ Supabase not configured. Add environment variables to enable authentication.
+              </div>
+            )}
+
+            {/* Sign In Form */}
+            <form id="signin-form" action={signInAction} className="space-y-6 rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800 to-slate-900 p-8 shadow-2xl">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
+                <p className="text-sm text-slate-400">Sign in to your property management workspace</p>
               </div>
 
               <input type="hidden" name="next" value={next} />
 
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-card-foreground">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="you@company.com"
-                />
-              </label>
+              <div className="space-y-4">
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-300">Email Address</span>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder:text-slate-500 focus:border-amber-500 focus:bg-slate-700 focus:outline-none transition"
+                    placeholder="manager@property.com"
+                    autoComplete="email"
+                  />
+                </label>
 
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-card-foreground">Password</span>
-                <input
-                  type="password"
-                  name="password"
-                  required
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="••••••••"
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-95"
-              >
-                Continue to PMS
-              </button>
-            </form>
-
-            <form action={signUpAction} className="space-y-5 rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-semibold text-card-foreground">Create account</h2>
-                <p className="text-sm text-muted-foreground">Provision your operator login, then create your first workspace.</p>
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-300">Password</span>
+                  <input
+                    type="password"
+                    name="password"
+                    required
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder:text-slate-500 focus:border-amber-500 focus:bg-slate-700 focus:outline-none transition"
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                  />
+                </label>
               </div>
 
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-card-foreground">Full name</span>
-                <input
-                  type="text"
-                  name="fullName"
-                  required
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="Operations lead"
-                />
-              </label>
+              <button
+                type="submit"
+                suppressHydrationWarning
+                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:from-amber-600 hover:to-orange-600 transition transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Sign In
+              </button>
 
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-card-foreground">Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="ops@company.com"
-                />
-              </label>
+              <p className="text-xs text-slate-400 text-center">
+                Don&apos;t have an account?{" "}
+                <Link href="#signup-form" className="text-amber-400 hover:text-amber-300 font-medium">
+                  Create one
+                </Link>
+              </p>
+            </form>
 
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-card-foreground">Password</span>
-                <input
-                  type="password"
-                  name="password"
-                  minLength={8}
-                  required
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="At least 8 characters"
-                />
-              </label>
+            {/* Sign Up Form */}
+            <form id="signup-form" action={signUpAction} className="space-y-6 rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800/70 to-slate-900/70 p-8 shadow-lg backdrop-blur-sm">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-white">Get Started</h2>
+                <p className="text-sm text-slate-400">Create your operator account and first workspace</p>
+              </div>
+
+              <div className="space-y-4">
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-300">Full Name</span>
+                  <input
+                    type="text"
+                    name="fullName"
+                    required
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder:text-slate-500 focus:border-amber-500 focus:bg-slate-700 focus:outline-none transition"
+                    placeholder="Your name"
+                  />
+                </label>
+
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-300">Email Address</span>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder:text-slate-500 focus:border-amber-500 focus:bg-slate-700 focus:outline-none transition"
+                    placeholder="you@company.com"
+                    autoComplete="email"
+                  />
+                </label>
+
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-300">Password</span>
+                  <input
+                    type="password"
+                    name="password"
+                    minLength={8}
+                    required
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder:text-slate-500 focus:border-amber-500 focus:bg-slate-700 focus:outline-none transition"
+                    placeholder="At least 8 characters"
+                    autoComplete="new-password"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Must be at least 8 characters</p>
+                </label>
+              </div>
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium text-card-foreground transition hover:border-primary/40 hover:bg-primary/5"
+                suppressHydrationWarning
+                className="w-full px-4 py-3 rounded-lg bg-white text-slate-900 font-semibold hover:bg-slate-100 transition transform hover:scale-[1.02] active:scale-[0.98]"
               >
-                Create account
+                Create Account
               </button>
-            </form>
-          </div>
 
-          <p className="px-1 text-sm text-muted-foreground">
-            Need the migration file? It lives in `supabase/migrations/202606110001_sprint1_foundation.sql`. Once
-            applied, continue with <Link href="/setup" className="text-primary hover:underline">workspace setup</Link>.
-          </p>
-        </section>
+              <p className="text-xs text-slate-400 text-center">
+                Already have an account?{" "}
+                <Link href="#signin-form" className="text-amber-400 hover:text-amber-300 font-medium">
+                  Sign in
+                </Link>
+              </p>
+            </form>
+
+            <p className="text-xs text-slate-500 text-center px-4">
+              By signing in, you agree to our{" "}
+              <a href="#" className="text-slate-400 hover:text-slate-300 underline">Terms of Service</a> and{" "}
+              <a href="#" className="text-slate-400 hover:text-slate-300 underline">Privacy Policy</a>
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-6 py-6 text-center text-sm text-slate-400">
+          <p>© 2025 N3uralia. Enterprise property management platform.</p>
+        </div>
+      </footer>
     </main>
   );
 }
