@@ -142,9 +142,7 @@ export function LoginShell({
           <span
             style={{
               fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em",
-              background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: "oklch(0.72 0.18 60)",
             }}
           >
             N3uralia
@@ -186,13 +184,13 @@ export function LoginShell({
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               padding: "0.4rem 0.9rem", borderRadius: 99,
               border: "1px solid oklch(0.52 0.24 280 / 0.25)", background: "oklch(0.52 0.24 280 / 0.07)",
-              fontSize: "0.7rem", fontWeight: 600, color: "oklch(0.52 0.24 280)",
+              fontSize: "0.7rem", fontWeight: 600, color: "oklch(0.72 0.18 60)",
               letterSpacing: "0.07em", textTransform: "uppercase", width: "fit-content",
             }}
           >
             <span
               style={{
-                width: 7, height: 7, borderRadius: "50%", background: "oklch(0.52 0.24 280)",
+                width: 7, height: 7, borderRadius: "50%", background: "oklch(0.72 0.18 60)",
                 flexShrink: 0, animation: "lp-pulse 2s ease-in-out infinite",
               }}
             />
@@ -211,9 +209,7 @@ export function LoginShell({
             <span
               style={{
                 display: "block",
-                background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                color: "oklch(0.72 0.18 60)",
               }}
             >
               Reimagined
@@ -246,7 +242,7 @@ export function LoginShell({
                   aria-hidden="true"
                   style={{
                     flexShrink: 0, marginTop: 4, width: 7, height: 7,
-                    borderRadius: "50%", background: "oklch(0.52 0.24 280)",
+                    borderRadius: "50%", background: "oklch(0.72 0.18 60)",
                     boxShadow: "0 0 8px oklch(0.52 0.24 280 / 0.6)",
                   }}
                 />
@@ -400,7 +396,7 @@ export function LoginShell({
   );
 }
 
-/* ── Sub-components ────────────────────────────────── */
+/* ── Sub-components ─────────────────���──────────────── */
 
 function StatCard({ stat, delay }: { stat: typeof STATS[number]; delay: number }) {
   const [hovered, setHovered] = useState(false);
@@ -446,7 +442,7 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
           color: "var(--foreground)", fontSize: "0.875rem", outline: "none",
           transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
           boxShadow: focused ? "0 0 0 3px oklch(0.52 0.24 280 / 0.1)" : "none",
-          caretColor: "oklch(0.52 0.24 280)", boxSizing: "border-box",
+          caretColor: "oklch(0.72 0.18 60)", boxSizing: "border-box",
         }}
       />
       {hint && <span style={{ fontSize: "0.71rem", color: "var(--muted-foreground)" }}>{hint}</span>}
