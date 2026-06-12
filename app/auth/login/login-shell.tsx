@@ -171,14 +171,14 @@ export function LoginShell({
           position: "relative", zIndex: 10, flex: 1,
           display: "grid", gap: "3rem",
           maxWidth: 1200, width: "100%", margin: "0 auto",
-          padding: "3.5rem 1.5rem", alignItems: "center",
+          alignItems: "center",
         }}
       >
         {/* Hero — hidden on mobile via CSS */}
         <section
           className="lp-hero"
           aria-labelledby="hero-heading"
-          style={{ display: "flex", flexDirection: "column", gap: "2rem", animation: "lp-fade-up 0.6s ease 0.1s both" }}
+          style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
         >
           {/* Badge */}
           <div
@@ -375,12 +375,26 @@ export function LoginShell({
         @keyframes lp-slide-right{ from { opacity:0; transform:translateX(-12px) } to { opacity:1; transform:translateX(0) } }
         @keyframes lp-pulse      { 0%,100%{ box-shadow:0 0 0 0 rgba(251,191,36,0.6) } 50%{ box-shadow:0 0 0 5px rgba(251,191,36,0) } }
         @keyframes lp-stat-in    { from { opacity:0; transform:scale(0.95) } to { opacity:1; transform:scale(1) } }
-        .lp-grid { grid-template-columns: 1fr; }
-        @media (min-width:960px){
-          .lp-grid { grid-template-columns:1fr 440px !important; padding:4rem 2rem !important; }
-          .lp-hero { display:flex !important; }
+        
+        .lp-grid { 
+          grid-template-columns: 1fr;
+          padding: 3.5rem 1.5rem;
         }
-        @media (max-width:959px){ .lp-hero { display:none !important; } }
+        
+        .lp-hero { 
+          display: none;
+        }
+        
+        @media (min-width: 960px) {
+          .lp-grid { 
+            grid-template-columns: 1fr 440px !important;
+            padding: 4rem 2rem !important;
+          }
+          .lp-hero { 
+            display: flex !important;
+            animation: lp-fade-up 0.6s ease 0.1s both;
+          }
+        }
       `}</style>
     </div>
   );
