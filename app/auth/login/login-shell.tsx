@@ -142,7 +142,7 @@ export function LoginShell({
           <span
             style={{
               fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em",
-              color: "var(--primary)",
+              color: "oklch(0.60 0.28 320)",
             }}
           >
             N3uralia
@@ -184,13 +184,13 @@ export function LoginShell({
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               padding: "0.4rem 0.9rem", borderRadius: 99,
               border: "1px solid oklch(0.52 0.24 280 / 0.25)", background: "oklch(0.52 0.24 280 / 0.07)",
-              fontSize: "0.7rem", fontWeight: 600, color: "var(--primary)",
+              fontSize: "0.7rem", fontWeight: 600, color: "oklch(0.60 0.28 320)",
               letterSpacing: "0.07em", textTransform: "uppercase", width: "fit-content",
             }}
           >
             <span
               style={{
-                width: 7, height: 7, borderRadius: "50%", background: "var(--primary)",
+                width: 7, height: 7, borderRadius: "50%", background: "oklch(0.60 0.28 320)",
                 flexShrink: 0, animation: "lp-pulse 2s ease-in-out infinite",
               }}
             />
@@ -209,7 +209,7 @@ export function LoginShell({
             <span
               style={{
                 display: "block",
-                color: "var(--primary)",
+                color: "oklch(0.60 0.28 320)",
               }}
             >
               Reimagined
@@ -242,7 +242,7 @@ export function LoginShell({
                   aria-hidden="true"
                   style={{
                     flexShrink: 0, marginTop: 4, width: 7, height: 7,
-                    borderRadius: "50%", background: "var(--primary)",
+                    borderRadius: "50%", background: "oklch(0.60 0.28 320)",
                     boxShadow: "0 0 8px oklch(0.52 0.24 280 / 0.6)",
                   }}
                 />
@@ -302,7 +302,7 @@ export function LoginShell({
                 style={{
                   borderRadius: 10, padding: "0.75rem 1rem", fontSize: "0.8125rem",
                   border: "1px solid oklch(0.52 0.24 280 / 0.25)", background: "oklch(0.52 0.24 280 / 0.07)",
-                  color: "var(--primary)",
+                  color: "oklch(0.60 0.28 320)",
                 }}
               >
                 {message}
@@ -442,7 +442,7 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
           color: "var(--foreground)", fontSize: "0.875rem", outline: "none",
           transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
           boxShadow: focused ? "0 0 0 3px oklch(0.52 0.24 280 / 0.1)" : "none",
-          caretColor: "var(--primary)", boxSizing: "border-box",
+          caretColor: "oklch(0.60 0.28 320)", boxSizing: "border-box",
         }}
       />
       {hint && <span style={{ fontSize: "0.71rem", color: "var(--muted-foreground)" }}>{hint}</span>}
@@ -461,7 +461,7 @@ function AuthButton({ label }: { label: string }) {
       style={{
         width: "100%", marginTop: "0.25rem", padding: "0.825rem 1rem",
         border: "none", borderRadius: 10,
-        background: "linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%)",
+        background: "linear-gradient(135deg,oklch(0.60 0.28 320) 0%,oklch(0.55 0.25 300) 100%)",
         color: "var(--primary-foreground)", fontSize: "0.875rem", fontWeight: 700,
         letterSpacing: "0.01em", cursor: "pointer",
         transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
