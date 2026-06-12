@@ -11,8 +11,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Mini PMS Dashboard',
+  description: 'Hospitality operations dashboard with reservations, automation, and multi-tenant foundations.',
   generator: 'v0.app',
   icons: {
     icon: [

@@ -1,33 +1,145 @@
 # v0-mini-pms-dashboard
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Next.js hospitality platform foundation for short-term rentals. The app started as a `v0` front-end demo and now includes:
 
-## Built with v0
+- API-backed PMS flows
+- Postgres-ready persistence
+- optional Supabase Auth with protected routes
+- Sprint 1 multi-tenant schema, roles, and onboarding scaffolding
+- Sprint 2 tenant-aware PMS data mapping with legacy fallback
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+## Current Architecture
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_8uIUIQh4qo3x6jYlfNI5767J5gLV)
+- App Router UI in `app/pms/*`
+- Node runtime API routes in `app/api/pms/*`
+- PMS domain logic in `lib/pms/*`
+- Auth/session helpers in `lib/auth/*` and `lib/supabase/*`
+- Local JSON fallback store in `data/pms.json`
+- Postgres-backed repository adapter
+- Supabase migration in `supabase/migrations/202606110001_sprint1_foundation.sql`
 
-## Getting Started
+## Modes
 
-First, run the development server:
+### 1. Demo mode
+
+When Supabase auth env vars are missing:
+
+- the app stays publicly accessible
+- PMS data still uses the current repository layer
+- this is useful for local UI work and lightweight demos
+
+### 2. Protected mode
+
+When Supabase auth env vars are configured:
+
+- `/` and `/pms` require login
+- authenticated users are sent through workspace onboarding
+- API routes require an authenticated, ready workspace
+- PMS reads and writes against the active organization/property scope
+- the first workspace auto-seeds units and reservations when tenant tables are empty
+- Next.js `proxy.ts` refreshes Supabase sessions server-side
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx
+POSTGRES_URL=postgres://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Supported database aliases remain available:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `DATABASE_URL`
+- `POSTGRES_URL_NON_POOLING`
+- `SUPABASE_DB_URL`
+- `NEON_DATABASE_URL`
 
-## Learn More
+## Sprint 1 Setup
 
-To learn more, take a look at the following resources:
+### 1. Configure Supabase Auth
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+Per the current Supabase SSR guidance, install `@supabase/ssr` and `@supabase/supabase-js`, store sessions in cookies, and refresh them through a Next.js proxy layer.
+
+### 2. Apply the SQL migration
+
+Run:
+
+- `supabase/migrations/202606110001_sprint1_foundation.sql`
+
+This creates:
+
+- `profiles`
+- `organizations`
+- `memberships`
+- `properties`
+- `units`
+- `guests`
+- `reservations`
+- `tasks`
+- `audit_logs`
+- RLS policies and role helpers
+- `bootstrap_workspace(...)` onboarding function
+
+### 3. Create your first workspace
+
+After login, open `/setup` and create:
+
+- your organization
+- the first property
+- the default owner membership
+
+## Storage
+
+The PMS repository supports two storage paths:
+
+1. **Postgres mode** when a database URL is configured
+2. **File mode** when no database URL exists
+
+Inside Postgres mode, the repository supports two execution paths:
+
+1. **Workspace path** for authenticated tenants using `organizations`, `properties`, `units`, `guests`, and `reservations`
+2. **Legacy path** for non-scoped/demo consumers still using the original flat `rooms` / `reservations` tables
+
+The API exposes the active mode through:
+
+- `x-pms-storage`
+- `x-pms-storage-config`
+
+## Development
+
+```bash
+pnpm dev
+pnpm lint
+pnpm typecheck
+pnpm build
+```
+
+## Deployment
+
+- The repo is connected to `v0`: [Continue working on v0](https://v0.app/chat/projects/prj_8uIUIQh4qo3x6jYlfNI5767J5gLV)
+- Merges to `main` deploy to Vercel
+- For protected mode in production, set the Supabase env vars in Vercel
+- For persistent PMS writes in production, set a Postgres URL
+
+## Current Scope
+
+Implemented:
+
+- dashboard, calendar, reservations, reports, and responsive sidebar
+- API-backed reservation create/delete flows
+- validation for email, dates, capacity, and overlapping stays
+- Postgres-ready persistence layer with file fallback
+- protected auth shell and workspace onboarding
+- multi-tenant Sprint 1 schema and roles
+- tenant-aware reservation CRUD mapped to workspace tables
+- workspace auto-seeding from legacy/demo inventory on first run
+
+Still missing:
+
+- payments, folios, invoices, and accounting workflow
+- owner portals and advanced staff permissions
+- OTA/channel sync
+- housekeeping automation, guest messaging, and audit tooling UI
