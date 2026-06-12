@@ -8,6 +8,7 @@ import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
 import OnboardingWizard from "./components/OnboardingWizard";
 import ChannelManager from "./components/ChannelManager";
+import ExecutiveBriefing from "./components/ExecutiveBriefing";
 import CommunicationTemplates from "./components/CommunicationTemplates";
 import ConflictDetectionUI from "./components/ConflictDetectionUI";
 import FilterPanel from "./components/FilterPanel";
@@ -214,6 +215,10 @@ export default function PMSApp() {
               {isLoading ? <span className="text-xs text-foreground/60">Syncing PMS data...</span> : null}
               {liveError ? <span className="text-xs text-red-300">{liveError}</span> : null}
             </div>
+
+            {activeSection === "operations" ? (
+              <ExecutiveBriefing isLoading={isLoading} reservations={reservations} rooms={rooms} tasks={tasks} />
+            ) : null}
 
             {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
 

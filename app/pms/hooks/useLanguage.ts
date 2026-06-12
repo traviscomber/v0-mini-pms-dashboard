@@ -53,8 +53,8 @@ export function useLanguage() {
     notifyLanguageChange(lang);
   }, []);
 
-  const translate = useCallback((key: string): string => {
-    return t(language, key);
+  const translate = useCallback((key: string, variables?: Record<string, string | number>): string => {
+    return t(language, key, variables);
   }, [language]);
 
   return {

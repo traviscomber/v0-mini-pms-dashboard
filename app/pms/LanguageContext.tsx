@@ -6,7 +6,7 @@ import { Language, t as translate } from './i18n';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, variables?: Record<string, string | number>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -35,9 +35,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const t = useCallback((key: string) => {
-    const result = translate(language, key);
-    return result;
+  const t = useCallback((key: string, variables?: Record<string, string | number>) => {
+    return translate(language, key, variables);
   }, [language]);
 
   const value = useMemo(() => ({ language, setLanguage, t }), [language, setLanguage, t]);
