@@ -82,6 +82,17 @@
   --chart-3: oklch(0.55 0.25 300);
   --chart-4: oklch(0.64 0.27 310);
   --chart-5: oklch(0.52 0.27 330);
+
+  /* Calendar guest bar palette — 8 distinct gem tones for per-guest identification */
+  --cal-1: oklch(0.58 0.27 320);   /* iridescent magenta */
+  --cal-2: oklch(0.52 0.24 270);   /* deep sapphire */
+  --cal-3: oklch(0.54 0.22 195);   /* teal jade */
+  --cal-4: oklch(0.55 0.26 25);    /* coral ruby */
+  --cal-5: oklch(0.57 0.22 145);   /* emerald */
+  --cal-6: oklch(0.56 0.25 290);   /* violet amethyst */
+  --cal-7: oklch(0.60 0.23 60);    /* amber topaz */
+  --cal-8: oklch(0.54 0.24 350);   /* crimson garnet */
+
   --radius: 0.625rem;
   --sidebar: oklch(0.12 0.01 280);
   --sidebar-foreground: oklch(0.98 0 0);
@@ -117,6 +128,14 @@
   --chart-3: oklch(0.55 0.25 300);
   --chart-4: oklch(0.64 0.27 310);
   --chart-5: oklch(0.52 0.27 330);
+  --cal-1: oklch(0.58 0.27 320);
+  --cal-2: oklch(0.52 0.24 270);
+  --cal-3: oklch(0.54 0.22 195);
+  --cal-4: oklch(0.55 0.26 25);
+  --cal-5: oklch(0.57 0.22 145);
+  --cal-6: oklch(0.56 0.25 290);
+  --cal-7: oklch(0.60 0.23 60);
+  --cal-8: oklch(0.54 0.24 350);
   --radius: 0.625rem;
   --sidebar: oklch(0.12 0.01 280);
   --sidebar-foreground: oklch(0.98 0 0);
