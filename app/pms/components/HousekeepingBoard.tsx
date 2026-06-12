@@ -16,7 +16,7 @@ const statusConfig = {
   pending: { labelKey: 'housekeeping.pending', color: 'bg-amber-500/20', textColor: 'text-amber-700', icon: Clock },
   in_progress: { labelKey: 'housekeeping.inProgress', color: 'bg-blue-500/20', textColor: 'text-blue-700', icon: AlertCircle },
   completed: { labelKey: 'housekeeping.completed', color: 'bg-green-500/20', textColor: 'text-green-700', icon: CheckCircle2 },
-  cancelled: { labelKey: 'housekeeping.cancelled', color: 'bg-gray-500/20', textColor: 'text-gray-700', icon: Trash2 },
+  cancelled: { labelKey: 'housekeeping.cancelled', color: 'bg-card/500/20', textColor: 'text-foreground/80', icon: Trash2 },
 };
 
 export default function HousekeepingBoard({

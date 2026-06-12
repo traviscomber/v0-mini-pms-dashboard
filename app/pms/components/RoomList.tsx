@@ -24,7 +24,7 @@ export default function RoomList({ rooms, propertyId, onEdit, onDelete, onAdd }:
       blocked: 'bg-red-500/20 text-red-300',
       reserved: 'bg-blue-500/20 text-blue-300',
     };
-    return colors[status] || 'bg-gray-500/20 text-gray-300';
+    return colors[status] || 'bg-card/500/20 text-foreground/50';
   };
 
   return (

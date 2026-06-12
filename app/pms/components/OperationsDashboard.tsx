@@ -35,7 +35,7 @@ export default function OperationsDashboard({
       case 'in_progress':
         return <Clock className="w-5 h-5 text-yellow-500" />;
       default:
-        return <AlertCircle className="w-5 h-5 text-gray-500" />;
+        return <AlertCircle className="w-5 h-5 text-foreground/60" />;
     }
   };
 

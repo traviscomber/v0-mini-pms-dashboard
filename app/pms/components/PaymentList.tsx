@@ -24,7 +24,7 @@ export default function PaymentList({ payments, onEdit, onDelete, onAdd }: Payme
       online: 'bg-cyan-500/20 text-cyan-300',
       crypto: 'bg-orange-500/20 text-orange-300',
     };
-    return badges[method] || 'bg-gray-500/20 text-gray-300';
+    return badges[method] || 'bg-card/500/20 text-foreground/50';
   };
 
   const totalAmount = payments.reduce((sum, p) => sum + p.amount, 0);

@@ -59,7 +59,7 @@ export default function AutomationDashboard({
       case 'pending':
         return 'bg-orange-500/20 text-orange-700 border-orange-500/30';
       default:
-        return 'bg-gray-500/20 text-gray-700 border-gray-500/30';
+        return 'bg-card/500/20 text-foreground/80 border-border/30';
     }
   };
 

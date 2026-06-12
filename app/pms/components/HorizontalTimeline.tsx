@@ -52,7 +52,7 @@ export default function HorizontalTimeline({
   };
 
   const getStatusColor = (reservation: Reservation) => {
-    if (reservation.reservationStatus === 'cancelled') return 'bg-gray-300';
+    if (reservation.reservationStatus === 'cancelled') return 'bg-card/60';
     
     switch (reservation.paymentStatus) {
       case 'paid':
@@ -117,7 +117,7 @@ export default function HorizontalTimeline({
           </button>
           <button
             onClick={goToToday}
-            className="px-3 py-2 bg-primary text-black text-sm rounded-lg hover:bg-primary/90 transition font-medium"
+            className="px-3 py-2 bg-primary text-foreground text-sm rounded-lg hover:bg-primary/90 transition font-medium"
           >
             Today
           </button>

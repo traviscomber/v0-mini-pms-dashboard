@@ -124,7 +124,7 @@ export default function PaymentLedger({
             className="flex-1 bg-transparent outline-none text-sm"
           />
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/80 transition">
+        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/80 transition">
           <Download className="w-4 h-4" />
           Export
         </button>

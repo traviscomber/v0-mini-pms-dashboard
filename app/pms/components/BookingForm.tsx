@@ -299,7 +299,7 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-4 w-full rounded-lg bg-blue-600 py-2 font-semibold text-black transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-4 w-full rounded-lg bg-blue-600 py-2 font-semibold text-foreground transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? 'Saving...' : 'Add Reservation'}
       </button>

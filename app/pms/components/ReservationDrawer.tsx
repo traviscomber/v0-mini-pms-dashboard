@@ -221,7 +221,7 @@ export default function ReservationDrawer({
                   }}
                   className={`flex-1 px-3 py-2 text-xs rounded transition ${
                     editedReservation?.reservationStatus === 'confirmed'
-                      ? 'bg-primary text-black'
+                      ? 'bg-primary text-foreground'
                       : 'bg-background border border-border text-foreground hover:bg-background/80'
                   }`}
                 >
@@ -269,7 +269,7 @@ export default function ReservationDrawer({
             </button>
             <button
               onClick={handleSave}
-              className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition flex items-center justify-center gap-2 font-semibold"
+              className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 transition flex items-center justify-center gap-2 font-semibold"
             >
               <Check className="w-4 h-4" />
               Save

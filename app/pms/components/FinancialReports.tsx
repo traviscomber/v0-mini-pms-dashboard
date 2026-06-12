@@ -77,7 +77,7 @@ export default function FinancialReports() {
               onClick={() => setDateRange(period)}
               className={`px-4 py-2 rounded text-sm font-medium transition ${
                 dateRange === period
-                  ? 'bg-primary text-black'
+                  ? 'bg-primary text-foreground'
                   : 'bg-background border border-border hover:border-primary/50'
               }`}
             >

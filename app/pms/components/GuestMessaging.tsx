@@ -146,7 +146,7 @@ export default function GuestMessaging() {
                 <div
                   className={`max-w-xs px-4 py-2 rounded-lg ${
                     msg.sender === 'host'
-                      ? 'bg-primary text-black'
+                      ? 'bg-primary text-foreground'
                       : 'bg-background border border-border text-foreground'
                   }`}
                 >
@@ -170,7 +170,7 @@ export default function GuestMessaging() {
               />
               <button
                 onClick={handleSendMessage}
-                className="px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/80 transition flex items-center gap-2"
+                className="px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/80 transition flex items-center gap-2"
               >
                 <Send className="w-4 h-4" />
               </button>

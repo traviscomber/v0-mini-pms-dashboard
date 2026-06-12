@@ -27,7 +27,7 @@ export default function AlertList({ alerts, onDismiss }: AlertListProps) {
       warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300',
       critical: 'bg-red-500/10 border-red-500/30 text-red-300',
     };
-    return styles[level] || 'bg-gray-500/10 border-gray-500/30 text-gray-300';
+    return styles[level] || 'bg-card/500/10 border-border/30 text-foreground/50';
   };
 
   const activeAlerts = alerts.filter((a) => !a.isDismissed);

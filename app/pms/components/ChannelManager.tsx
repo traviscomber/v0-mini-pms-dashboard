@@ -157,7 +157,7 @@ export default function ChannelManager() {
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               />
             </div>
-            <button className="w-full px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/80 transition">
+            <button className="w-full px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/80 transition">
               Save Settings
             </button>
           </div>

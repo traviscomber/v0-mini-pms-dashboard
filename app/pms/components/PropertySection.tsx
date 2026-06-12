@@ -132,7 +132,7 @@ export default function PropertySection({ rooms }: PropertyProps) {
           </div>
         </div>
 
-        <button className="w-full px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/90 font-semibold transition">
+        <button className="w-full px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-semibold transition">
           Save Changes
         </button>
       </div>

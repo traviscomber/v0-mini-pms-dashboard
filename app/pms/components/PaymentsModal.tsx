@@ -88,7 +88,7 @@ export default function PaymentsModal({
                 <div className="flex gap-3 pt-2">
                   <button
                     onClick={() => onMarkPaid?.(reservation.id)}
-                    className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition text-sm"
+                    className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition text-sm"
                   >
                     {t('paymentTable.markPaid') || 'Mark Paid'}
                   </button>

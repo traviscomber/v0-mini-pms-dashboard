@@ -154,7 +154,7 @@ export default function CommunicationTemplates() {
     'check-in': 'bg-green-500/10 text-green-600',
     'post-stay': 'bg-purple-500/10 text-purple-600',
     'issue': 'bg-red-500/10 text-red-600',
-    'custom': 'bg-card/500/10 text-gray-600',
+    'custom': 'bg-card/500/10 text-foreground/70',
   };
 
   return (
@@ -186,7 +186,7 @@ export default function CommunicationTemplates() {
           setShowNewForm(!showNewForm);
           setNewTemplate({ name: '', category: 'custom', subject: '', body: '' });
         }}
-        className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/90 transition"
+        className="flex items-center gap-2 px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/90 transition"
       >
         <Plus className="w-4 h-4" />
         Create Template
@@ -255,7 +255,7 @@ export default function CommunicationTemplates() {
           <div className="flex gap-2">
             <button
               onClick={handleSaveTemplate}
-              className="flex-1 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/90 transition"
+              className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/90 transition"
             >
               {editingId ? 'Update Template' : 'Create Template'}
             </button>

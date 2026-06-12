@@ -64,5 +64,5 @@ export const roleColors: Record<UserRole, string> = {
   reception: 'bg-green-500/20 text-green-700',
   housekeeping: 'bg-orange-500/20 text-orange-700',
   finance: 'bg-cyan-500/20 text-cyan-700',
-  guest: 'bg-gray-500/20 text-gray-700',
+  guest: 'bg-card/500/20 text-foreground/80',
 };

@@ -29,7 +29,7 @@ export default function TaskList({
       completed: 'bg-green-500/20 text-green-300',
       cancelled: 'bg-red-500/20 text-red-300',
     };
-    return colors[status] || 'bg-gray-500/20 text-gray-300';
+    return colors[status] || 'bg-card/500/20 text-foreground/50';
   };
 
   const getPriorityColor = (priority: string) => {
@@ -39,7 +39,7 @@ export default function TaskList({
       high: 'text-orange-300',
       urgent: 'text-red-300',
     };
-    return colors[priority] || 'text-gray-300';
+    return colors[priority] || 'text-foreground/50';
   };
 
   const pendingTasks = tasks.filter((t) => t.status === 'pending');

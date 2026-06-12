@@ -11,8 +11,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Mini PMS Dashboard',
-  description: 'Hospitality operations dashboard with reservations, automation, and multi-tenant foundations.',
+  title: 'N3uralia PMS',
+  description: 'Enterprise property management platform. Reservations, revenue, and operations — unified.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -39,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark bg-background`}>
+      <body className="font-sans antialiased bg-background text-foreground">
         <Providers>
           {children}
         </Providers>

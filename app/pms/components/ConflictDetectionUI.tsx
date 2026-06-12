@@ -111,7 +111,7 @@ export default function ConflictDetectionUI({
               onClick={() => setViewMode('overview')}
               className={`px-3 py-1 text-xs rounded transition ${
                 viewMode === 'overview'
-                  ? 'bg-primary text-black'
+                  ? 'bg-primary text-foreground'
                   : 'bg-background border border-border'
               }`}
             >
@@ -121,7 +121,7 @@ export default function ConflictDetectionUI({
               onClick={() => setViewMode('detail')}
               className={`px-3 py-1 text-xs rounded transition ${
                 viewMode === 'detail'
-                  ? 'bg-primary text-black'
+                  ? 'bg-primary text-foreground'
                   : 'bg-background border border-border'
               }`}
             >

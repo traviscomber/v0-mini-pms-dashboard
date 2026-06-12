@@ -83,7 +83,7 @@ export default function CheckInsModal({
                   </div>
 
                   <div className="flex gap-3 pt-2">
-                    <button className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition text-sm">
+                    <button className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition text-sm">
                       {t('common.confirm') || 'Check-in'}
                     </button>
                     <button className="flex-1 px-4 py-2 bg-card border border-border rounded-lg text-foreground hover:bg-background font-medium transition text-sm">

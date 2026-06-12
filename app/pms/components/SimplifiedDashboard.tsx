@@ -82,7 +82,7 @@ export default function SimplifiedDashboard({
       icon: AlertCircle,
       color: pendingPayments > 0 ? 'from-red-500 to-orange-600' : 'from-gray-400 to-gray-600',
       action: `${pendingPayments} pending`,
-      actionColor: pendingPayments > 0 ? 'text-red-600' : 'text-gray-600',
+      actionColor: pendingPayments > 0 ? 'text-red-600' : 'text-foreground/70',
       onClick: onShowPayments,
       alert: pendingPayments > 0
     }

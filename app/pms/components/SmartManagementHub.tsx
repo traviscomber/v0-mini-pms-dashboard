@@ -70,7 +70,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
             Este mes: <strong>{trends.thisMonth}</strong> reservas | Mes pasado: <strong>{trends.lastMonth}</strong>{' '}
             {trends.trend === 'up' && <span className="text-green-600">↑ {trends.changePercent}%</span>}
             {trends.trend === 'down' && <span className="text-red-600">↓ {trends.changePercent}%</span>}
-            {trends.trend === 'stable' && <span className="text-gray-600">= Estable</span>}
+            {trends.trend === 'stable' && <span className="text-foreground/70">= Estable</span>}
           </p>
         </div>
       </section>
@@ -93,7 +93,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                       ? 'bg-green-500/20 text-green-700'
                       : price.recommended === 'Decrease'
                       ? 'bg-red-500/20 text-red-700'
-                      : 'bg-gray-500/20 text-gray-700'
+                      : 'bg-card/500/20 text-foreground/80'
                   }`}
                 >
                   {price.recommended}
@@ -124,7 +124,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                   ? 'bg-purple-500/10 border-purple-500'
                   : day.type === 'season'
                   ? 'bg-orange-500/10 border-orange-500'
-                  : 'bg-gray-500/10 border-gray-500'
+                  : 'bg-card/500/10 border-border'
               }`}>
                 <p className="font-semibold">{day.dayName}</p>
                 <p className="text-foreground/60">×{day.multiplier}</p>
@@ -152,7 +152,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                 key={notif.id}
                 className={`p-4 rounded border-l-4 ${
                   notif.sent
-                    ? 'bg-gray-500/5 border-gray-500'
+                    ? 'bg-card/500/5 border-border'
                     : notif.priority >= 2
                     ? 'bg-orange-500/10 border-orange-500'
                     : 'bg-blue-500/10 border-blue-500'
@@ -172,7 +172,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                     Enviar Ahora
                   </button>
                 )}
-                {notif.sent && <p className="text-xs text-gray-500 mt-2">✓ Enviado</p>}
+                {notif.sent && <p className="text-xs text-foreground/60 mt-2">✓ Enviado</p>}
               </div>
             ))}
           </div>

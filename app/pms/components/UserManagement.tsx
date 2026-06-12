@@ -56,7 +56,7 @@ export default function UserManagement({
           <h3 className="font-semibold">Team Members</h3>
           <button
             onClick={onAddUser}
-            className="flex items-center gap-2 px-3 py-2 bg-primary text-black rounded-lg text-sm font-medium hover:bg-primary/80 transition"
+            className="flex items-center gap-2 px-3 py-2 bg-primary text-foreground rounded-lg text-sm font-medium hover:bg-primary/80 transition"
           >
             <Plus className="w-4 h-4" />
             Add User
@@ -97,8 +97,8 @@ export default function UserManagement({
                         </>
                       ) : (
                         <>
-                          <Circle className="w-4 h-4 text-gray-400" />
-                          <span className="text-xs text-gray-600">Inactive</span>
+                          <Circle className="w-4 h-4 text-foreground/50" />
+                          <span className="text-xs text-foreground/70">Inactive</span>
                         </>
                       )}
                     </div>
