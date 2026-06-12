@@ -13,10 +13,7 @@ export async function GET() {
     return guardResponse;
   }
 
-  const data = await getPmsData(scope ?? undefined).catch((err: unknown) => {
-    console.log("[v0] getPmsData error:", err instanceof Error ? err.message : String(err));
-    throw err;
-  });
+  const data = await getPmsData(scope ?? undefined);
 
   return NextResponse.json(data, {
     headers: {
