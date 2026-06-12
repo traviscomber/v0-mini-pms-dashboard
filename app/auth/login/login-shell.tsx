@@ -1,3 +1,4 @@
+// v2 - outcome focused landing page
 "use client";
 
 import { useEffect, useRef, useState } from "react";
