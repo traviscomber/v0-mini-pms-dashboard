@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { DollarSign, Home, Users, AlertCircle, ChevronRight } from 'lucide-react';
 import { useLanguage as useLanguage } from '../LanguageContext';
 
@@ -18,7 +17,6 @@ export default function SimplifiedDashboard({
   onShowPayments
 }: SimplifiedDashboardProps) {
   const { t } = useLanguage();
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
 
   // Calculate outcomes
   const todayStart = new Date();
@@ -67,7 +65,7 @@ export default function SimplifiedDashboard({
     },
     {
       id: 'checkins',
-      title: t('schedule.todayCheckoutsCleaning')?.split('-')[0] || "Today's Check-ins",
+      title: t('schedule.todayCheckoutsCleaning'),
       value: todayCheckIns.toString(),
       icon: Users,
       color: 'from-accent to-pink-600',
@@ -99,7 +97,6 @@ export default function SimplifiedDashboard({
               key={metric.id}
               onClick={() => {
                 if (metric.onClick) metric.onClick();
-                setSelectedMetric(metric.id);
               }}
               className={`relative overflow-hidden rounded-xl p-6 text-left transition-all hover:shadow-lg active:scale-95 ${
                 metric.alert ? 'ring-2 ring-red-400' : ''
@@ -180,7 +177,7 @@ export default function SimplifiedDashboard({
             onClick={onShowCheckIns}
             className="p-4 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-lg text-left transition group"
           >
-            <p className="text-sm font-semibold text-primary group-hover:text-primary/90">{t('schedule.todayCheckoutsCleaning')?.split('-')[0] || "Today's Check-ins"}</p>
+            <p className="text-sm font-semibold text-primary group-hover:text-primary/90">{t('schedule.todayCheckoutsCleaning')}</p>
             <p className="text-2xl font-bold text-foreground mt-2">{todayCheckIns}</p>
           </button>
           <button
