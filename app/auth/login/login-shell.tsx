@@ -11,16 +11,16 @@ interface LoginShellProps {
 }
 
 const STATS = [
-  { label: "Occupancy rate", value: "94%",  delta: "+12%" },
-  { label: "Avg nightly rate", value: "$287", delta: "+8%"  },
-  { label: "Revenue / month", value: "$41k", delta: "+23%" },
+  { label: "Revenue tracked", value: "$1.5k", delta: "This month" },
+  { label: "Occupancy", value: "52%", delta: "8/15 rooms booked" },
+  { label: "Payment visibility", value: "100%", delta: "All transactions logged" },
 ];
 
 const FEATURES = [
-  { title: "Dynamic Pricing",  description: "AI adjusts rates in real time based on demand, events, and competition." },
-  { title: "Unified Inbox",    description: "OTA messages, reviews, and tasks in one streamlined place."              },
-  { title: "Housekeeping",     description: "Auto-assign tasks on checkout. Track status room by room."              },
-  { title: "Revenue Reports",  description: "Visual P&L, channel mix, and forecasting at a glance."                 },
+  { title: "Complete Reservation Oversight", description: "Track every booking, guest, date, and payment status in one place. No data silos." },
+  { title: "Automatic Task Generation", description: "Cleaning, maintenance, and guest prep tasks auto-created per reservation. Nothing forgotten." },
+  { title: "Real Revenue Tracking", description: "Every payment, balance due, and charge logged. Know your exact cash position daily." },
+  { title: "Guest Experience Continuity", description: "Preferences, history, and special requests stored per guest. Personalization at scale." },
 ];
 
 export function LoginShell({
@@ -196,7 +196,7 @@ export function LoginShell({
                 flexShrink: 0, animation: "lp-pulse 2s ease-in-out infinite",
               }}
             />
-            Live dashboard
+            Used by property operators
           </div>
 
           {/* Heading */}
@@ -207,7 +207,7 @@ export function LoginShell({
               lineHeight: 1.1, letterSpacing: "-0.03em", margin: 0,
             }}
           >
-            Property Management
+            Never Lose Track of Revenue.
             <span
               style={{
                 display: "block",
@@ -216,14 +216,12 @@ export function LoginShell({
                 backgroundClip: "text",
               }}
             >
-              Reimagined
+              Or Guest Experience.
             </span>
           </h1>
 
           <p style={{ fontSize: "1.0625rem", lineHeight: 1.65, color: "#94a3b8", maxWidth: 480, margin: 0 }}>
-            AI-powered operations for boutique hotels and vacation rentals. Manage properties,
-            maximize revenue, and delight guests — from one unified workspace.
-          </p>
+            One system. Every reservation, payment, task, and guest preference. No spreadsheets. No chaos. Built for boutique hotels and vacation rental operators.
 
           {/* Stats */}
           <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
