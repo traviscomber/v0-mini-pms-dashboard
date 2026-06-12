@@ -87,13 +87,13 @@ export default function Dashboard({
           )}
           {checkOuts > 0 && (
             <p className="flex items-center gap-2 text-foreground/80">
-              <LogOut className="text-orange-600" size={18} />
+              <LogOut className="text-destructive600" size={18} />
               <strong>{checkOuts}</strong> {t('operations.checkOutPlural')}
             </p>
           )}
           {pendingPayments > 0 && (
             <p className="flex items-center gap-2 text-foreground/80">
-              <AlertCircle className="text-red-600" size={18} />
+              <AlertCircle className="text-destructive" size={18} />
               <strong>{pendingPayments}</strong> {t('operations.pendingPaymentPlural')}
             </p>
           )}

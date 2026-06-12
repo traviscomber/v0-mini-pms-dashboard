@@ -41,7 +41,7 @@ export default function PropertyList({ properties, onEdit, onDelete, onAdd }: Pr
                 <h3 className="font-bold text-foreground">{property.name}</h3>
               </div>
               {property.isActive && (
-                <span className="bg-green-500/20 text-green-300 text-xs px-2 py-1 rounded">
+                <span className="bg-chart-2/20 text-green-300 text-xs px-2 py-1 rounded">
                   {t('crud.active')}
                 </span>
               )}
@@ -72,14 +72,14 @@ export default function PropertyList({ properties, onEdit, onDelete, onAdd }: Pr
             <div className="flex gap-2">
               <button
                 onClick={() => onEdit(property)}
-                className="flex-1 flex items-center justify-center gap-2 bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 px-3 py-2 rounded transition"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary/20 text-primary/70 hover:bg-primary/30 px-3 py-2 rounded transition"
               >
                 <Edit2 className="w-4 h-4" />
                 {t('crud.edit')}
               </button>
               <button
                 onClick={() => onDelete(property.id)}
-                className="flex-1 flex items-center justify-center gap-2 bg-red-500/20 text-red-300 hover:bg-red-500/30 px-3 py-2 rounded transition"
+                className="flex-1 flex items-center justify-center gap-2 bg-destructive/20 text-red-300 hover:bg-destructive/30 px-3 py-2 rounded transition"
               >
                 <Trash2 className="w-4 h-4" />
                 {t('crud.delete')}

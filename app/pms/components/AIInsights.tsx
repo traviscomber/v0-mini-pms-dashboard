@@ -90,14 +90,14 @@ export default function AIInsights({ rooms, reservations, guests, propertyId }: 
         {/* Dynamic Pricing Card */}
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
-            <DollarSign className="w-5 h-5 text-green-500" />
+            <DollarSign className="w-5 h-5 text-chart-2" />
             <h3 className="font-semibold text-foreground">Dynamic Pricing</h3>
           </div>
           <p className="text-sm text-foreground/60 mb-4">
             AI-optimized room prices based on demand and market conditions
           </p>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-green-500">+15-30%</div>
+            <div className="text-2xl font-bold text-chart-2">+15-30%</div>
             <p className="text-xs text-foreground/50">Potential revenue increase</p>
           </div>
         </div>
@@ -105,14 +105,14 @@ export default function AIInsights({ rooms, reservations, guests, propertyId }: 
         {/* Cancellation Risk Card */}
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
-            <AlertCircle className="w-5 h-5 text-orange-500" />
+            <AlertCircle className="w-5 h-5 text-destructive500" />
             <h3 className="font-semibold text-foreground">Cancellation Risk</h3>
           </div>
           <p className="text-sm text-foreground/60 mb-4">
             AI predicts high-risk cancellations for overbooking strategy
           </p>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-orange-500">-20%</div>
+            <div className="text-2xl font-bold text-destructive500">-20%</div>
             <p className="text-xs text-foreground/50">Expected cancellation reduction</p>
           </div>
         </div>
@@ -120,14 +120,14 @@ export default function AIInsights({ rooms, reservations, guests, propertyId }: 
         {/* Revenue Forecast Card */}
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-blue-500" />
+            <TrendingUp className="w-5 h-5 text-primary" />
             <h3 className="font-semibold text-foreground">Revenue Forecast</h3>
           </div>
           <p className="text-sm text-foreground/60 mb-4">
             Next month revenue prediction with confidence intervals
           </p>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-blue-500">+12%</div>
+            <div className="text-2xl font-bold text-primary">+12%</div>
             <p className="text-xs text-foreground/50">Projected month-over-month growth</p>
           </div>
         </div>
@@ -135,20 +135,20 @@ export default function AIInsights({ rooms, reservations, guests, propertyId }: 
         {/* Guest Segmentation Card */}
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5 text-purple-500" />
+            <Users className="w-5 h-5 text-accent500" />
             <h3 className="font-semibold text-foreground">Guest Segments</h3>
           </div>
           <p className="text-sm text-foreground/60 mb-4">
             VIP, Premium, Regular, At-Risk, and Churned guest analysis
           </p>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-purple-500">{guests.length}</div>
+            <div className="text-2xl font-bold text-accent500">{guests.length}</div>
             <p className="text-xs text-foreground/50">Guests analyzed and segmented</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4">
+      <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-4">
         <p className="text-sm text-foreground">
           💡 <strong>Pro Tip:</strong> AI insights are refreshed hourly. Check back for updated recommendations based on new booking data and market conditions.
         </p>

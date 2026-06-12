@@ -51,21 +51,21 @@ export default function TodayCommandCenter({
     <div className="space-y-6">
       {/* Critical Alerts */}
       {criticalTasks.length > 0 && (
-        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+        <div className="bg-destructive/10 border border-destructive/50 rounded-lg p-4">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-red-700">
                 {criticalTasks.length} {criticalTasks.length === 1 ? t('operations.criticalTaskPlural') : `${t('operations.criticalTaskPlural')}s`}
               </p>
               <div className="space-y-1 mt-2">
                 {criticalTasks.slice(0, 3).map((task) => (
-                  <p key={task.id} className="text-sm text-red-600">
+                  <p key={task.id} className="text-sm text-destructive">
                     {task.title}
                   </p>
                 ))}
                 {criticalTasks.length > 3 && (
-                  <p className="text-sm text-red-600">{t('operations.moreItems', { count: criticalTasks.length - 3 })}</p>
+                  <p className="text-sm text-destructive">{t('operations.moreItems', { count: criticalTasks.length - 3 })}</p>
                 )}
               </div>
             </div>
@@ -150,7 +150,7 @@ export default function TodayCommandCenter({
                     <p className="font-medium">{res.guestName}</p>
                     <p className="text-sm text-foreground/60">
                       {res.cleaningStatus === 'dirty' ? (
-                        <span className="text-amber-600">{t('operations.roomNeedsGuestCleaning')}</span>
+                        <span className="text-secondary600">{t('operations.roomNeedsGuestCleaning')}</span>
                       ) : (
                         <span className="text-green-600">{t('operations.roomClean')}</span>
                       )}
@@ -177,13 +177,13 @@ export default function TodayCommandCenter({
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">{t('operations.pending')}</p>
-          <p className="text-2xl font-bold text-amber-600 mt-1">
+          <p className="text-2xl font-bold text-secondary600 mt-1">
             {tasksByStatus.pending.length}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">{t('housekeeping.inProgress')}</p>
-          <p className="text-2xl font-bold text-blue-600 mt-1">
+          <p className="text-2xl font-bold text-primary mt-1">
             {tasksByStatus.in_progress.length}
           </p>
         </div>

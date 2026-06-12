@@ -133,7 +133,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   onChange={(e) => setFormData({...formData, checkInDate: e.target.value})}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                {errors.checkInDate && <p className="text-red-500 text-sm mt-1">{errors.checkInDate}</p>}
+                {errors.checkInDate && <p className="text-destructive text-sm mt-1">{errors.checkInDate}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Check-out Date</label>
@@ -143,7 +143,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   onChange={(e) => setFormData({...formData, checkOutDate: e.target.value})}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                {errors.checkOutDate && <p className="text-red-500 text-sm mt-1">{errors.checkOutDate}</p>}
+                {errors.checkOutDate && <p className="text-destructive text-sm mt-1">{errors.checkOutDate}</p>}
               </div>
               <p className="text-foreground/60">{nights} nights selected</p>
             </div>
@@ -154,7 +154,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
             <div className="space-y-3">
               <p className="text-foreground/60">{availableRooms.length} rooms available</p>
               {availableRooms.length === 0 ? (
-                <p className="text-red-500">No rooms available for selected dates</p>
+                <p className="text-destructive">No rooms available for selected dates</p>
               ) : (
                 availableRooms.map(room => (
                   <button
@@ -176,7 +176,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   </button>
                 ))
               )}
-              {errors.roomId && <p className="text-red-500 text-sm">{errors.roomId}</p>}
+              {errors.roomId && <p className="text-destructive text-sm">{errors.roomId}</p>}
             </div>
           )}
 
@@ -192,7 +192,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   placeholder="John Doe"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                {errors.guestName && <p className="text-red-500 text-sm mt-1">{errors.guestName}</p>}
+                {errors.guestName && <p className="text-destructive text-sm mt-1">{errors.guestName}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Email</label>
@@ -203,7 +203,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   placeholder="john@example.com"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                {errors.guestEmail && <p className="text-red-500 text-sm mt-1">{errors.guestEmail}</p>}
+                {errors.guestEmail && <p className="text-destructive text-sm mt-1">{errors.guestEmail}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Phone</label>
@@ -214,7 +214,7 @@ const BookingFlowModal = memo(({ isOpen, onClose, rooms, reservations, onConfirm
                   placeholder="+1234567890"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                {errors.guestPhone && <p className="text-red-500 text-sm mt-1">{errors.guestPhone}</p>}
+                {errors.guestPhone && <p className="text-destructive text-sm mt-1">{errors.guestPhone}</p>}
               </div>
             </div>
           )}

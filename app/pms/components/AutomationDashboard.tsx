@@ -53,11 +53,11 @@ export default function AutomationDashboard({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-500/20 text-green-700 border-green-500/30';
+        return 'bg-chart-2/20 text-green-700 border-chart-2/30';
       case 'in_progress':
-        return 'bg-blue-500/20 text-blue-700 border-blue-500/30';
+        return 'bg-primary/20 text-primary border-primary/30';
       case 'pending':
-        return 'bg-orange-500/20 text-orange-700 border-orange-500/30';
+        return 'bg-destructive500/20 text-destructive700 border-destructive500/30';
       default:
         return 'bg-card/500/20 text-foreground/80 border-border/30';
     }
@@ -66,11 +66,11 @@ export default function AutomationDashboard({
   const getAlertColor = (level: string) => {
     switch (level) {
       case 'critical':
-        return 'bg-red-500/20 text-red-700 border-red-500/30';
+        return 'bg-destructive/20 text-red-700 border-destructive/30';
       case 'warning':
-        return 'bg-orange-500/20 text-orange-700 border-orange-500/30';
+        return 'bg-destructive500/20 text-destructive700 border-destructive500/30';
       default:
-        return 'bg-blue-500/20 text-blue-700 border-blue-500/30';
+        return 'bg-primary/20 text-primary border-primary/30';
     }
   };
 
@@ -104,7 +104,7 @@ export default function AutomationDashboard({
               <p className="text-xs text-foreground/60 mb-1">Completadas</p>
               <p className="text-2xl font-bold text-green-600">{stats.completedTasks}</p>
             </div>
-            <CheckCircle2 className="w-8 h-8 text-green-500 opacity-20" />
+            <CheckCircle2 className="w-8 h-8 text-chart-2 opacity-20" />
           </div>
         </div>
 
@@ -112,9 +112,9 @@ export default function AutomationDashboard({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-foreground/60 mb-1">Alertas</p>
-              <p className="text-2xl font-bold text-orange-600">{stats.criticalAlerts}</p>
+              <p className="text-2xl font-bold text-destructive600">{stats.criticalAlerts}</p>
             </div>
-            <AlertCircle className="w-8 h-8 text-red-500 opacity-20" />
+            <AlertCircle className="w-8 h-8 text-destructive opacity-20" />
           </div>
         </div>
       </div>
@@ -158,23 +158,23 @@ export default function AutomationDashboard({
         <div className="space-y-4">
           {/* Tareas Críticas */}
           {criticalTasks.length > 0 && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+            <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
               <h3 className="font-semibold text-red-700 mb-3">⚠️ Tareas Críticas</h3>
               <div className="space-y-2">
                 {criticalTasks.map((task: any) => (
-                  <div key={task.id} className="bg-red-500/5 p-3 rounded border border-red-500/20">
+                  <div key={task.id} className="bg-destructive/5 p-3 rounded border border-destructive/20">
                     <p className="font-semibold text-foreground">{task.title}</p>
                     <p className="text-sm text-foreground/60">{task.description}</p>
                     <div className="flex gap-2 mt-2">
                       <button
                         onClick={() => onTaskStatusChange?.(task.id, 'in_progress')}
-                        className="px-3 py-1 bg-blue-500/20 text-blue-700 rounded text-xs hover:bg-blue-500/30"
+                        className="px-3 py-1 bg-primary/20 text-primary rounded text-xs hover:bg-primary/30"
                       >
                         En Progreso
                       </button>
                       <button
                         onClick={() => onTaskStatusChange?.(task.id, 'completed')}
-                        className="px-3 py-1 bg-green-500/20 text-green-700 rounded text-xs hover:bg-green-500/30"
+                        className="px-3 py-1 bg-chart-2/20 text-green-700 rounded text-xs hover:bg-chart-2/30"
                       >
                         Completar
                       </button>
@@ -216,13 +216,13 @@ export default function AutomationDashboard({
                     <div className="flex gap-2 mt-2">
                       <button
                         onClick={() => onTaskStatusChange?.(task.id, 'in_progress')}
-                        className="px-2 py-1 bg-blue-500/20 text-blue-700 rounded text-xs hover:bg-blue-500/30"
+                        className="px-2 py-1 bg-primary/20 text-primary rounded text-xs hover:bg-primary/30"
                       >
                         En Progreso
                       </button>
                       <button
                         onClick={() => onTaskStatusChange?.(task.id, 'completed')}
-                        className="px-2 py-1 bg-green-500/20 text-green-700 rounded text-xs hover:bg-green-500/30"
+                        className="px-2 py-1 bg-chart-2/20 text-green-700 rounded text-xs hover:bg-chart-2/30"
                       >
                         Completar
                       </button>

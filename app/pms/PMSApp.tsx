@@ -197,7 +197,7 @@ export default function PMSApp() {
         <main className="flex-1 overflow-y-auto">
           <div className="space-y-6 p-8">
             <div className="flex flex-wrap items-center gap-3">
-              <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-amber-500/30 bg-amber-500/10 text-amber-300"}`}>
+              <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-secondary500/30 bg-secondary500/10 text-secondary300"}`}>
                 {mode === "live" ? "Live PMS data" : "Demo fallback data"}
               </span>
               {isLoading ? <span className="text-xs text-foreground/60">Syncing PMS data...</span> : null}

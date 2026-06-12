@@ -116,7 +116,7 @@ export default function GuestMessaging() {
                   <p className="text-sm text-foreground/60 truncate">{conv.lastMessage}</p>
                 </div>
                 {conv.unreadCount > 0 && (
-                  <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <div className="bg-destructive text-white text-xs font-bold px-2 py-1 rounded-full">
                     {conv.unreadCount}
                   </div>
                 )}
@@ -197,11 +197,11 @@ export default function GuestMessaging() {
         </div>
         <div>
           <p className="text-sm text-foreground/60">Unread Messages</p>
-          <p className="text-2xl font-bold text-red-500">{unreadTotal}</p>
+          <p className="text-2xl font-bold text-destructive">{unreadTotal}</p>
         </div>
         <div>
           <p className="text-sm text-foreground/60">Response Rate</p>
-          <p className="text-2xl font-bold text-green-500">100%</p>
+          <p className="text-2xl font-bold text-chart-2">100%</p>
         </div>
       </div>
     </div>

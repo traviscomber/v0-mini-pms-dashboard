@@ -42,7 +42,7 @@ const WishlistManager = memo(({ rooms }: WishlistManagerProps) => {
               onClick={() => toggleWishlist(room.id)}
               className={`p-4 rounded-lg border-2 transition text-left ${
                 wishlisted.includes(room.id)
-                  ? 'bg-red-500/10 border-red-500/50'
+                  ? 'bg-destructive/10 border-destructive/50'
                   : 'bg-background border-border hover:border-foreground/30'
               }`}
             >
@@ -53,7 +53,7 @@ const WishlistManager = memo(({ rooms }: WishlistManagerProps) => {
                 </div>
                 <Heart
                   size={20}
-                  className={wishlisted.includes(room.id) ? 'fill-red-500 text-red-500' : 'text-foreground/30'}
+                  className={wishlisted.includes(room.id) ? 'fill-red-500 text-destructive' : 'text-foreground/30'}
                 />
               </div>
             </button>
@@ -69,7 +69,7 @@ const WishlistManager = memo(({ rooms }: WishlistManagerProps) => {
             {wishlistedRooms.map(room => (
               <div key={room.id} className="flex items-center justify-between p-3 bg-background rounded-lg">
                 <div className="flex items-center gap-3">
-                  <Heart size={20} className="fill-red-500 text-red-500" />
+                  <Heart size={20} className="fill-red-500 text-destructive" />
                   <div>
                     <p className="font-semibold text-foreground">{room.name}</p>
                     <p className="text-sm text-foreground/60">{room.type} • {room.capacity} guests</p>

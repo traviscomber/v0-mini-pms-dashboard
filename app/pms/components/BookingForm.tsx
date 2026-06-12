@@ -129,10 +129,10 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
             type="text"
             value={form.guestName}
             onChange={(e) => { setForm({ ...form, guestName: e.target.value }); delete errors.guestName; }}
-            className={`w-full px-3 py-2 border rounded-lg bg-card/50 text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary ${errors.guestName ? 'border-red-500' : 'border-border'}`}
+            className={`w-full px-3 py-2 border rounded-lg bg-card/50 text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary ${errors.guestName ? 'border-destructive' : 'border-border'}`}
             placeholder="John Doe"
           />
-          {errors.guestName && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestName}</p>}
+          {errors.guestName && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestName}</p>}
         </div>
 
         {/* Email */}
@@ -142,10 +142,10 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
             type="email"
             value={form.guestEmail}
             onChange={(e) => { setForm({ ...form, guestEmail: e.target.value }); delete errors.guestEmail; }}
-            className={`w-full px-3 py-2 border rounded-lg text-foreground placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.guestEmail ? 'border-red-500' : 'border-border/80'}`}
+            className={`w-full px-3 py-2 border rounded-lg text-foreground placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.guestEmail ? 'border-destructive' : 'border-border/80'}`}
             placeholder="john@example.com"
           />
-          {errors.guestEmail && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestEmail}</p>}
+          {errors.guestEmail && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.guestEmail}</p>}
         </div>
 
         {/* Phone */}
@@ -166,11 +166,11 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
           <select
             value={form.roomId}
             onChange={(e) => setForm({ ...form, roomId: e.target.value })}
-            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.roomId ? 'border-red-500' : 'border-border/80'}`}
+            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.roomId ? 'border-destructive' : 'border-border/80'}`}
           >
             {rooms.map(r => <option key={r.id} value={r.id}>{r.name} (${r.basePrice}/night)</option>)}
           </select>
-          {errors.roomId && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.roomId}</p>}
+          {errors.roomId && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.roomId}</p>}
         </div>
 
         {/* Check-in */}
@@ -180,9 +180,9 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
             type="date"
             value={form.checkIn}
             onChange={(e) => { setForm({ ...form, checkIn: e.target.value }); delete errors.checkIn; }}
-            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.checkIn ? 'border-red-500' : 'border-border/80'}`}
+            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.checkIn ? 'border-destructive' : 'border-border/80'}`}
           />
-          {errors.checkIn && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.checkIn}</p>}
+          {errors.checkIn && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.checkIn}</p>}
         </div>
 
         {/* Check-out */}
@@ -192,9 +192,9 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
             type="date"
             value={form.checkOut}
             onChange={(e) => { setForm({ ...form, checkOut: e.target.value }); delete errors.checkOut; }}
-            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.checkOut ? 'border-red-500' : 'border-border/80'}`}
+            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.checkOut ? 'border-destructive' : 'border-border/80'}`}
           />
-          {errors.checkOut && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.checkOut}</p>}
+          {errors.checkOut && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.checkOut}</p>}
         </div>
 
         {/* Adults */}
@@ -205,9 +205,9 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
             min="1"
             value={form.adults}
             onChange={(e) => { setForm({ ...form, adults: parseInt(e.target.value) || 1 }); delete errors.adults; }}
-            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.adults ? 'border-red-500' : 'border-border/80'}`}
+            className={`w-full px-3 py-2 border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.adults ? 'border-destructive' : 'border-border/80'}`}
           />
-          {errors.adults && <p className="text-red-600 text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.adults}</p>}
+          {errors.adults && <p className="text-destructive text-xs mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.adults}</p>}
         </div>
 
         {/* Children */}
@@ -291,7 +291,7 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
       )}
 
       {submitError && (
-        <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+        <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-200">
           {submitError}
         </div>
       )}
@@ -299,7 +299,7 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-4 w-full rounded-lg bg-blue-600 py-2 font-semibold text-foreground transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-4 w-full rounded-lg bg-primary py-2 font-semibold text-foreground transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? 'Saving...' : 'Add Reservation'}
       </button>

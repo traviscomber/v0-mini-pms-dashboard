@@ -28,7 +28,7 @@ const generateAlerts = (reservations: any[], rooms: any[], t: any): Alert[] => {
       type: 'warning',
       title: t('alerts.lowOccupancy'),
       message: `${t('alerts.occupancy')} ${occupancyRate.toFixed(0)}%. ${t('alerts.consider')}`,
-      icon: <TrendingDown className="text-orange-600" />,
+      icon: <TrendingDown className="text-destructive600" />,
     });
   }
   
@@ -40,7 +40,7 @@ const generateAlerts = (reservations: any[], rooms: any[], t: any): Alert[] => {
       type: 'critical',
       title: t('alerts.pendingPayments'),
       message: `${pendingPayments} ${t('alerts.pending')}`,
-      icon: <AlertCircle className="text-red-600" />,
+      icon: <AlertCircle className="text-destructive" />,
     });
   }
 
@@ -57,7 +57,7 @@ const generateAlerts = (reservations: any[], rooms: any[], t: any): Alert[] => {
       type: 'info',
       title: t('alerts.checkinsTitle'),
       message: `${checkInsToday} ${t('alerts.checkInsToday')}`,
-      icon: <Clock className="text-blue-600" />,
+      icon: <Clock className="text-primary" />,
     });
   }
   
@@ -91,7 +91,7 @@ const AlertsPanel = memo(({ reservations, rooms }: AlertsProps) => {
             alert.type === 'critical'
               ? 'bg-red-950/20 border-red-900/30'
               : alert.type === 'warning'
-              ? 'bg-orange-950/20 border-orange-900/30'
+              ? 'bg-destructive950/20 border-destructive900/30'
               : 'bg-blue-950/20 border-blue-900/30'
           }`}
           role="alert"

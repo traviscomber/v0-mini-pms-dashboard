@@ -11,9 +11,9 @@ interface MobileHousekeepingViewProps {
 }
 
 const statusConfig = {
-  pending: { label: 'To Do', color: 'bg-amber-500/20', textColor: 'text-amber-700', icon: Clock },
-  in_progress: { label: 'In Progress', color: 'bg-blue-500/20', textColor: 'text-blue-700', icon: Zap },
-  completed: { label: 'Done', color: 'bg-green-500/20', textColor: 'text-green-700', icon: CheckCircle2 },
+  pending: { label: 'To Do', color: 'bg-secondary500/20', textColor: 'text-secondary700', icon: Clock },
+  in_progress: { label: 'In Progress', color: 'bg-primary/20', textColor: 'text-primary', icon: Zap },
+  completed: { label: 'Done', color: 'bg-chart-2/20', textColor: 'text-green-700', icon: CheckCircle2 },
 };
 
 export default function MobileHousekeepingView({
@@ -51,7 +51,7 @@ export default function MobileHousekeepingView({
           onClick={() => setCurrentFilter('pending')}
           className={`p-3 rounded-lg transition ${
             currentFilter === 'pending'
-              ? 'bg-amber-500/20 border-2 border-amber-500'
+              ? 'bg-secondary500/20 border-2 border-secondary500'
               : 'bg-background border border-border'
           }`}
         >
@@ -62,7 +62,7 @@ export default function MobileHousekeepingView({
           onClick={() => setCurrentFilter('in_progress')}
           className={`p-3 rounded-lg transition ${
             currentFilter === 'in_progress'
-              ? 'bg-blue-500/20 border-2 border-blue-500'
+              ? 'bg-primary/20 border-2 border-primary'
               : 'bg-background border border-border'
           }`}
         >
@@ -73,7 +73,7 @@ export default function MobileHousekeepingView({
           onClick={() => setCurrentFilter('completed')}
           className={`p-3 rounded-lg transition ${
             currentFilter === 'completed'
-              ? 'bg-green-500/20 border-2 border-green-500'
+              ? 'bg-chart-2/20 border-2 border-chart-2'
               : 'bg-background border border-border'
           }`}
         >
@@ -100,9 +100,9 @@ export default function MobileHousekeepingView({
               key={task.id}
               className={`p-4 rounded-lg border-2 transition ${
                 task.priority === 'urgent'
-                  ? 'bg-red-500/10 border-red-500 shadow-lg shadow-red-500/20'
+                  ? 'bg-destructive/10 border-destructive shadow-lg shadow-red-500/20'
                   : task.priority === 'high'
-                  ? 'bg-orange-500/10 border-orange-500'
+                  ? 'bg-destructive500/10 border-destructive500'
                   : 'bg-card border-border'
               }`}
             >
@@ -113,7 +113,7 @@ export default function MobileHousekeepingView({
                   <p className="text-xs text-foreground/60 mt-0.5">Room</p>
                 </div>
                 {task.priority === 'urgent' && (
-                  <span className="px-2 py-1 bg-red-600 text-white text-xs font-bold rounded">
+                  <span className="px-2 py-1 bg-destructive text-white text-xs font-bold rounded">
                     URGENT
                   </span>
                 )}
@@ -145,8 +145,8 @@ export default function MobileHousekeepingView({
                   onClick={() => onUpdateTask?.(task.id, 'pending')}
                   className={`py-2 px-2 rounded text-xs font-medium transition ${
                     task.status === 'pending'
-                      ? 'bg-amber-600 text-white'
-                      : 'bg-amber-500/20 text-amber-700'
+                      ? 'bg-secondary600 text-white'
+                      : 'bg-secondary500/20 text-secondary700'
                   }`}
                 >
                   Pending
@@ -155,8 +155,8 @@ export default function MobileHousekeepingView({
                   onClick={() => onUpdateTask?.(task.id, 'in_progress')}
                   className={`py-2 px-2 rounded text-xs font-medium transition ${
                     task.status === 'in_progress'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-blue-500/20 text-blue-700'
+                      ? 'bg-primary text-white'
+                      : 'bg-primary/20 text-primary'
                   }`}
                 >
                   Working
@@ -166,7 +166,7 @@ export default function MobileHousekeepingView({
                   className={`py-2 px-2 rounded text-xs font-medium transition ${
                     task.status === 'completed'
                       ? 'bg-green-600 text-white'
-                      : 'bg-green-500/20 text-green-700'
+                      : 'bg-chart-2/20 text-green-700'
                   }`}
                 >
                   Done

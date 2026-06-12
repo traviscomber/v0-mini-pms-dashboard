@@ -23,11 +23,11 @@ export default function BookingCalendar({ rooms, reservations }: BookingCalendar
   };
 
   const channelColors: Record<string, string> = {
-    'Direct': 'bg-blue-500',
-    'Airbnb': 'bg-red-500',
-    'Booking.com': 'bg-yellow-500',
-    'Website': 'bg-green-500',
-    'Phone': 'bg-purple-500',
+    'Direct': 'bg-primary',
+    'Airbnb': 'bg-destructive',
+    'Booking.com': 'bg-secondary500',
+    'Website': 'bg-chart-2',
+    'Phone': 'bg-accent500',
   };
 
   return (

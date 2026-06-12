@@ -56,13 +56,13 @@ export default function HorizontalTimeline({
     
     switch (reservation.paymentStatus) {
       case 'paid':
-        return 'bg-green-500';
+        return 'bg-chart-2';
       case 'partially_paid':
-        return 'bg-yellow-500';
+        return 'bg-secondary500';
       case 'pending':
-        return 'bg-blue-500';
+        return 'bg-primary';
       case 'overdue':
-        return 'bg-red-600';
+        return 'bg-destructive';
       default:
         return 'bg-blue-400';
     }
@@ -211,19 +211,19 @@ export default function HorizontalTimeline({
       {/* Legend */}
       <div className="flex gap-6 px-6 py-3 bg-background border border-border rounded-lg text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
+          <div className="w-4 h-4 bg-chart-2 rounded"></div>
           <span className="text-foreground/60">Paid</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-yellow-500 rounded"></div>
+          <div className="w-4 h-4 bg-secondary500 rounded"></div>
           <span className="text-foreground/60">Partial</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
+          <div className="w-4 h-4 bg-primary rounded"></div>
           <span className="text-foreground/60">Pending</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-600 rounded"></div>
+          <div className="w-4 h-4 bg-destructive rounded"></div>
           <span className="text-foreground/60">Overdue</span>
         </div>
       </div>

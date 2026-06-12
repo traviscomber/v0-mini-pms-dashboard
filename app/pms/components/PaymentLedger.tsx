@@ -10,11 +10,11 @@ interface PaymentLedgerProps {
 }
 
 const typeColors = {
-  booking_deposit: 'bg-blue-500/10 text-blue-700',
-  payment: 'bg-green-500/10 text-green-700',
-  refund: 'bg-orange-500/10 text-orange-700',
-  adjustment: 'bg-purple-500/10 text-purple-700',
-  cancellation_fee: 'bg-red-500/10 text-red-700',
+  booking_deposit: 'bg-primary/10 text-primary',
+  payment: 'bg-chart-2/10 text-green-700',
+  refund: 'bg-destructive500/10 text-destructive700',
+  adjustment: 'bg-accent500/10 text-accent700',
+  cancellation_fee: 'bg-destructive/10 text-red-700',
 };
 
 export default function PaymentLedger({
@@ -77,13 +77,13 @@ export default function PaymentLedger({
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">Total Refunds</p>
-          <p className="text-2xl font-bold text-orange-600 mt-1">
+          <p className="text-2xl font-bold text-destructive600 mt-1">
             -${totalRefunds.toFixed(2)}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">Adjustments</p>
-          <p className="text-2xl font-bold text-purple-600 mt-1">
+          <p className="text-2xl font-bold text-accent600 mt-1">
             ${totalAdjustments.toFixed(2)}
           </p>
         </div>
@@ -97,14 +97,14 @@ export default function PaymentLedger({
 
       {/* Outstanding Balance Alert */}
       {outstandingBalance > 0 && (
-        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+        <div className="bg-destructive/10 border border-destructive/50 rounded-lg p-4">
           <div className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-red-600" />
+            <DollarSign className="w-5 h-5 text-destructive" />
             <div>
               <p className="font-semibold text-red-700">
                 Outstanding Balance: ${outstandingBalance.toFixed(2)}
               </p>
-              <p className="text-sm text-red-600 mt-1">
+              <p className="text-sm text-destructive mt-1">
                 {reservations.filter((r) => r.balanceDue > 0 && r.reservationStatus !== 'cancelled').length} reservations with pending payments
               </p>
             </div>
@@ -175,7 +175,7 @@ export default function PaymentLedger({
                     <span
                       className={
                         entry.type === 'refund'
-                          ? 'text-orange-600'
+                          ? 'text-destructive600'
                           : 'text-green-600'
                       }
                     >

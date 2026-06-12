@@ -34,7 +34,7 @@ const PaymentManager = memo(({ reservations, onPaymentStatusChange }: PaymentMan
     switch(status) {
       case 'Paid': return 'bg-primary/10 text-primary';
       case 'Pending': return 'bg-accent/10 text-accent';
-      case 'Partial': return 'bg-yellow-500/10 text-yellow-600';
+      case 'Partial': return 'bg-secondary500/10 text-yellow-600';
       default: return 'bg-border text-foreground/60';
     }
   };

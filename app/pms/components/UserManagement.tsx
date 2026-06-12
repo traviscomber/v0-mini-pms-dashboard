@@ -38,7 +38,7 @@ export default function UserManagement({
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">Inactive</p>
-          <p className="text-2xl font-bold text-orange-600 mt-1">{users.length - activeCount}</p>
+          <p className="text-2xl font-bold text-destructive600 mt-1">{users.length - activeCount}</p>
         </div>
       </div>
 
@@ -115,7 +115,7 @@ export default function UserManagement({
                     </button>
                     <button
                       onClick={() => onDeleteUser?.(user.id)}
-                      className="px-2 py-1 text-xs text-red-600 hover:bg-red-500/10 rounded transition"
+                      className="px-2 py-1 text-xs text-destructive hover:bg-destructive/10 rounded transition"
                     >
                       <Trash2 className="w-3 h-3 inline" />
                     </button>

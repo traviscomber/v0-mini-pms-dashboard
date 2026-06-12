@@ -50,7 +50,7 @@ export default function CheckInsModal({
         <div className="p-6 space-y-4">
           {todayCheckIns.length === 0 ? (
             <div className="text-center py-8">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+              <CheckCircle className="w-12 h-12 text-chart-2 mx-auto mb-3" />
               <p className="text-foreground/60">{t('schedule.noCheckoutsToday') || 'No check-ins today'}</p>
             </div>
           ) : (

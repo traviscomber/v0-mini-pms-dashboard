@@ -17,7 +17,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
       {/* Alertas de Occupancy */}
       <section className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center gap-2 mb-4">
-          <AlertCircle className="text-orange-500" size={24} />
+          <AlertCircle className="text-destructive500" size={24} />
           <h2 className="text-xl font-bold text-foreground">Alertas de Occupancy</h2>
         </div>
 
@@ -28,10 +28,10 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                 key={alert.id}
                 className={`p-4 rounded-lg border-l-4 ${
                   alert.level === 3
-                    ? 'bg-red-500/10 border-red-500 text-red-700'
+                    ? 'bg-destructive/10 border-destructive text-red-700'
                     : alert.level === 2
-                    ? 'bg-yellow-500/10 border-yellow-500 text-yellow-700'
-                    : 'bg-green-500/10 border-green-500 text-green-700'
+                    ? 'bg-secondary500/10 border-yellow-500 text-yellow-700'
+                    : 'bg-chart-2/10 border-chart-2 text-green-700'
                 }`}
               >
                 <p className="font-semibold">{alert.title}</p>
@@ -64,12 +64,12 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
         </div>
 
         {/* Trends */}
-        <div className="mt-4 p-3 bg-blue-500/10 rounded border border-blue-500">
-          <p className="text-sm font-semibold text-blue-700">📈 Tendencia</p>
+        <div className="mt-4 p-3 bg-primary/10 rounded border border-primary">
+          <p className="text-sm font-semibold text-primary">📈 Tendencia</p>
           <p className="text-sm">
             Este mes: <strong>{trends.thisMonth}</strong> reservas | Mes pasado: <strong>{trends.lastMonth}</strong>{' '}
             {trends.trend === 'up' && <span className="text-green-600">↑ {trends.changePercent}%</span>}
-            {trends.trend === 'down' && <span className="text-red-600">↓ {trends.changePercent}%</span>}
+            {trends.trend === 'down' && <span className="text-destructive">↓ {trends.changePercent}%</span>}
             {trends.trend === 'stable' && <span className="text-foreground/70">= Estable</span>}
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
       {/* Precios Dinámicos */}
       <section className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center gap-2 mb-4">
-          <DollarSign className="text-green-500" size={24} />
+          <DollarSign className="text-chart-2" size={24} />
           <h2 className="text-xl font-bold text-foreground">Precios Dinámicos</h2>
         </div>
 
@@ -90,9 +90,9 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                 <span
                   className={`text-xs font-bold px-2 py-1 rounded ${
                     price.recommended === 'Increase'
-                      ? 'bg-green-500/20 text-green-700'
+                      ? 'bg-chart-2/20 text-green-700'
                       : price.recommended === 'Decrease'
-                      ? 'bg-red-500/20 text-red-700'
+                      ? 'bg-destructive/20 text-red-700'
                       : 'bg-card/500/20 text-foreground/80'
                   }`}
                 >
@@ -105,7 +105,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                   Base: <span className="text-foreground/60">${price.basePrice}</span> →{' '}
                   <span className="font-bold text-foreground">${price.dynamicPrice}</span>
                 </p>
-                <p className={`${price.priceChange > 0 ? 'text-green-600' : price.priceChange < 0 ? 'text-red-600' : ''}`}>
+                <p className={`${price.priceChange > 0 ? 'text-green-600' : price.priceChange < 0 ? 'text-destructive' : ''}`}>
                   {price.priceChange > 0 ? '+' : ''}{price.priceChange} ({price.percentageChange}%)
                 </p>
                 <p className="text-foreground/60 text-xs">{price.reason}</p>
@@ -121,9 +121,9 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
             {pricingForecast.map((day: any) => (
               <div key={day.date} className={`p-2 rounded text-center text-xs border ${
                 day.type === 'weekend'
-                  ? 'bg-purple-500/10 border-purple-500'
+                  ? 'bg-accent500/10 border-purple-500'
                   : day.type === 'season'
-                  ? 'bg-orange-500/10 border-orange-500'
+                  ? 'bg-destructive500/10 border-destructive500'
                   : 'bg-card/500/10 border-border'
               }`}>
                 <p className="font-semibold">{day.dayName}</p>
@@ -138,9 +138,9 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
       {/* Notificaciones a Guests */}
       <section className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Mail className="text-blue-500" size={24} />
+          <Mail className="text-primary" size={24} />
           <h2 className="text-xl font-bold text-foreground">Notificaciones a Guests</h2>
-          <span className="ml-auto bg-red-500/20 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
+          <span className="ml-auto bg-destructive/20 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
             {totalPending} pendientes
           </span>
         </div>
@@ -154,8 +154,8 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                   notif.sent
                     ? 'bg-card/500/5 border-border'
                     : notif.priority >= 2
-                    ? 'bg-orange-500/10 border-orange-500'
-                    : 'bg-blue-500/10 border-blue-500'
+                    ? 'bg-destructive500/10 border-destructive500'
+                    : 'bg-primary/10 border-primary'
                 }`}
               >
                 <div className="flex justify-between items-start">
@@ -168,7 +168,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                   <div className="text-2xl ml-2">{notif.type === 'confirmation' ? '✅' : notif.type === 'reminder_48h' ? '📢' : notif.type === 'checkin_instructions' ? '🔑' : notif.type === 'review_request' ? '⭐' : '💳'}</div>
                 </div>
                 {!notif.sent && (
-                  <button className="mt-3 text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 font-semibold">
+                  <button className="mt-3 text-xs bg-primary text-white px-3 py-1 rounded hover:bg-blue-700 font-semibold">
                     Enviar Ahora
                   </button>
                 )}

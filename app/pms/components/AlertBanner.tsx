@@ -39,15 +39,15 @@ export default function AlertBanner({ alerts }: AlertBannerProps) {
     <div className="space-y-2">
       {sortedAlerts.map(alert => {
         const bgColor = {
-          critical: 'bg-red-500/10 border-red-500/20',
-          warning: 'bg-yellow-500/10 border-yellow-500/20',
-          info: 'bg-blue-500/10 border-blue-500/20',
+          critical: 'bg-destructive/10 border-destructive/20',
+          warning: 'bg-secondary500/10 border-yellow-500/20',
+          info: 'bg-primary/10 border-primary/20',
         };
         
         const iconColor = {
-          critical: 'text-red-600',
+          critical: 'text-destructive',
           warning: 'text-yellow-600',
-          info: 'text-blue-600',
+          info: 'text-primary',
         };
         
         const Icon = {

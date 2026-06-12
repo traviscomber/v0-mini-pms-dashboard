@@ -174,7 +174,7 @@ export default function HospitalityAutomationExample({
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-sm text-foreground/60">Alertas Activas</p>
-          <p className="text-2xl font-bold text-orange-600 mt-2">
+          <p className="text-2xl font-bold text-destructive600 mt-2">
             {automation.alerts.filter((a) => !a.isDismissed).length}
           </p>
         </div>
@@ -218,9 +218,9 @@ export default function HospitalityAutomationExample({
       )}
 
       {/* Instrucciones */}
-      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-        <h3 className="font-semibold text-blue-700 mb-2">📖 Cómo Usar:</h3>
-        <ul className="text-sm text-blue-700 space-y-1">
+      <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+        <h3 className="font-semibold text-primary mb-2">📖 Cómo Usar:</h3>
+        <ul className="text-sm text-primary space-y-1">
           <li>✓ El sistema genera automáticamente tareas cuando se crea una reserva</li>
           <li>✓ Las alertas se crean automáticamente 24h antes de check-in</li>
           <li>✓ Las alertas de checkout se crean 2h antes</li>

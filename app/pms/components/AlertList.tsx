@@ -23,9 +23,9 @@ export default function AlertList({ alerts, onDismiss }: AlertListProps) {
 
   const getStyles = (level: string) => {
     const styles: Record<string, string> = {
-      info: 'bg-blue-500/10 border-blue-500/30 text-blue-300',
-      warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300',
-      critical: 'bg-red-500/10 border-red-500/30 text-red-300',
+      info: 'bg-primary/10 border-primary/30 text-primary/70',
+      warning: 'bg-secondary500/10 border-yellow-500/30 text-yellow-300',
+      critical: 'bg-destructive/10 border-destructive/30 text-red-300',
     };
     return styles[level] || 'bg-card/500/10 border-border/30 text-foreground/50';
   };

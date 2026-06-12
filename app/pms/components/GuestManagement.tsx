@@ -39,7 +39,7 @@ const GuestManagement = memo(({ reservations, rooms, onStatusChange }: GuestMana
     switch(status) {
       case 'pending': return 'bg-accent/20 text-accent';
       case 'confirmed': return 'bg-primary/20 text-primary';
-      case 'completed': return 'bg-green-500/20 text-green-400';
+      case 'completed': return 'bg-chart-2/20 text-green-400';
       default: return 'bg-foreground/20 text-foreground';
     }
   };
@@ -48,8 +48,8 @@ const GuestManagement = memo(({ reservations, rooms, onStatusChange }: GuestMana
     switch(status) {
       case 'Paid': return 'bg-primary/10 text-primary';
       case 'Pending': return 'bg-accent/10 text-accent';
-      case 'Partial': return 'bg-yellow-500/10 text-yellow-600';
-      default: return 'bg-red-500/10 text-red-600';
+      case 'Partial': return 'bg-secondary500/10 text-yellow-600';
+      default: return 'bg-destructive/10 text-destructive';
     }
   };
 

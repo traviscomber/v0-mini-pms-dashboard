@@ -43,45 +43,45 @@ export default function AnalyticsSection({ reservations, rooms }: AnalyticsProps
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-chart-2/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Total Revenue</p>
-              <p className="text-3xl font-bold text-green-500">${stats.totalRevenue.toFixed(0)}</p>
+              <p className="text-3xl font-bold text-chart-2">${stats.totalRevenue.toFixed(0)}</p>
             </div>
-            <DollarSign size={32} className="text-green-500/40" />
+            <DollarSign size={32} className="text-chart-2/40" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-primary/10 to-blue-600/10 border border-primary/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Avg Occupancy</p>
-              <p className="text-3xl font-bold text-blue-500">{stats.avgOccupancy.toFixed(0)}%</p>
+              <p className="text-3xl font-bold text-primary">{stats.avgOccupancy.toFixed(0)}%</p>
             </div>
-            <Users size={32} className="text-blue-500/40" />
+            <Users size={32} className="text-primary/40" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-accent/10 to-purple-600/10 border border-purple-500/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Avg Booking Value</p>
-              <p className="text-3xl font-bold text-purple-500">${stats.avgBookingValue.toFixed(0)}</p>
+              <p className="text-3xl font-bold text-accent500">${stats.avgBookingValue.toFixed(0)}</p>
             </div>
-            <TrendingUp size={32} className="text-purple-500/40" />
+            <TrendingUp size={32} className="text-accent500/40" />
           </div>
         </div>
 
-        <div className={`bg-gradient-to-br ${stats.cancellationRate > 10 ? 'from-red-500/10 to-red-600/10 border-red-500/20' : 'from-orange-500/10 to-orange-600/10 border-orange-500/20'} border rounded-lg p-6`}>
+        <div className={`bg-gradient-to-br ${stats.cancellationRate > 10 ? 'from-red-500/10 to-red-600/10 border-destructive/20' : 'from-orange-500/10 to-orange-600/10 border-destructive500/20'} border rounded-lg p-6`}>
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Cancellation Rate</p>
-              <p className={`text-3xl font-bold ${stats.cancellationRate > 10 ? 'text-red-500' : 'text-orange-500'}`}>
+              <p className={`text-3xl font-bold ${stats.cancellationRate > 10 ? 'text-destructive' : 'text-destructive500'}`}>
                 {stats.cancellationRate.toFixed(1)}%
               </p>
             </div>
-            <AlertCircle size={32} className={stats.cancellationRate > 10 ? 'text-red-500/40' : 'text-orange-500/40'} />
+            <AlertCircle size={32} className={stats.cancellationRate > 10 ? 'text-destructive/40' : 'text-destructive500/40'} />
           </div>
         </div>
       </div>

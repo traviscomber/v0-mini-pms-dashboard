@@ -100,8 +100,8 @@ export default function ReservationDrawer({
               <h3 className="font-semibold text-foreground">Payment</h3>
               <div className="space-y-2 text-sm">
                 <p><span className="text-foreground/60">Total:</span> <span className="text-foreground font-semibold">${reservation.totalAmount.toFixed(2)}</span></p>
-                <p><span className="text-foreground/60">Paid:</span> <span className="text-green-500 font-semibold">${reservation.paidAmount.toFixed(2)}</span></p>
-                <p><span className="text-foreground/60">Due:</span> <span className={reservation.balanceDue > 0 ? 'text-red-500' : 'text-foreground'} > ${reservation.balanceDue.toFixed(2)}</span></p>
+                <p><span className="text-foreground/60">Paid:</span> <span className="text-chart-2 font-semibold">${reservation.paidAmount.toFixed(2)}</span></p>
+                <p><span className="text-foreground/60">Due:</span> <span className={reservation.balanceDue > 0 ? 'text-destructive' : 'text-foreground'} > ${reservation.balanceDue.toFixed(2)}</span></p>
               </div>
               <div className="pt-2 grid grid-cols-3 gap-2">
                 <button
@@ -115,7 +115,7 @@ export default function ReservationDrawer({
                       });
                     }
                   }}
-                  className="px-3 py-2 bg-green-500/20 text-green-500 text-xs rounded hover:bg-green-500/30 transition"
+                  className="px-3 py-2 bg-chart-2/20 text-chart-2 text-xs rounded hover:bg-chart-2/30 transition"
                 >
                   Mark Paid
                 </button>
@@ -128,7 +128,7 @@ export default function ReservationDrawer({
                       });
                     }
                   }}
-                  className="px-3 py-2 bg-yellow-500/20 text-yellow-600 text-xs rounded hover:bg-yellow-500/30 transition"
+                  className="px-3 py-2 bg-secondary500/20 text-yellow-600 text-xs rounded hover:bg-secondary500/30 transition"
                 >
                   Partial
                 </button>
@@ -141,7 +141,7 @@ export default function ReservationDrawer({
                       });
                     }
                   }}
-                  className="px-3 py-2 bg-red-500/20 text-red-500 text-xs rounded hover:bg-red-500/30 transition"
+                  className="px-3 py-2 bg-destructive/20 text-destructive text-xs rounded hover:bg-destructive/30 transition"
                 >
                   Overdue
                 </button>
@@ -163,7 +163,7 @@ export default function ReservationDrawer({
                   }}
                   className={`flex-1 px-3 py-2 text-xs rounded transition ${
                     editedReservation?.cleaningStatus === 'clean'
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-chart-2 text-white'
                       : 'bg-background border border-border text-foreground hover:bg-background/80'
                   }`}
                 >
@@ -180,7 +180,7 @@ export default function ReservationDrawer({
                   }}
                   className={`flex-1 px-3 py-2 text-xs rounded transition ${
                     editedReservation?.cleaningStatus === 'dirty'
-                      ? 'bg-red-500 text-white'
+                      ? 'bg-destructive text-white'
                       : 'bg-background border border-border text-foreground hover:bg-background/80'
                   }`}
                 >
@@ -197,7 +197,7 @@ export default function ReservationDrawer({
                   }}
                   className={`flex-1 px-3 py-2 text-xs rounded transition ${
                     editedReservation?.cleaningStatus === 'in_progress'
-                      ? 'bg-yellow-500 text-white'
+                      ? 'bg-secondary500 text-white'
                       : 'bg-background border border-border text-foreground hover:bg-background/80'
                   }`}
                 >
@@ -238,7 +238,7 @@ export default function ReservationDrawer({
                   }}
                   className={`flex-1 px-3 py-2 text-xs rounded transition ${
                     editedReservation?.reservationStatus === 'cancelled'
-                      ? 'bg-red-500 text-white'
+                      ? 'bg-destructive text-white'
                       : 'bg-background border border-border text-foreground hover:bg-background/80'
                   }`}
                 >
@@ -251,7 +251,7 @@ export default function ReservationDrawer({
             {reservation.specialRequests && (
               <div className="space-y-2 p-3 bg-background rounded-lg">
                 <h3 className="font-semibold text-foreground text-sm flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-yellow-500" />
+                  <AlertCircle className="w-4 h-4 text-secondary" />
                   Special Requests
                 </h3>
                 <p className="text-sm text-foreground/70">{reservation.specialRequests}</p>

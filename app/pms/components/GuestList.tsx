@@ -56,13 +56,13 @@ export default function GuestList({ guests, onEdit, onDelete, onAdd }: GuestList
                 <td className="py-3 px-4 flex justify-end gap-2">
                   <button
                     onClick={() => onEdit(guest)}
-                    className="p-2 hover:bg-blue-500/20 rounded transition"
+                    className="p-2 hover:bg-primary/20 rounded transition"
                   >
-                    <Edit2 className="w-4 h-4 text-blue-300" />
+                    <Edit2 className="w-4 h-4 text-primary/70" />
                   </button>
                   <button
                     onClick={() => onDelete(guest.id)}
-                    className="p-2 hover:bg-red-500/20 rounded transition"
+                    className="p-2 hover:bg-destructive/20 rounded transition"
                   >
                     <Trash2 className="w-4 h-4 text-red-300" />
                   </button>

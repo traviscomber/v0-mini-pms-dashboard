@@ -24,10 +24,10 @@ export default function TaskList({
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      pending: 'bg-yellow-500/20 text-yellow-300',
-      in_progress: 'bg-blue-500/20 text-blue-300',
-      completed: 'bg-green-500/20 text-green-300',
-      cancelled: 'bg-red-500/20 text-red-300',
+      pending: 'bg-secondary500/20 text-yellow-300',
+      in_progress: 'bg-primary/20 text-primary/70',
+      completed: 'bg-chart-2/20 text-green-300',
+      cancelled: 'bg-destructive/20 text-red-300',
     };
     return colors[status] || 'bg-card/500/20 text-foreground/50';
   };
@@ -35,8 +35,8 @@ export default function TaskList({
   const getPriorityColor = (priority: string) => {
     const colors: Record<string, string> = {
       low: 'text-green-300',
-      normal: 'text-blue-300',
-      high: 'text-orange-300',
+      normal: 'text-primary/70',
+      high: 'text-destructive300',
       urgent: 'text-red-300',
     };
     return colors[priority] || 'text-foreground/50';
@@ -61,7 +61,7 @@ export default function TaskList({
       </div>
 
       {urgentTasks.length > 0 && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+        <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
           <div className="flex items-center gap-2 text-red-300 mb-2">
             <AlertCircle className="w-5 h-5" />
             <span className="font-semibold">{urgentTasks.length} Urgent Task(s)</span>
@@ -117,7 +117,7 @@ export default function TaskList({
               {task.status !== 'completed' && (
                 <button
                   onClick={() => onStatusChange?.(task.id, 'completed')}
-                  className="p-2 hover:bg-green-500/20 rounded transition"
+                  className="p-2 hover:bg-chart-2/20 rounded transition"
                   title="Mark complete"
                 >
                   <CheckCircle2 className="w-4 h-4 text-green-300" />
@@ -125,13 +125,13 @@ export default function TaskList({
               )}
               <button
                 onClick={() => onEdit(task)}
-                className="p-2 hover:bg-blue-500/20 rounded transition"
+                className="p-2 hover:bg-primary/20 rounded transition"
               >
-                <Edit2 className="w-4 h-4 text-blue-300" />
+                <Edit2 className="w-4 h-4 text-primary/70" />
               </button>
               <button
                 onClick={() => onDelete(task.id)}
-                className="p-2 hover:bg-red-500/20 rounded transition"
+                className="p-2 hover:bg-destructive/20 rounded transition"
               >
                 <Trash2 className="w-4 h-4 text-red-300" />
               </button>

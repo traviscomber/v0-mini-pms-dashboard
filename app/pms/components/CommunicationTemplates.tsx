@@ -150,10 +150,10 @@ export default function CommunicationTemplates() {
   };
 
   const categoryColors = {
-    'pre-arrival': 'bg-blue-500/10 text-blue-600',
-    'check-in': 'bg-green-500/10 text-green-600',
-    'post-stay': 'bg-purple-500/10 text-purple-600',
-    'issue': 'bg-red-500/10 text-red-600',
+    'pre-arrival': 'bg-primary/10 text-primary',
+    'check-in': 'bg-chart-2/10 text-green-600',
+    'post-stay': 'bg-accent500/10 text-accent600',
+    'issue': 'bg-destructive/10 text-destructive',
     'custom': 'bg-card/500/10 text-foreground/70',
   };
 
@@ -313,7 +313,7 @@ export default function CommunicationTemplates() {
                   }}
                   className="p-2 hover:bg-background rounded transition"
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
+                  <Trash2 className="w-4 h-4 text-destructive" />
                 </button>
               </div>
             </div>

@@ -42,9 +42,9 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
     });
 
     if (booking) {
-      return { status: 'booked', label: 'Booked', color: 'bg-red-500/20 border-red-500 text-red-700' };
+      return { status: 'booked', label: 'Booked', color: 'bg-destructive/20 border-destructive text-red-700' };
     }
-    return { status: 'available', label: 'Available', color: 'bg-green-500/20 border-green-500 text-green-700' };
+    return { status: 'available', label: 'Available', color: 'bg-chart-2/20 border-chart-2 text-green-700' };
   };
 
   const goToPrevious = () => {
@@ -138,11 +138,11 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
         {/* Legend */}
         <div className="flex gap-6 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500/30 border border-green-500 rounded"></div>
+            <div className="w-4 h-4 bg-chart-2/30 border border-chart-2 rounded"></div>
             <span className="text-foreground/70">Available</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500/30 border border-red-500 rounded"></div>
+            <div className="w-4 h-4 bg-destructive/30 border border-destructive rounded"></div>
             <span className="text-foreground/70">Booked</span>
           </div>
           <div className="flex items-center gap-2">
