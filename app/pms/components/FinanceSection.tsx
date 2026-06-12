@@ -29,33 +29,33 @@ export default function FinanceSection({ reservations }: FinanceProps) {
     <div className="space-y-6">
       {/* Financial Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-chart-2/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Total Earned</p>
-              <p className="text-3xl font-bold text-green-500">${financials.totalEarned.toFixed(0)}</p>
+              <p className="text-3xl font-bold text-chart-2">${financials.totalEarned.toFixed(0)}</p>
             </div>
-            <DollarSign size={32} className="text-green-500/40" />
+            <DollarSign size={32} className="text-chart-2/40" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-primary/10 to-blue-600/10 border border-primary/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Pending Payments</p>
-              <p className="text-3xl font-bold text-blue-500">${financials.pendingPayments.toFixed(0)}</p>
+              <p className="text-3xl font-bold text-primary">${financials.pendingPayments.toFixed(0)}</p>
             </div>
-            <CreditCard size={32} className="text-blue-500/40" />
+            <CreditCard size={32} className="text-primary/40" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-lg p-6">
+        <div className="bg-gradient-to-br from-accent/10 to-purple-600/10 border border-purple-500/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Partial Payments</p>
-              <p className="text-3xl font-bold text-purple-500">${financials.partialPayments.toFixed(0)}</p>
+              <p className="text-3xl font-bold text-accent500">${financials.partialPayments.toFixed(0)}</p>
             </div>
-            <TrendingUp size={32} className="text-purple-500/40" />
+            <TrendingUp size={32} className="text-accent500/40" />
           </div>
         </div>
 
@@ -76,9 +76,9 @@ export default function FinanceSection({ reservations }: FinanceProps) {
           <h3 className="font-semibold text-foreground mb-4">Payment Status</h3>
           <div className="space-y-4">
             {[
-              { status: 'Paid', amount: financials.totalEarned, color: 'text-green-500' },
-              { status: 'Pending', amount: financials.pendingPayments, color: 'text-yellow-500' },
-              { status: 'Partial', amount: financials.partialPayments, color: 'text-orange-500' },
+              { status: 'Paid', amount: financials.totalEarned, color: 'text-chart-2' },
+              { status: 'Pending', amount: financials.pendingPayments, color: 'text-secondary' },
+              { status: 'Partial', amount: financials.partialPayments, color: 'text-destructive500' },
             ].map(({ status, amount, color }) => (
               <div key={status} className="flex justify-between items-center">
                 <span className="text-foreground/60">{status}</span>
@@ -107,9 +107,9 @@ export default function FinanceSection({ reservations }: FinanceProps) {
                 <div className="text-right">
                   <p className="font-bold text-foreground">${reservation.totalPrice}</p>
                   <p className={`text-xs ${
-                    reservation.paymentStatus === 'Paid' ? 'text-green-500' :
-                    reservation.paymentStatus === 'Pending' ? 'text-yellow-500' :
-                    'text-orange-500'
+                    reservation.paymentStatus === 'Paid' ? 'text-chart-2' :
+                    reservation.paymentStatus === 'Pending' ? 'text-secondary' :
+                    'text-destructive500'
                   }`}>{reservation.paymentStatus}</p>
                 </div>
               </div>
@@ -127,9 +127,9 @@ export default function FinanceSection({ reservations }: FinanceProps) {
               <div>
                 <p className="font-medium text-foreground">{payout.date}</p>
                 <p className={`text-xs ${
-                  payout.status === 'Paid' ? 'text-green-500' :
-                  payout.status === 'Pending' ? 'text-yellow-500' :
-                  'text-blue-500'
+                  payout.status === 'Paid' ? 'text-chart-2' :
+                  payout.status === 'Pending' ? 'text-secondary' :
+                  'text-primary'
                 }`}>{payout.status}</p>
               </div>
               <p className="font-bold text-foreground">${payout.amount}</p>

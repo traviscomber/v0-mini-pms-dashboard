@@ -39,28 +39,28 @@ export default function Reports({ reservations }: ReportsProps) {
         {/* Total Revenue */}
         <div className="bg-card p-6 rounded-lg border border-border">
           <h3 className="font-semibold text-foreground mb-2">{t('payment.totalRevenue')}</h3>
-          <p className="text-4xl font-bold text-green-500">${totalRevenue.toFixed(0)}</p>
+          <p className="text-4xl font-bold text-chart-2">${totalRevenue.toFixed(0)}</p>
           <p className="text-sm text-foreground/60 mt-2">{reservations.length} {t('dashboard.reservations')}</p>
         </div>
 
         {/* Pending Payments */}
         <div className="bg-card p-6 rounded-lg border border-border">
           <h3 className="font-semibold text-foreground mb-2">{t('payment.pendingPayments')}</h3>
-          <p className="text-4xl font-bold text-red-500">${pendingPayments.toFixed(0)}</p>
+          <p className="text-4xl font-bold text-destructive">${pendingPayments.toFixed(0)}</p>
           <p className="text-sm text-foreground/60 mt-2">{reservations.filter(r => getPaymentStatus(r) === 'pending').length} {t('dashboard.unpaidBookings')}</p>
         </div>
 
         {/* Total Nights */}
         <div className="bg-card p-6 rounded-lg border border-border">
           <h3 className="font-semibold text-foreground mb-2">{t('reports.totalNights')}</h3>
-          <p className="text-4xl font-bold text-blue-500">{totalNights || 0}</p>
+          <p className="text-4xl font-bold text-primary">{totalNights || 0}</p>
           <p className="text-sm text-foreground/60 mt-2">{totalNights > 0 ? (totalNights / 30).toFixed(1) : 0} {t('reports.monthsOccupancy')}</p>
         </div>
 
         {/* Average Booking Value */}
         <div className="bg-card p-6 rounded-lg border border-border">
           <h3 className="font-semibold text-foreground mb-2">{t('reports.avgBookingValue')}</h3>
-          <p className="text-4xl font-bold text-purple-500">${reservations.length > 0 ? (totalRevenue / reservations.length).toFixed(0) : 0}</p>
+          <p className="text-4xl font-bold text-accent500">${reservations.length > 0 ? (totalRevenue / reservations.length).toFixed(0) : 0}</p>
           <p className="text-sm text-foreground/60 mt-2">{t('reports.perReservation')}</p>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function Reports({ reservations }: ReportsProps) {
                 </div>
                 <div className="w-full bg-foreground/10 rounded-full h-2">
                   <div
-                    className="bg-blue-500 h-2 rounded-full"
+                    className="bg-primary h-2 rounded-full"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -95,9 +95,9 @@ export default function Reports({ reservations }: ReportsProps) {
           const count = reservations.filter(r => getPaymentStatus(r) === status).length;
           const revenue = reservations.filter(r => getPaymentStatus(r) === status).reduce((sum, r) => sum + getTotal(r), 0);
           const colors = { 
-            paid: 'bg-green-500/10 text-green-400 border-green-500/30', 
-            partially_paid: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30', 
-            pending: 'bg-red-500/10 text-red-400 border-red-500/30' 
+            paid: 'bg-chart-2/10 text-green-400 border-chart-2/30', 
+            partially_paid: 'bg-secondary500/10 text-yellow-400 border-yellow-500/30', 
+            pending: 'bg-destructive/10 text-red-400 border-destructive/30' 
           };
           const statusLabel = status === 'paid' ? t('reports.paid') : status === 'partially_paid' ? t('reports.partial') : t('reports.pending');
           return (

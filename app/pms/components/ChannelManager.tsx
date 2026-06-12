@@ -14,11 +14,11 @@ interface Channel {
 }
 
 const CHANNELS: Channel[] = [
-  { id: 'airbnb', name: 'Airbnb', icon: 'A', connected: true, color: 'bg-red-500', listings: 3, reservations: 12 },
-  { id: 'booking', name: 'Booking.com', icon: 'B', connected: true, color: 'bg-blue-600', listings: 3, reservations: 8 },
-  { id: 'expedia', name: 'Expedia', icon: 'E', connected: false, color: 'bg-yellow-500', listings: 0, reservations: 0 },
+  { id: 'airbnb', name: 'Airbnb', icon: 'A', connected: true, color: 'bg-destructive', listings: 3, reservations: 12 },
+  { id: 'booking', name: 'Booking.com', icon: 'B', connected: true, color: 'bg-primary', listings: 3, reservations: 8 },
+  { id: 'expedia', name: 'Expedia', icon: 'E', connected: false, color: 'bg-secondary500', listings: 0, reservations: 0 },
   { id: 'vrbo', name: 'VRBO', icon: 'V', connected: false, color: 'bg-green-600', listings: 0, reservations: 0 },
-  { id: 'direct', name: 'Direct Bookings', icon: 'D', connected: true, color: 'bg-purple-500', listings: 1, reservations: 5 },
+  { id: 'direct', name: 'Direct Bookings', icon: 'D', connected: true, color: 'bg-accent500', listings: 1, reservations: 5 },
 ];
 
 export default function ChannelManager() {
@@ -86,8 +86,8 @@ export default function ChannelManager() {
                   }}
                   className={`p-2 rounded-lg transition ${
                     channel.connected
-                      ? 'bg-red-500/10 text-red-600 hover:bg-red-500/20'
-                      : 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
+                      ? 'bg-destructive/10 text-destructive hover:bg-destructive/20'
+                      : 'bg-chart-2/10 text-green-600 hover:bg-chart-2/20'
                   }`}
                 >
                   {channel.connected ? (
@@ -157,7 +157,7 @@ export default function ChannelManager() {
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               />
             </div>
-            <button className="w-full px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/80 transition">
+            <button className="w-full px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:bg-primary/80 transition">
               Save Settings
             </button>
           </div>

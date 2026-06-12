@@ -61,18 +61,18 @@ export default function SimplifiedDashboard({
       title: t('roomMgmt.dailyOccupancy') || 'Occupancy Rate',
       value: `${occupancyRate}%`,
       icon: Home,
-      color: 'from-blue-500 to-cyan-600',
+      color: 'from-primary to-cyan-600',
       action: `${occupiedRooms}/${rooms.length} rooms`,
-      actionColor: 'text-blue-600'
+      actionColor: 'text-primary'
     },
     {
       id: 'checkins',
       title: t('schedule.todayCheckoutsCleaning')?.split('-')[0] || "Today's Check-ins",
       value: todayCheckIns.toString(),
       icon: Users,
-      color: 'from-purple-500 to-pink-600',
+      color: 'from-accent to-pink-600',
       action: 'View guests',
-      actionColor: 'text-purple-600',
+      actionColor: 'text-accent600',
       onClick: onShowCheckIns
     },
     {
@@ -82,7 +82,7 @@ export default function SimplifiedDashboard({
       icon: AlertCircle,
       color: pendingPayments > 0 ? 'from-red-500 to-orange-600' : 'from-gray-400 to-gray-600',
       action: `${pendingPayments} pending`,
-      actionColor: pendingPayments > 0 ? 'text-red-600' : 'text-gray-600',
+      actionColor: pendingPayments > 0 ? 'text-destructive' : 'text-foreground/70',
       onClick: onShowPayments,
       alert: pendingPayments > 0
     }

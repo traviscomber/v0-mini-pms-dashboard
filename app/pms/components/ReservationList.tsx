@@ -17,12 +17,12 @@ export default function ReservationList({ reservations, onEdit, onDelete, onAdd 
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      confirmed: 'bg-green-500/20 text-green-300',
-      pending: 'bg-yellow-500/20 text-yellow-300',
-      cancelled: 'bg-red-500/20 text-red-300',
-      completed: 'bg-blue-500/20 text-blue-300',
+      confirmed: 'bg-chart-2/20 text-green-300',
+      pending: 'bg-secondary500/20 text-yellow-300',
+      cancelled: 'bg-destructive/20 text-red-300',
+      completed: 'bg-primary/20 text-primary/70',
     };
-    return colors[status] || 'bg-gray-500/20 text-gray-300';
+    return colors[status] || 'bg-card/500/20 text-foreground/50';
   };
 
   return (
@@ -80,13 +80,13 @@ export default function ReservationList({ reservations, onEdit, onDelete, onAdd 
                 <td className="py-3 px-4 flex justify-end gap-2">
                   <button
                     onClick={() => onEdit(res)}
-                    className="p-2 hover:bg-blue-500/20 rounded transition"
+                    className="p-2 hover:bg-primary/20 rounded transition"
                   >
-                    <Edit2 className="w-4 h-4 text-blue-300" />
+                    <Edit2 className="w-4 h-4 text-primary/70" />
                   </button>
                   <button
                     onClick={() => onDelete(res.id)}
-                    className="p-2 hover:bg-red-500/20 rounded transition"
+                    className="p-2 hover:bg-destructive/20 rounded transition"
                   >
                     <Trash2 className="w-4 h-4 text-red-300" />
                   </button>

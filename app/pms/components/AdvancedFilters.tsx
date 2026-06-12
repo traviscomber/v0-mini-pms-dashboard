@@ -177,7 +177,7 @@ const AdvancedFilters = memo(({ rooms, reservations, onFilter }: FiltersProps) =
                 applyFilters();
                 setIsOpen(false);
               }}
-              className="flex-1 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               {t('filters.applyFilters')}
             </button>

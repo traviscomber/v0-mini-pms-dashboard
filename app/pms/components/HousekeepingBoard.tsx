@@ -13,10 +13,10 @@ interface HousekeepingBoardProps {
 }
 
 const statusConfig = {
-  pending: { labelKey: 'housekeeping.pending', color: 'bg-amber-500/20', textColor: 'text-amber-700', icon: Clock },
-  in_progress: { labelKey: 'housekeeping.inProgress', color: 'bg-blue-500/20', textColor: 'text-blue-700', icon: AlertCircle },
-  completed: { labelKey: 'housekeeping.completed', color: 'bg-green-500/20', textColor: 'text-green-700', icon: CheckCircle2 },
-  cancelled: { labelKey: 'housekeeping.cancelled', color: 'bg-gray-500/20', textColor: 'text-gray-700', icon: Trash2 },
+  pending: { labelKey: 'housekeeping.pending', color: 'bg-secondary500/20', textColor: 'text-secondary700', icon: Clock },
+  in_progress: { labelKey: 'housekeeping.inProgress', color: 'bg-primary/20', textColor: 'text-primary', icon: AlertCircle },
+  completed: { labelKey: 'housekeeping.completed', color: 'bg-chart-2/20', textColor: 'text-green-700', icon: CheckCircle2 },
+  cancelled: { labelKey: 'housekeeping.cancelled', color: 'bg-card/500/20', textColor: 'text-foreground/80', icon: Trash2 },
 };
 
 export default function HousekeepingBoard({
@@ -84,12 +84,12 @@ export default function HousekeepingBoard({
                       {task.roomId}
                     </span>
                     {task.priority === 'urgent' && (
-                      <span className="text-xs px-2 py-1 bg-red-500/20 text-red-700 rounded font-medium">
+                      <span className="text-xs px-2 py-1 bg-destructive/20 text-red-700 rounded font-medium">
                         URGENT
                       </span>
                     )}
                     {task.priority === 'high' && (
-                      <span className="text-xs px-2 py-1 bg-orange-500/20 text-orange-700 rounded">
+                      <span className="text-xs px-2 py-1 bg-destructive500/20 text-destructive700 rounded">
                         High
                       </span>
                     )}
@@ -154,7 +154,7 @@ export default function HousekeepingBoard({
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">Critical Tasks</p>
-          <p className="text-2xl font-bold text-red-600 mt-1">
+          <p className="text-2xl font-bold text-destructive mt-1">
             {tasks.filter((t) => t.priority === 'urgent' && t.status !== 'completed').length}
           </p>
         </div>

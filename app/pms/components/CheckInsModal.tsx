@@ -50,7 +50,7 @@ export default function CheckInsModal({
         <div className="p-6 space-y-4">
           {todayCheckIns.length === 0 ? (
             <div className="text-center py-8">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+              <CheckCircle className="w-12 h-12 text-chart-2 mx-auto mb-3" />
               <p className="text-foreground/60">{t('schedule.noCheckoutsToday') || 'No check-ins today'}</p>
             </div>
           ) : (
@@ -83,7 +83,7 @@ export default function CheckInsModal({
                   </div>
 
                   <div className="flex gap-3 pt-2">
-                    <button className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition text-sm">
+                    <button className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition text-sm">
                       {t('common.confirm') || 'Check-in'}
                     </button>
                     <button className="flex-1 px-4 py-2 bg-card border border-border rounded-lg text-foreground hover:bg-background font-medium transition text-sm">

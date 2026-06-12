@@ -29,13 +29,13 @@ export default function OperationsDashboard({
   const getCleaningIcon = (status: string) => {
     switch (status) {
       case 'clean':
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
+        return <CheckCircle className="w-5 h-5 text-chart-2" />;
       case 'dirty':
-        return <AlertCircle className="w-5 h-5 text-red-500" />;
+        return <AlertCircle className="w-5 h-5 text-destructive" />;
       case 'in_progress':
-        return <Clock className="w-5 h-5 text-yellow-500" />;
+        return <Clock className="w-5 h-5 text-secondary" />;
       default:
-        return <AlertCircle className="w-5 h-5 text-gray-500" />;
+        return <AlertCircle className="w-5 h-5 text-foreground/60" />;
     }
   };
 
@@ -67,18 +67,21 @@ export default function OperationsDashboard({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Pending Payments</p>
-              <p className="text-3xl font-bold text-yellow-500">${pendingPayments.reduce((sum, r) => sum + r.balanceDue, 0).toFixed(0)}</p>
+              <p className="text-3xl font-bold text-destructive">${pendingPayments.reduce((sum, r) => sum + r.balanceDue, 0).toFixed(0)}</p>
             </div>
-            <DollarSign className="w-10 h-10 text-yellow-500 opacity-20" />
+            <DollarSign className="w-10 h-10 text-destructive opacity-20" />
+          </div>
+        </div>
+            <DollarSign className="w-10 h-10 text-secondary opacity-20" />
           </div>
         </div>
         <div className="p-4 bg-card border border-border rounded-lg">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Dirty Rooms</p>
-              <p className="text-3xl font-bold text-red-500">{dirtyRooms.length}</p>
+              <p className="text-3xl font-bold text-destructive">{dirtyRooms.length}</p>
             </div>
-            <Trash2 className="w-10 h-10 text-red-500 opacity-20" />
+            <Trash2 className="w-10 h-10 text-destructive opacity-20" />
           </div>
         </div>
       </div>
@@ -126,7 +129,7 @@ export default function OperationsDashboard({
                     <Users className="w-4 h-4" />
                     {rooms.find(r => r.id === res.roomId)?.name}
                   </div>
-                  <div className={`text-xs mt-1 flex items-center gap-1 ${res.cleaningStatus === 'dirty' ? 'text-red-500' : 'text-green-500'}`}>
+                  <div className={`text-xs mt-1 flex items-center gap-1 ${res.cleaningStatus === 'dirty' ? 'text-destructive' : 'text-chart-2'}`}>
                     {getCleaningIcon(res.cleaningStatus)}
                     {res.cleaningStatus === 'dirty' ? 'Needs cleaning' : 'Ready for next guest'}
                   </div>
@@ -147,7 +150,7 @@ export default function OperationsDashboard({
                 <button
                   key={res.id}
                   onClick={() => onViewReservation(res)}
-                  className="w-full text-left p-3 bg-card border border-border hover:border-yellow-500 rounded-lg transition"
+                  className="w-full text-left p-3 bg-card border border-border hover:border-destructive rounded-lg transition"
                 >
                   <div className="flex justify-between items-start">
                     <div>
@@ -155,7 +158,7 @@ export default function OperationsDashboard({
                       <div className="text-sm text-foreground/60">{rooms.find(r => r.id === res.roomId)?.name}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold text-yellow-500">${res.balanceDue.toFixed(2)}</div>
+                      <div className="font-semibold text-secondary">${res.balanceDue.toFixed(2)}</div>
                       <div className="text-xs text-foreground/50">due</div>
                     </div>
                   </div>
@@ -178,13 +181,13 @@ export default function OperationsDashboard({
               {dirtyRooms.map(room => {
                 const roomReservations = reservations.filter(r => r.roomId === room.id && r.cleaningStatus === 'dirty');
                 return (
-                  <div key={room.id} className="p-3 bg-card border border-red-500/30 bg-red-500/5 rounded-lg">
+                  <div key={room.id} className="p-3 bg-card border border-destructive/30 bg-destructive/5 rounded-lg">
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="font-semibold text-foreground">{room.name}</div>
                         <div className="text-sm text-foreground/60">{roomReservations.length} guest(s) departed</div>
                       </div>
-                      <AlertCircle className="w-5 h-5 text-red-500" />
+                      <AlertCircle className="w-5 h-5 text-destructive" />
                     </div>
                   </div>
                 );

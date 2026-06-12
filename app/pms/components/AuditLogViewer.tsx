@@ -9,12 +9,12 @@ interface AuditLogViewerProps {
 }
 
 const actionColors: Record<AuditAction, string> = {
-  create: 'bg-green-500/10 text-green-700',
-  update: 'bg-blue-500/10 text-blue-700',
-  delete: 'bg-red-500/10 text-red-700',
-  assign: 'bg-purple-500/10 text-purple-700',
-  complete: 'bg-cyan-500/10 text-cyan-700',
-  cancel: 'bg-orange-500/10 text-orange-700',
+  create: 'bg-chart-2/10 text-green-700',
+  update: 'bg-primary/10 text-primary',
+  delete: 'bg-destructive/10 text-red-700',
+  assign: 'bg-accent500/10 text-accent700',
+  complete: 'bg-accent500/10 text-accent700',
+  cancel: 'bg-destructive500/10 text-destructive700',
 };
 
 export default function AuditLogViewer({ auditLogs }: AuditLogViewerProps) {

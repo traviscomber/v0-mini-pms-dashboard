@@ -47,8 +47,8 @@ export default function FinancialReports() {
         </div>
         <div className="bg-card border border-border rounded-lg p-6">
           <p className="text-sm text-foreground/60">Total Expenses</p>
-          <p className="text-3xl font-bold text-red-500 mt-2">${(totalExpenses / 1000).toFixed(1)}K</p>
-          <p className="text-xs text-red-600 mt-1">+5% vs last period</p>
+          <p className="text-3xl font-bold text-destructive mt-2">${(totalExpenses / 1000).toFixed(1)}K</p>
+          <p className="text-xs text-destructive mt-1">+5% vs last period</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-6">
           <p className="text-sm text-foreground/60">Net Income</p>
@@ -77,7 +77,7 @@ export default function FinancialReports() {
               onClick={() => setDateRange(period)}
               className={`px-4 py-2 rounded text-sm font-medium transition ${
                 dateRange === period
-                  ? 'bg-primary text-black'
+                  ? 'bg-primary text-foreground'
                   : 'bg-background border border-border hover:border-primary/50'
               }`}
             >
@@ -194,11 +194,11 @@ export default function FinancialReports() {
                   <tr key={row.month} className="hover:bg-background/30 transition">
                     <td className="px-6 py-3">{row.month}</td>
                     <td className="text-right px-6 py-3 font-medium text-primary">${row.revenue.toLocaleString()}</td>
-                    <td className="text-right px-6 py-3 font-medium text-red-500">${row.expenses.toLocaleString()}</td>
+                    <td className="text-right px-6 py-3 font-medium text-destructive">${row.expenses.toLocaleString()}</td>
                     <td className="text-right px-6 py-3 font-bold text-accent">${netIncome.toLocaleString()}</td>
                     <td className="text-right px-6 py-3">
                       <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                        Number(margin) > 50 ? 'bg-green-500/10 text-green-600' : 'bg-yellow-500/10 text-yellow-600'
+                        Number(margin) > 50 ? 'bg-chart-2/10 text-green-600' : 'bg-secondary500/10 text-yellow-600'
                       }`}>
                         {margin}%
                       </span>

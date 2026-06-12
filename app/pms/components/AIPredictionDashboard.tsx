@@ -134,7 +134,7 @@ export default function AIPredictionDashboard({
         <p className="text-foreground/60">Calculating optimal price...</p>
       )}
       {pricingHook.error && (
-        <p className="text-red-500">Error: {pricingHook.error}</p>
+        <p className="text-destructive">Error: {pricingHook.error}</p>
       )}
       {pricingHook.result && (
         <div className="bg-card border border-border rounded-lg p-4 space-y-3">
@@ -154,7 +154,7 @@ export default function AIPredictionDashboard({
             <span className="text-foreground/70">AI Confidence:</span>
             <div className="w-32 h-2 bg-background rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-green-500 to-blue-500"
+                className="h-full bg-gradient-to-r from-green-500 to-primary"
                 style={{
                   width: `${pricingHook.result.confidence}%`,
                 }}
@@ -178,7 +178,7 @@ export default function AIPredictionDashboard({
         <p className="text-foreground/60">Analyzing risk...</p>
       )}
       {cancellationHook.error && (
-        <p className="text-red-500">Error: {cancellationHook.error}</p>
+        <p className="text-destructive">Error: {cancellationHook.error}</p>
       )}
       {cancellationHook.result && (
         <div className="bg-card border border-border rounded-lg p-4 space-y-3">
@@ -186,10 +186,10 @@ export default function AIPredictionDashboard({
             <AlertTriangle
               className={
                 cancellationHook.result.riskLevel === "critical"
-                  ? "text-red-500"
+                  ? "text-destructive"
                   : cancellationHook.result.riskLevel === "high"
-                    ? "text-orange-500"
-                    : "text-yellow-500"
+                    ? "text-destructive500"
+                    : "text-secondary"
               }
             />
             <span className="text-foreground/70">Risk Level:</span>
@@ -235,7 +235,7 @@ export default function AIPredictionDashboard({
         <p className="text-foreground/60">Forecasting revenue...</p>
       )}
       {revenueHook.error && (
-        <p className="text-red-500">Error: {revenueHook.error}</p>
+        <p className="text-destructive">Error: {revenueHook.error}</p>
       )}
       {revenueHook.result && (
         <div className="bg-card border border-border rounded-lg p-4 space-y-3">
@@ -273,7 +273,7 @@ export default function AIPredictionDashboard({
             <span className="text-foreground/70">AI Confidence:</span>
             <div className="flex-1 h-2 bg-background rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                className="h-full bg-gradient-to-r from-primary to-accent"
                 style={{ width: `${revenueHook.result.confidence}%` }}
               />
             </div>
@@ -295,7 +295,7 @@ export default function AIPredictionDashboard({
         <p className="text-foreground/60">Analyzing guest...</p>
       )}
       {segmentationHook.error && (
-        <p className="text-red-500">Error: {segmentationHook.error}</p>
+        <p className="text-destructive">Error: {segmentationHook.error}</p>
       )}
       {segmentationHook.result && (
         <div className="bg-card border border-border rounded-lg p-4 space-y-3">
@@ -341,7 +341,7 @@ export default function AIPredictionDashboard({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-6">
-        <Zap className="text-yellow-500" size={24} />
+        <Zap className="text-secondary" size={24} />
         <h2 className="text-2xl font-bold text-foreground">AI Predictions</h2>
       </div>
 

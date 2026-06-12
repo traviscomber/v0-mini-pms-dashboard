@@ -19,12 +19,12 @@ export default function RoomList({ rooms, propertyId, onEdit, onDelete, onAdd }:
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      available: 'bg-green-500/20 text-green-300',
-      maintenance: 'bg-yellow-500/20 text-yellow-300',
-      blocked: 'bg-red-500/20 text-red-300',
-      reserved: 'bg-blue-500/20 text-blue-300',
+      available: 'bg-chart-2/20 text-green-300',
+      maintenance: 'bg-secondary500/20 text-yellow-300',
+      blocked: 'bg-destructive/20 text-red-300',
+      reserved: 'bg-primary/20 text-primary/70',
     };
-    return colors[status] || 'bg-gray-500/20 text-gray-300';
+    return colors[status] || 'bg-card/500/20 text-foreground/50';
   };
 
   return (
@@ -90,14 +90,14 @@ export default function RoomList({ rooms, propertyId, onEdit, onDelete, onAdd }:
             <div className="flex gap-2">
               <button
                 onClick={() => onEdit(room)}
-                className="flex-1 flex items-center justify-center gap-2 bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 px-3 py-2 rounded transition text-sm"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary/20 text-primary/70 hover:bg-primary/30 px-3 py-2 rounded transition text-sm"
               >
                 <Edit2 className="w-4 h-4" />
                 {t('crud.edit')}
               </button>
               <button
                 onClick={() => onDelete(room.id)}
-                className="flex-1 flex items-center justify-center gap-2 bg-red-500/20 text-red-300 hover:bg-red-500/30 px-3 py-2 rounded transition text-sm"
+                className="flex-1 flex items-center justify-center gap-2 bg-destructive/20 text-red-300 hover:bg-destructive/30 px-3 py-2 rounded transition text-sm"
               >
                 <Trash2 className="w-4 h-4" />
                 {t('crud.delete')}

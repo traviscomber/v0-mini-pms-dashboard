@@ -17,14 +17,14 @@ export default function PaymentList({ payments, onEdit, onDelete, onAdd }: Payme
 
   const getMethodBadge = (method: string) => {
     const badges: Record<string, string> = {
-      credit_card: 'bg-blue-500/20 text-blue-300',
-      bank_transfer: 'bg-green-500/20 text-green-300',
-      cash: 'bg-yellow-500/20 text-yellow-300',
-      check: 'bg-purple-500/20 text-purple-300',
-      online: 'bg-cyan-500/20 text-cyan-300',
-      crypto: 'bg-orange-500/20 text-orange-300',
+      credit_card: 'bg-primary/20 text-primary/70',
+      bank_transfer: 'bg-chart-2/20 text-green-300',
+      cash: 'bg-secondary500/20 text-yellow-300',
+      check: 'bg-accent500/20 text-accent300',
+      online: 'bg-accent500/20 text-accent300',
+      crypto: 'bg-destructive500/20 text-destructive300',
     };
-    return badges[method] || 'bg-gray-500/20 text-gray-300';
+    return badges[method] || 'bg-card/500/20 text-foreground/50';
   };
 
   const totalAmount = payments.reduce((sum, p) => sum + p.amount, 0);
@@ -88,13 +88,13 @@ export default function PaymentList({ payments, onEdit, onDelete, onAdd }: Payme
                 <td className="py-3 px-4 flex justify-end gap-2">
                   <button
                     onClick={() => onEdit(payment)}
-                    className="p-2 hover:bg-blue-500/20 rounded transition"
+                    className="p-2 hover:bg-primary/20 rounded transition"
                   >
-                    <Edit2 className="w-4 h-4 text-blue-300" />
+                    <Edit2 className="w-4 h-4 text-primary/70" />
                   </button>
                   <button
                     onClick={() => onDelete(payment.id)}
-                    className="p-2 hover:bg-red-500/20 rounded transition"
+                    className="p-2 hover:bg-destructive/20 rounded transition"
                   >
                     <Trash2 className="w-4 h-4 text-red-300" />
                   </button>

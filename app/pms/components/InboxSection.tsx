@@ -66,12 +66,12 @@ export default function InboxSection({ reservations }: InboxProps) {
                   <div
                     className={`max-w-xs px-4 py-2 rounded-lg ${
                       msg.sender === 'host'
-                        ? 'bg-primary text-black rounded-br-none'
+                        ? 'bg-primary text-foreground rounded-br-none'
                         : 'bg-background border border-border text-foreground rounded-bl-none'
                     }`}
                   >
                     <p className="text-sm">{msg.text}</p>
-                    <p className={`text-xs mt-1 ${msg.sender === 'host' ? 'text-black/60' : 'text-foreground/60'}`}>
+                    <p className={`text-xs mt-1 ${msg.sender === 'host' ? 'text-foreground/60' : 'text-foreground/60'}`}>
                       {msg.timestamp}
                     </p>
                   </div>
@@ -90,7 +90,7 @@ export default function InboxSection({ reservations }: InboxProps) {
               />
               <button
                 onClick={handleSendMessage}
-                className="px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition"
+                className="px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 transition"
               >
                 <Send size={18} />
               </button>

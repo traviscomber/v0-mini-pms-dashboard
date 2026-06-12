@@ -128,16 +128,10 @@ export const getViewerContext = cache(async (): Promise<ViewerContext> => {
   }
 
   const supabase = await createClient();
-  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
-  const userId = typeof claimsData?.claims?.sub === "string" ? claimsData.claims.sub : null;
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const userId = userData?.user?.id ?? null;
 
-  if (claimsError || !userId) {
-    return createLoggedOutContext();
-  }
-
-  const { data: userData } = await supabase.auth.getUser();
-
-  if (!userData.user) {
+  if (userError || !userId) {
     return createLoggedOutContext();
   }
 
@@ -150,7 +144,7 @@ export const getViewerContext = cache(async (): Promise<ViewerContext> => {
     .order("created_at", { ascending: true });
 
   const profile = (profileResult.data ?? null) as ProfileRow | null;
-  const viewerUser = createViewerUser(userData.user, profile?.full_name);
+  const viewerUser = createViewerUser(userData.user!, profile?.full_name);
 
   if (isSchemaError(profileResult.error?.message) || isSchemaError(membershipResult.error?.message)) {
     return createSchemaPendingContext(viewerUser);

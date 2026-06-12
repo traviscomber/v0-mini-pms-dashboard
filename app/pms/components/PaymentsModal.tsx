@@ -48,13 +48,13 @@ export default function PaymentsModal({
         <div className="p-6 space-y-4">
           {/* Total Summary */}
           {pendingPayments.length > 0 && (
-            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-red-500" />
+                  <DollarSign className="w-5 h-5 text-destructive" />
                   <span className="font-semibold text-foreground">{t('payment.totalRevenue') || 'Total Pending'}</span>
                 </div>
-                <span className="text-2xl font-bold text-red-500">${totalPending}</span>
+                <span className="text-2xl font-bold text-destructive">${totalPending}</span>
               </div>
             </div>
           )}
@@ -62,7 +62,7 @@ export default function PaymentsModal({
           {/* Payments List */}
           {pendingPayments.length === 0 ? (
             <div className="text-center py-8">
-              <DollarSign className="w-12 h-12 text-green-500 mx-auto mb-3" />
+              <DollarSign className="w-12 h-12 text-chart-2 mx-auto mb-3" />
               <p className="text-foreground/60">All payments collected!</p>
             </div>
           ) : (
@@ -88,7 +88,7 @@ export default function PaymentsModal({
                 <div className="flex gap-3 pt-2">
                   <button
                     onClick={() => onMarkPaid?.(reservation.id)}
-                    className="flex-1 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition text-sm"
+                    className="flex-1 px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition text-sm"
                   >
                     {t('paymentTable.markPaid') || 'Mark Paid'}
                   </button>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import AlertBanner from "./components/AlertBanner";
 import AuditLogViewer from "./components/AuditLogViewer";
+import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
 import ChannelManager from "./components/ChannelManager";
 import CommunicationTemplates from "./components/CommunicationTemplates";
@@ -21,7 +22,6 @@ import ReservationList from "./components/ReservationList";
 import Sidebar from "./components/Sidebar";
 import TodayCommandCenter from "./components/TodayCommandCenter";
 import UserManagement from "./components/UserManagement";
-import { demoData } from "./data";
 import { useAlerts } from "./hooks/use-alerts";
 import { createOperationalTasks, createPaymentEntries, useLivePms } from "./hooks/use-live-pms";
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, type FilterOptions } from "./lib/filter-utils";
@@ -40,7 +40,8 @@ type PageType =
   | "ledger"
   | "users"
   | "audit"
-  | "conflicts";
+  | "conflicts"
+  | "automation";
 
 export default function PMSApp() {
   const {
@@ -57,7 +58,6 @@ export default function PMSApp() {
     setTasks,
     tasks,
   } = useLivePms();
-  const [users] = useState(demoData.users);
   const [activeSection, setActiveSection] = useState<PageType>("operations");
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -140,7 +140,7 @@ export default function PMSApp() {
       paidAmount: 0,
       paymentStatus: "pending",
       payment_status: "pending",
-      propertyId: room?.propertyId ?? demoData.properties[0]?.id ?? "prop-live",
+      propertyId: room?.propertyId ?? "",
       reservationStatus: "pending",
       roomId,
       room_id: roomId,
@@ -197,7 +197,7 @@ export default function PMSApp() {
         <main className="flex-1 overflow-y-auto">
           <div className="space-y-6 p-8">
             <div className="flex flex-wrap items-center gap-3">
-              <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-amber-500/30 bg-amber-500/10 text-amber-300"}`}>
+              <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-secondary500/30 bg-secondary500/10 text-secondary300"}`}>
                 {mode === "live" ? "Live PMS data" : "Demo fallback data"}
               </span>
               {isLoading ? <span className="text-xs text-foreground/60">Syncing PMS data...</span> : null}
@@ -305,12 +305,22 @@ export default function PMSApp() {
               <PaymentLedger reservations={reservations} paymentEntries={paymentEntries} />
             ) : null}
 
-            {activeSection === "users" ? <UserManagement users={users} /> : null}
+            {activeSection === "users" ? <UserManagement users={[]} /> : null}
 
-            {activeSection === "audit" ? <AuditLogViewer auditLogs={demoData.auditLogs} /> : null}
+            {activeSection === "audit" ? <AuditLogViewer auditLogs={[]} /> : null}
 
             {activeSection === "conflicts" ? (
               <ConflictDetectionUI rooms={rooms} reservations={reservations} />
+            ) : null}
+
+            {activeSection === "automation" ? (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold">Automation</h1>
+                  <p className="text-foreground/60">Rules that run automatically — no manual work needed.</p>
+                </div>
+                <AutomationDashboard tasks={tasks} alerts={alerts} criticalTasks={[]} />
+              </div>
             ) : null}
           </div>
         </main>

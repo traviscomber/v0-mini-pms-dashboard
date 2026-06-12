@@ -37,25 +37,25 @@ export const darkThemeColors = {
 export function convertToTheme(lightColorClass: string): string {
   const mapping: Record<string, string> = {
     // Backgrounds
-    'bg-white': 'bg-card',
-    'bg-slate-50': 'bg-card/50',
-    'bg-slate-100': 'bg-card/70',
-    'bg-gray-50': 'bg-card/50',
-    'bg-gray-100': 'bg-card/70',
+    'bg-card': 'bg-card',
+    'bg-card/50': 'bg-card/50',
+    'bg-card/70': 'bg-card/70',
+    'bg-card/50': 'bg-card/50',
+    'bg-card/70': 'bg-card/70',
     
     // Text
-    'text-slate-900': 'text-foreground',
-    'text-slate-800': 'text-foreground/90',
-    'text-slate-700': 'text-foreground/80',
-    'text-slate-600': 'text-foreground/70',
-    'text-slate-500': 'text-foreground/60',
-    'text-black': 'text-foreground',
-    'text-gray-900': 'text-foreground',
+    'text-foreground': 'text-foreground',
+    'text-foreground': 'text-foreground/90',
+    'text-foreground/80': 'text-foreground/80',
+    'text-foreground/70': 'text-foreground/70',
+    'text-foreground/60': 'text-foreground/60',
+    'text-foreground': 'text-foreground',
+    'text-foreground': 'text-foreground',
     
     // Borders
-    'border-slate-200': 'border-border',
-    'border-gray-200': 'border-border',
-    'border-slate-300': 'border-border',
+    'border-border': 'border-border',
+    'border-border': 'border-border',
+    'border-border': 'border-border',
   };
   
   return mapping[lightColorClass] || lightColorClass;

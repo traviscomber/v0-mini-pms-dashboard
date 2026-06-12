@@ -44,11 +44,11 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle2 size={20} className="text-green-500" />;
+        return <CheckCircle2 size={20} className="text-chart-2" />;
       case 'in_progress':
         return <Clock size={20} className="text-accent" />;
       default:
-        return <AlertCircle size={20} className="text-orange-500" />;
+        return <AlertCircle size={20} className="text-destructive500" />;
     }
   };
 
@@ -73,10 +73,10 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
                   onClick={() => toggleCleaningStatus(res.roomId, res.id)}
                   className={`w-full p-4 rounded-lg border text-left transition ${
                     status === 'completed'
-                      ? 'bg-green-500/10 border-green-500/30'
+                      ? 'bg-chart-2/10 border-chart-2/30'
                       : status === 'in_progress'
                       ? 'bg-accent/10 border-accent/30'
-                      : 'bg-orange-500/10 border-orange-500/30 hover:bg-orange-500/20'
+                      : 'bg-destructive500/10 border-destructive500/30 hover:bg-destructive500/20'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -109,7 +109,7 @@ const CleaningSchedule = memo(({ rooms, reservations }: CleaningScheduleProps) =
                   onClick={() => toggleCleaningStatus(res.roomId, res.id)}
                   className={`w-full p-4 rounded-lg border text-left transition ${
                     status === 'completed'
-                      ? 'bg-green-500/10 border-green-500/30 text-foreground'
+                      ? 'bg-chart-2/10 border-chart-2/30 text-foreground'
                       : 'bg-card border-border text-foreground hover:bg-card/80'
                   }`}
                 >

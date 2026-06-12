@@ -42,9 +42,9 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
     });
 
     if (booking) {
-      return { status: 'booked', label: 'Booked', color: 'bg-red-500/20 border-red-500 text-red-700' };
+      return { status: 'booked', label: 'Booked', color: 'bg-destructive/20 border-destructive text-red-700' };
     }
-    return { status: 'available', label: 'Available', color: 'bg-green-500/20 border-green-500 text-green-700' };
+    return { status: 'available', label: 'Available', color: 'bg-chart-2/20 border-chart-2 text-green-700' };
   };
 
   const goToPrevious = () => {
@@ -77,7 +77,7 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
                 onClick={() => setViewMode('month')}
                 className={`px-4 py-2 rounded transition ${
                   viewMode === 'month'
-                    ? 'bg-primary text-black font-medium'
+                    ? 'bg-primary text-foreground font-medium'
                     : 'text-foreground/60 hover:text-foreground'
                 }`}
               >
@@ -87,7 +87,7 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
                 onClick={() => setViewMode('list')}
                 className={`px-4 py-2 rounded transition ${
                   viewMode === 'list'
-                    ? 'bg-primary text-black font-medium'
+                    ? 'bg-primary text-foreground font-medium'
                     : 'text-foreground/60 hover:text-foreground'
                 }`}
               >
@@ -125,7 +125,7 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
                 onClick={() => setSelectedRoomId(room.id)}
                 className={`px-4 py-2 rounded-lg border transition ${
                   selectedRoomId === room.id
-                    ? 'bg-primary text-black border-primary font-medium'
+                    ? 'bg-primary text-foreground border-primary font-medium'
                     : 'bg-background border-border text-foreground hover:border-primary'
                 }`}
               >
@@ -138,15 +138,15 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
         {/* Legend */}
         <div className="flex gap-6 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500/30 border border-green-500 rounded"></div>
+            <div className="w-4 h-4 bg-chart-2/30 border border-chart-2 rounded"></div>
             <span className="text-foreground/70">Available</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500/30 border border-red-500 rounded"></div>
+            <div className="w-4 h-4 bg-destructive/30 border border-destructive rounded"></div>
             <span className="text-foreground/70">Booked</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-card/500/30 border border-gray-500 rounded"></div>
+            <div className="w-4 h-4 bg-card/500/30 border border-border rounded"></div>
             <span className="text-foreground/70">Blocked</span>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function CalendarSection({ rooms, reservations }: CalendarProps) 
                 />
               </div>
             </div>
-            <button className="mt-4 px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition">
+            <button className="mt-4 px-6 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition">
               {t('propertySection.saveChanges') || 'Save Changes'}
             </button>
           </div>

@@ -38,7 +38,7 @@ export default function UserManagement({
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
           <p className="text-xs text-foreground/60">Inactive</p>
-          <p className="text-2xl font-bold text-orange-600 mt-1">{users.length - activeCount}</p>
+          <p className="text-2xl font-bold text-destructive600 mt-1">{users.length - activeCount}</p>
         </div>
       </div>
 
@@ -56,7 +56,7 @@ export default function UserManagement({
           <h3 className="font-semibold">Team Members</h3>
           <button
             onClick={onAddUser}
-            className="flex items-center gap-2 px-3 py-2 bg-primary text-black rounded-lg text-sm font-medium hover:bg-primary/80 transition"
+            className="flex items-center gap-2 px-3 py-2 bg-primary text-foreground rounded-lg text-sm font-medium hover:bg-primary/80 transition"
           >
             <Plus className="w-4 h-4" />
             Add User
@@ -97,8 +97,8 @@ export default function UserManagement({
                         </>
                       ) : (
                         <>
-                          <Circle className="w-4 h-4 text-gray-400" />
-                          <span className="text-xs text-gray-600">Inactive</span>
+                          <Circle className="w-4 h-4 text-foreground/50" />
+                          <span className="text-xs text-foreground/70">Inactive</span>
                         </>
                       )}
                     </div>
@@ -115,7 +115,7 @@ export default function UserManagement({
                     </button>
                     <button
                       onClick={() => onDeleteUser?.(user.id)}
-                      className="px-2 py-1 text-xs text-red-600 hover:bg-red-500/10 rounded transition"
+                      className="px-2 py-1 text-xs text-destructive hover:bg-destructive/10 rounded transition"
                     >
                       <Trash2 className="w-3 h-3 inline" />
                     </button>

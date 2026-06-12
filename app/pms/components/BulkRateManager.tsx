@@ -80,7 +80,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
                   onClick={() => setAdjustmentType(type)}
                   className={`flex-1 py-2 rounded-lg font-medium transition ${
                     adjustmentType === type
-                      ? 'bg-primary text-black'
+                      ? 'bg-primary text-foreground'
                       : 'bg-card border border-border text-foreground hover:bg-card/80'
                   }`}
                 >
@@ -105,7 +105,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
 
           <button
             onClick={handleApply}
-            className="w-full py-2 bg-primary text-black rounded-lg hover:bg-primary/90 font-medium transition"
+            className="w-full py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 font-medium transition"
           >
             {t('bulkRate.applyRateUpdate')}
           </button>
@@ -122,7 +122,7 @@ const BulkRateManager = memo(({ rooms, reservations }: BulkRateManagerProps) => 
                   onClick={() => toggleRoom(room.id)}
                   className={`w-full p-3 rounded-lg text-left font-medium transition ${
                     selectedRooms.includes(room.id)
-                      ? 'bg-primary text-black'
+                      ? 'bg-primary text-foreground'
                       : 'bg-card border border-border text-foreground hover:bg-card/80'
                   }`}
                 >
