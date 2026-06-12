@@ -119,7 +119,7 @@ export function LoginShell({
         style={{
           position: "absolute", top: -200, left: -200,
           width: 800, height: 800, borderRadius: "50%",
-          background: "radial-gradient(circle, oklch(0.52 0.24 280 / 0.09) 0%, transparent 65%)",
+          background: "var(--primary) 0%, transparent 65%)",
           pointerEvents: "none", zIndex: 0,
         }}
       />
@@ -142,8 +142,8 @@ export function LoginShell({
           <span
             style={{
               fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em",
-              background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              background: "var(--primary),oklch(0.56 0.15 310))",
+              ,
               backgroundClip: "text",
             }}
           >
@@ -211,8 +211,8 @@ export function LoginShell({
             <span
               style={{
                 display: "block",
-                background: "linear-gradient(90deg,oklch(0.52 0.24 280),oklch(0.56 0.15 310))",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                background: "var(--primary),oklch(0.56 0.15 310))",
+                ,
                 backgroundClip: "text",
               }}
             >
@@ -465,7 +465,7 @@ function AuthButton({ label }: { label: string }) {
       style={{
         width: "100%", marginTop: "0.25rem", padding: "0.825rem 1rem",
         border: "none", borderRadius: 10,
-        background: "linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%)",
+        background: "var(--primary) 0%,var(--accent) 100%)",
         color: "var(--primary-foreground)", fontSize: "0.875rem", fontWeight: 700,
         letterSpacing: "0.01em", cursor: "pointer",
         transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
