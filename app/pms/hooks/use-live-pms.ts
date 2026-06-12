@@ -231,8 +231,13 @@ export function useLivePms() {
     try {
       const response = await fetch("/api/pms", { cache: "no-store", credentials: "include" });
 
+      // 401 means the user is not signed in — leave state empty and return quietly.
+      if (response.status === 401) {
+        return;
+      }
+
       if (!response.ok) {
-        throw new Error(response.status === 401 ? "Sign in required to load live PMS data." : "Unable to load live PMS data.");
+        throw new Error("Unable to load live PMS data.");
       }
 
       const payload = (await response.json()) as {
@@ -249,9 +254,7 @@ export function useLivePms() {
       setPaymentEntries(createPaymentEntries(nextReservations));
       setMode("live");
     } catch (cause) {
-      const errorMessage = cause instanceof Error ? cause.message : "Unable to load live PMS data.";
-      setError(errorMessage);
-      throw cause;
+      setError(cause instanceof Error ? cause.message : "Unable to load live PMS data.");
     } finally {
       setIsLoading(false);
     }
