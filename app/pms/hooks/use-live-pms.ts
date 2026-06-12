@@ -240,7 +240,7 @@ export function useLivePms() {
     setError(null);
 
     try {
-      const response = await fetch("/api/pms", { cache: "no-store" });
+      const response = await fetch("/api/pms", { cache: "no-store", credentials: "include" });
 
       if (!response.ok) {
         throw new Error(response.status === 401 ? "Sign in required to load live PMS data." : "Unable to load live PMS data.");
@@ -306,6 +306,7 @@ export function useLivePms() {
 
     const response = await fetch("/api/pms/reservations", {
       body: JSON.stringify(payload),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -332,6 +333,7 @@ export function useLivePms() {
 
   async function deleteReservation(id: string) {
     const response = await fetch(`/api/pms/reservations/${id}`, {
+      credentials: "include",
       method: "DELETE",
     });
 
