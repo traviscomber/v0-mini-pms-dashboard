@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import AlertBanner from "./components/AlertBanner";
 import AuditLogViewer from "./components/AuditLogViewer";
+import BookingForm from "./components/BookingForm";
 import ChannelManager from "./components/ChannelManager";
 import CommunicationTemplates from "./components/CommunicationTemplates";
 import ConflictDetectionUI from "./components/ConflictDetectionUI";
@@ -22,6 +23,7 @@ import TodayCommandCenter from "./components/TodayCommandCenter";
 import UserManagement from "./components/UserManagement";
 import { demoData } from "./data";
 import { useAlerts } from "./hooks/use-alerts";
+import { createOperationalTasks, createPaymentEntries, useLivePms } from "./hooks/use-live-pms";
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, type FilterOptions } from "./lib/filter-utils";
 import type { Reservation } from "./types";
 import { hasConflict } from "./utils/conflict-detector";
@@ -41,9 +43,20 @@ type PageType =
   | "conflicts";
 
 export default function PMSApp() {
-  const [rooms] = useState(demoData.rooms);
-  const [reservations, setReservations] = useState(demoData.reservations);
-  const [tasks, setTasks] = useState(demoData.tasks);
+  const {
+    createReservation,
+    deleteReservation,
+    error: liveError,
+    isLoading,
+    mode,
+    paymentEntries,
+    reservations,
+    rooms,
+    setPaymentEntries,
+    setReservations,
+    setTasks,
+    tasks,
+  } = useLivePms();
   const [users] = useState(demoData.users);
   const [activeSection, setActiveSection] = useState<PageType>("operations");
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
@@ -68,6 +81,11 @@ export default function PMSApp() {
     () => applyFilters(reservations, filters),
     [reservations, filters],
   );
+  const today = useMemo(() => {
+    const nextDate = new Date();
+    nextDate.setHours(0, 0, 0, 0);
+    return nextDate;
+  }, []);
 
   const handleFilterChange = (nextFilters: FilterOptions) => {
     setFilters(nextFilters);
@@ -88,23 +106,50 @@ export default function PMSApp() {
         reservation.id === updatedReservation.id ? updatedReservation : reservation,
       ),
     );
+    setTasks((currentTasks) => [
+      ...currentTasks.filter((task) => task.reservationId !== updatedReservation.id),
+      ...createOperationalTasks([updatedReservation]),
+    ]);
+    setPaymentEntries((currentEntries) => [
+      ...currentEntries.filter((entry) => entry.reservationId !== updatedReservation.id),
+      ...createPaymentEntries([updatedReservation]),
+    ]);
   };
 
   const handleQuickBook = (roomId: string, checkInDate: Date, checkOutDate: Date) => {
+    const room = rooms.find((currentRoom) => currentRoom.id === roomId);
     const nextReservation: Omit<Reservation, "id" | "createdAt" | "updatedAt"> = {
-      roomId,
+      balanceDue: 0,
+      checkIn: checkInDate.toISOString().split("T")[0],
+      checkInDate,
+      checkOut: checkOutDate.toISOString().split("T")[0],
+      checkOutDate,
+      check_in_date: checkInDate.toISOString().split("T")[0],
+      check_out_date: checkOutDate.toISOString().split("T")[0],
+      cleaningStatus: "clean",
+      cleaning_status: "clean",
+      created_at: new Date().toISOString(),
+      guestEmail: "",
       guestId: "guest-new",
       guestName: "New Guest",
-      checkInDate,
-      checkOutDate,
-      source: "direct",
-      reservationStatus: "pending",
-      paymentStatus: "pending",
-      cleaningStatus: "clean",
-      totalAmount: 0,
-      paidAmount: 0,
-      balanceDue: 0,
+      guestPhone: "",
+      guest_email: "",
+      guest_name: "New Guest",
+      guest_phone: "",
       numberOfGuests: 1,
+      paidAmount: 0,
+      paymentStatus: "pending",
+      payment_status: "pending",
+      propertyId: room?.propertyId ?? demoData.properties[0]?.id ?? "prop-live",
+      reservationStatus: "pending",
+      roomId,
+      room_id: roomId,
+      source: "Direct",
+      specialRequests: "",
+      status: "pending",
+      totalAmount: 0,
+      totalPrice: 0,
+      updated_at: new Date().toISOString(),
     };
 
     if (hasConflict(nextReservation, reservations)) {
@@ -121,21 +166,25 @@ export default function PMSApp() {
     setIsDrawerOpen(true);
   };
 
-  const handleAddReservation = (reservationInput: Omit<Reservation, "id" | "createdAt" | "updatedAt">) => {
-    if (hasConflict(reservationInput, reservations)) {
-      alert("Conflict detected: Room is already booked for this date range");
-      return;
-    }
+  const handleAddReservation = async (reservationInput: {
+    adults: number;
+    checkIn: string;
+    checkOut: string;
+    children: number;
+    cleaningStatus: string;
+    guestEmail: string;
+    guestName: string;
+    guestPhone: string;
+    notes: string;
+    paymentStatus: string;
+    roomId: string;
+    source: string;
+  }) => {
+    await createReservation(reservationInput);
+  };
 
-    setReservations((currentReservations) => [
-      ...currentReservations,
-      {
-        id: Math.random().toString(36).slice(2, 11),
-        ...reservationInput,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
+  const handleDeleteReservation = async (id: string) => {
+    await deleteReservation(id);
   };
 
   return (
@@ -147,6 +196,14 @@ export default function PMSApp() {
 
         <main className="flex-1 overflow-y-auto">
           <div className="space-y-6 p-8">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-amber-500/30 bg-amber-500/10 text-amber-300"}`}>
+                {mode === "live" ? "Live PMS data" : "Demo fallback data"}
+              </span>
+              {isLoading ? <span className="text-xs text-foreground/60">Syncing PMS data...</span> : null}
+              {liveError ? <span className="text-xs text-red-300">{liveError}</span> : null}
+            </div>
+
             {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
 
             {activeSection === "operations" ? (
@@ -188,22 +245,39 @@ export default function PMSApp() {
                 reservations={reservations}
                 onSelectReservation={handleSelectReservation}
                 onQuickBook={handleQuickBook}
-                onAddReservation={handleAddReservation}
               />
             ) : null}
 
             {activeSection === "reservations" ? (
               <div className="space-y-6">
                 <FilterPanel filters={filters} onFilterChange={handleFilterChange} rooms={rooms} />
-                <ReservationList
-                  reservations={filteredReservations}
-                  rooms={rooms}
-                  onSelectReservation={handleSelectReservation}
-                />
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+                  <BookingForm
+                    rooms={rooms}
+                    reservations={reservations}
+                    onAdd={handleAddReservation}
+                  />
+                  <ReservationList
+                    reservations={filteredReservations}
+                    onAdd={() => {
+                      const firstRoom = rooms[0];
+
+                      if (!firstRoom) {
+                        return;
+                      }
+
+                      const tomorrow = new Date(today);
+                      tomorrow.setDate(tomorrow.getDate() + 1);
+                      handleQuickBook(firstRoom.id, today, tomorrow);
+                    }}
+                    onDelete={handleDeleteReservation}
+                    onEdit={handleSelectReservation}
+                  />
+                </div>
               </div>
             ) : null}
 
-            {activeSection === "reports" ? <Reports reservations={reservations} rooms={rooms} /> : null}
+            {activeSection === "reports" ? <Reports reservations={reservations} /> : null}
 
             {activeSection === "channels" ? (
               <div className="space-y-6">
@@ -228,7 +302,7 @@ export default function PMSApp() {
             {activeSection === "financial" ? <FinancialReports /> : null}
 
             {activeSection === "ledger" ? (
-              <PaymentLedger reservations={reservations} paymentEntries={demoData.paymentEntries} />
+              <PaymentLedger reservations={reservations} paymentEntries={paymentEntries} />
             ) : null}
 
             {activeSection === "users" ? <UserManagement users={users} /> : null}

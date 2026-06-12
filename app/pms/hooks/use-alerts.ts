@@ -1,4 +1,5 @@
-import { Reservation, Room } from '@/lib/types';
+type ReservationRecord = Record<string, any>;
+type RoomRecord = Record<string, any>;
 
 export interface Alert {
   id: string;
@@ -9,15 +10,39 @@ export interface Alert {
   dismissible: boolean;
 }
 
-export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
+function getCheckInDate(reservation: ReservationRecord) {
+  return new Date(reservation.check_in_date ?? reservation.checkInDate ?? reservation.checkIn);
+}
+
+function getCheckOutDate(reservation: ReservationRecord) {
+  return new Date(reservation.check_out_date ?? reservation.checkOutDate ?? reservation.checkOut);
+}
+
+function getPaymentStatus(reservation: ReservationRecord) {
+  return reservation.payment_status ?? reservation.paymentStatus ?? 'pending';
+}
+
+function getCleaningStatus(reservation: ReservationRecord) {
+  return reservation.cleaning_status ?? reservation.cleaningStatus ?? 'clean';
+}
+
+function getReservationStatus(reservation: ReservationRecord) {
+  return reservation.status ?? reservation.reservationStatus ?? 'confirmed';
+}
+
+function getUpdatedAt(reservation: ReservationRecord) {
+  return new Date(reservation.updated_at ?? reservation.updatedAt ?? reservation.created_at ?? reservation.createdAt ?? new Date());
+}
+
+export function useAlerts(reservations: ReservationRecord[], rooms: RoomRecord[]): Alert[] {
   const alerts: Alert[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   // Check for low occupancy
   const occupiedRooms = reservations.filter(r => {
-    const checkIn = new Date(r.check_in_date);
-    const checkOut = new Date(r.check_out_date);
+    const checkIn = getCheckInDate(r);
+    const checkOut = getCheckOutDate(r);
     return checkIn <= today && checkOut > today;
   }).length;
   
@@ -35,7 +60,7 @@ export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
 
   // Check for overdue payments
   const overduePayments = reservations.filter(
-    r => r.payment_status === 'pending' && new Date(r.check_in_date) < today
+    r => getPaymentStatus(r) === 'pending' && getCheckInDate(r) < today
   );
   if (overduePayments.length > 0) {
     alerts.push({
@@ -50,7 +75,7 @@ export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
 
   // Check for same-day multiple check-ins
   const todayCheckIns = reservations.filter(r => {
-    const checkIn = new Date(r.check_in_date);
+    const checkIn = getCheckInDate(r);
     checkIn.setHours(0, 0, 0, 0);
     return checkIn.getTime() === today.getTime();
   });
@@ -67,11 +92,11 @@ export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
 
   // Check for rooms needing cleaning
   const todayCheckOuts = reservations.filter(r => {
-    const checkOut = new Date(r.check_out_date);
+    const checkOut = getCheckOutDate(r);
     checkOut.setHours(0, 0, 0, 0);
     return checkOut.getTime() === today.getTime();
   });
-  const dirtyRooms = todayCheckOuts.filter(r => r.cleaning_status !== 'clean').length;
+  const dirtyRooms = todayCheckOuts.filter(r => getCleaningStatus(r) !== 'clean').length;
   if (dirtyRooms > 0) {
     alerts.push({
       id: 'dirty-rooms',
@@ -85,10 +110,10 @@ export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
 
   // Check for cancellations
   const recentCancellations = reservations.filter(r => {
-    const updated = new Date(r.updated_at);
+    const updated = getUpdatedAt(r);
     const dayAgo = new Date(today);
     dayAgo.setDate(dayAgo.getDate() - 1);
-    return r.status === 'cancelled' && updated > dayAgo;
+    return getReservationStatus(r) === 'cancelled' && updated > dayAgo;
   });
   if (recentCancellations.length > 0) {
     alerts.push({
@@ -103,7 +128,7 @@ export function useAlerts(reservations: Reservation[], rooms: Room[]): Alert[] {
 
   // Check for high cancellation rate
   const totalBookings = reservations.length;
-  const cancelledBookings = reservations.filter(r => r.status === 'cancelled').length;
+  const cancelledBookings = reservations.filter(r => getReservationStatus(r) === 'cancelled').length;
   const cancellationRate = totalBookings > 0 ? (cancelledBookings / totalBookings) * 100 : 0;
   if (cancellationRate > 20) {
     alerts.push({

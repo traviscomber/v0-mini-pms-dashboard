@@ -1,4 +1,4 @@
-import { Reservation } from '@/lib/types';
+type ReservationRecord = Record<string, any>;
 
 export interface FilterOptions {
   dateRange: {
@@ -20,14 +20,23 @@ export const defaultFilters: FilterOptions = {
 };
 
 export function applyFilters(
-  reservations: Reservation[],
+  reservations: ReservationRecord[],
   filters: FilterOptions
-): Reservation[] {
+): ReservationRecord[] {
   return reservations.filter(reservation => {
+    const checkInValue = reservation.check_in_date ?? reservation.checkInDate ?? reservation.checkIn;
+    const checkOutValue = reservation.check_out_date ?? reservation.checkOutDate ?? reservation.checkOut;
+    const paymentStatus = reservation.payment_status ?? reservation.paymentStatus;
+    const reservationStatus = reservation.status ?? reservation.reservationStatus;
+    const roomId = reservation.room_id ?? reservation.roomId;
+    const guestName = reservation.guest_name ?? reservation.guestName ?? '';
+    const guestEmail = reservation.guest_email ?? reservation.guestEmail ?? '';
+    const guestPhone = reservation.guest_phone ?? reservation.guestPhone ?? '';
+
     // Date range filter
     if (filters.dateRange.start && filters.dateRange.end) {
-      const checkIn = new Date(reservation.check_in_date);
-      const checkOut = new Date(reservation.check_out_date);
+      const checkIn = new Date(checkInValue);
+      const checkOut = new Date(checkOutValue);
       const filterStart = new Date(filters.dateRange.start);
       const filterEnd = new Date(filters.dateRange.end);
       
@@ -39,21 +48,21 @@ export function applyFilters(
 
     // Payment status filter
     if (filters.paymentStatus.length > 0) {
-      if (!filters.paymentStatus.includes(reservation.payment_status)) {
+      if (!filters.paymentStatus.includes(paymentStatus)) {
         return false;
       }
     }
 
     // Reservation status filter
     if (filters.reservationStatus.length > 0) {
-      if (!filters.reservationStatus.includes(reservation.status)) {
+      if (!filters.reservationStatus.includes(reservationStatus)) {
         return false;
       }
     }
 
     // Room ID filter
     if (filters.roomIds.length > 0) {
-      if (!filters.roomIds.includes(reservation.room_id)) {
+      if (!filters.roomIds.includes(roomId)) {
         return false;
       }
     }
@@ -61,13 +70,13 @@ export function applyFilters(
     // Search term filter (guest name, email, phone)
     if (filters.searchTerm) {
       const searchLower = filters.searchTerm.toLowerCase();
-      const guestName = reservation.guest_name?.toLowerCase() || '';
-      const guestEmail = reservation.guest_email?.toLowerCase() || '';
-      const guestPhone = reservation.guest_phone?.toLowerCase() || '';
+      const normalizedGuestName = guestName.toLowerCase();
+      const normalizedGuestEmail = guestEmail.toLowerCase();
+      const normalizedGuestPhone = guestPhone.toLowerCase();
       
-      if (!guestName.includes(searchLower) && 
-          !guestEmail.includes(searchLower) && 
-          !guestPhone.includes(searchLower)) {
+      if (!normalizedGuestName.includes(searchLower) && 
+          !normalizedGuestEmail.includes(searchLower) && 
+          !normalizedGuestPhone.includes(searchLower)) {
         return false;
       }
     }

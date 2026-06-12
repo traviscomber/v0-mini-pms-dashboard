@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, Check, AlertCircle } from 'lucide-react';
 import { Reservation } from '../types';
 import { useLanguage as useLanguage } from '../LanguageContext';
@@ -22,6 +22,10 @@ export default function ReservationDrawer({
 }: ReservationDrawerProps) {
   const [editedReservation, setEditedReservation] = useState<Reservation | null>(reservation);
   const { t } = useLanguage();
+
+  useEffect(() => {
+    setEditedReservation(reservation);
+  }, [reservation]);
 
   if (!isOpen || !reservation) return null;
 

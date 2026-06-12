@@ -185,14 +185,6 @@ export interface AuditLog {
   changes?: Record<string, any>;
   timestamp: Date;
 }
-  idNumber?: string;
-  totalBookings: number;
-  totalSpent?: number;
-  notes?: string;
-  isVIP?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 // Task management for operations workflow
 export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';

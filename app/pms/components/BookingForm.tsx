@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { useLanguage as useLanguage } from '../LanguageContext';
 
 interface BookingFormProps {
   rooms: any[];
   reservations: any[];
-  onAdd: (res: any) => void;
+  onAdd: (res: any) => void | Promise<void>;
 }
 
 export default function BookingForm({ rooms, reservations, onAdd }: BookingFormProps) {
@@ -27,19 +27,47 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
     notes: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  useEffect(() => {
+    if (!form.roomId && rooms[0]?.id) {
+      setForm((current) => ({ ...current, roomId: rooms[0].id }));
+    }
+  }, [form.roomId, rooms]);
+
+  const getReservationStart = (reservation: any) =>
+    reservation.checkIn || reservation.check_in_date || reservation.checkInDate?.toISOString?.().split('T')[0];
+
+  const getReservationEnd = (reservation: any) =>
+    reservation.checkOut || reservation.check_out_date || reservation.checkOutDate?.toISOString?.().split('T')[0];
+
+  const getReservationStatus = (reservation: any) =>
+    reservation.reservationStatus || reservation.status;
+
   const checkOverlap = (roomId: string, checkIn: string, checkOut: string) => {
-    return reservations.some(r => 
-      r.roomId === roomId && 
-      checkIn < r.checkOut && 
-      checkOut > r.checkIn
-    );
+    return reservations.some((reservation) => {
+      const reservationCheckIn = getReservationStart(reservation);
+      const reservationCheckOut = getReservationEnd(reservation);
+      const reservationStatus = getReservationStatus(reservation);
+
+      if (!reservationCheckIn || !reservationCheckOut || reservation.roomId !== roomId) {
+        return false;
+      }
+
+      if (reservationStatus === 'cancelled') {
+        return false;
+      }
+
+      return checkIn < reservationCheckOut && checkOut > reservationCheckIn;
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
     const newErrors: Record<string, string> = {};
 
     if (!form.guestName.trim()) newErrors.guestName = t('filters.guestName') + ' is required';
@@ -77,9 +105,16 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
       totalPrice,
     };
 
-    onAdd(newRes);
-    setForm({ guestName: '', guestEmail: '', guestPhone: '', roomId: rooms[0]?.id || '', checkIn: '', checkOut: '', adults: 1, children: 0, source: 'Direct', paymentStatus: 'Paid', cleaningStatus: 'Clean', notes: '' });
-    setErrors({});
+    try {
+      setIsSubmitting(true);
+      await onAdd(newRes);
+      setForm({ guestName: '', guestEmail: '', guestPhone: '', roomId: rooms[0]?.id || '', checkIn: '', checkOut: '', adults: 1, children: 0, source: 'Direct', paymentStatus: 'Paid', cleaningStatus: 'Clean', notes: '' });
+      setErrors({});
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to create reservation');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -255,11 +290,18 @@ export default function BookingForm({ rooms, reservations, onAdd }: BookingFormP
         </div>
       )}
 
+      {submitError && (
+        <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          {submitError}
+        </div>
+      )}
+
       <button
         type="submit"
-        className="mt-4 w-full bg-blue-600 text-black font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        disabled={isSubmitting}
+        className="mt-4 w-full rounded-lg bg-blue-600 py-2 font-semibold text-black transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Add Reservation
+        {isSubmitting ? 'Saving...' : 'Add Reservation'}
       </button>
     </form>
   );
