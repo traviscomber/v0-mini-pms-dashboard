@@ -40,9 +40,9 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
             <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
               Workspace setup
             </span>
-            <h1 className="text-4xl font-bold tracking-tight text-card-foreground">Provision your Blackswan workspace</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-card-foreground">Provision your workspace</h1>
             <p className="max-w-3xl text-base text-muted-foreground sm:text-lg">
-              This step creates the first organization, owner membership, and site context that future BFCS,
+              This step creates the first organization, owner membership, and site context that future platform
               operations, maintenance, hospitality, and automation flows will hang from.
             </p>
           </div>
@@ -106,7 +106,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                   name="organizationName"
                   required
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="Blackswan Facility Group"
+                  placeholder="N3uralia Group"
                 />
               </label>
 
@@ -117,7 +117,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                   name="propertyName"
                   required
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="Blackswan Santiago Hub"
+                  placeholder="Main Operations Hub"
                 />
               </label>
 

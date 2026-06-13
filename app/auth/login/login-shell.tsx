@@ -23,7 +23,7 @@ interface LoginShellProps {
 }
 
 const HERO_STATS = [
-  { label: "Unidades activas", value: "4", delta: "BFCS" },
+  { label: "Unidades activas", value: "4", delta: "Core" },
   { label: "Operaciones cubiertas", value: "100%", delta: "Admin + field" },
   { label: "Tiempo ahorrado", value: "—", delta: "Automation" },
   { label: "Decisiones trazables", value: "100%", delta: "Audit-ready" },
@@ -52,7 +52,7 @@ const PLATFORM_PILLARS = [
   },
 ];
 
-const BFCS_MODULES = [
+const CORE_MODULES = [
   {
     title: "Admin General",
     text: "Presupuestos, personas, energía y gobierno del sistema en una sola vista.",
@@ -223,8 +223,8 @@ export function LoginShell({
       <header className="relative z-10 border-b border-border/70 bg-card/70 backdrop-blur-xl animate-[lp-drop_0.7s_ease_both]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">Blackswan FC</p>
-            <p className="text-xs text-foreground/60">BFCS para Blackswan — core system para operación multi-vertical</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">N3uralia</p>
+            <p className="text-xs text-foreground/60">Core system para operación multi-vertical</p>
           </div>
           <nav className="hidden items-center gap-6 text-sm text-foreground/65 md:flex">
             <a href="#platform" className="transition hover:text-foreground">Plataforma</a>
@@ -239,16 +239,16 @@ export function LoginShell({
         <section className="space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary animate-[lp-rise_0.8s_ease_both]">
             <Sparkles className="h-3.5 w-3.5" />
-            Blackswan Facility Core System
+            N3uralia Facility Core System
           </div>
 
           <div className="space-y-5 animate-[lp-rise_0.85s_ease_0.05s_both]">
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl xl:text-6xl">
-              Un centro de control para Blackswan que organiza hospitality, administración, campo e infraestructura.
+              Un centro de control para equipos que organizan hospitality, administración, campo e infraestructura.
             </h1>
             <p className="max-w-2xl text-base leading-7 text-foreground/70 sm:text-lg">
-              BFCS reúne equipos, activos, reservas, mantenimiento y comunicación en una sola vista ejecutiva.
-              Pensado para la primera operación Blackswan, con control serio y claridad todos los días.
+              La plataforma reúne equipos, activos, reservas, mantenimiento y comunicación en una sola vista ejecutiva.
+              Pensado para equipos que necesitan control serio y claridad todos los días.
             </p>
           </div>
 
@@ -369,12 +369,12 @@ export function LoginShell({
 
           <section id="modules" className="space-y-4">
             <SectionHeading
-              eyebrow="Módulos BFCS"
-              title="Cuatro bloques para operar Blackswan sin fricción."
-              text="La portada debe mostrar la estructura real del cliente, no una promesa genérica."
+              eyebrow="Módulos core"
+              title="Cuatro bloques para operar sin fricción."
+              text="La portada debe mostrar la estructura real del producto, no una promesa genérica."
             />
             <div className="grid gap-4 md:grid-cols-2">
-              {BFCS_MODULES.map((item, index) => (
+              {CORE_MODULES.map((item, index) => (
                 <article
                   key={item.title}
                   className="rounded-3xl border border-border bg-card/80 p-5 animate-[lp-rise_0.75s_ease_both]"
@@ -435,7 +435,7 @@ export function LoginShell({
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               <Callout icon={<CheckCircle2 className="h-4 w-4" />} title="Menos errores" text="Reduce atrasos, cobros olvidados y fallas de coordinación." />
-              <Callout icon={<ArrowRight className="h-4 w-4" />} title="Decisiones rápidas" text="Convierte actividad BFCS en un plan claro desde un solo vistazo." />
+              <Callout icon={<ArrowRight className="h-4 w-4" />} title="Decisiones rápidas" text="Convierte actividad del core system en un plan claro desde un solo vistazo." />
               <Callout icon={<Lock className="h-4 w-4" />} title="Listo para auditoría" text="Cada recomendación puede revisarse y aprobarse con trazabilidad." />
             </div>
           </section>
@@ -492,14 +492,14 @@ export function LoginShell({
               {tab === "signin" ? (
                 <form action={signInAction} className="space-y-4" noValidate>
                   <input type="hidden" name="next" value={next} />
-                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@blackswan.cl" autoComplete="email" />
+                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@empresa.com" autoComplete="email" />
                   <AuthInput label="Contraseña" name="password" type="password" placeholder="••••••••" autoComplete="current-password" />
                   <AuthButton label="Entrar al workspace" />
                 </form>
               ) : (
                 <form action={signUpAction} className="space-y-4" noValidate>
                   <AuthInput label="Nombre completo" name="fullName" type="text" placeholder="Tu nombre" />
-                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@blackswan.cl" autoComplete="email" />
+                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@empresa.com" autoComplete="email" />
                   <AuthInput
                     label="Contraseña"
                     name="password"
@@ -531,7 +531,7 @@ export function LoginShell({
       </main>
 
       <footer className="relative z-10 border-t border-border/70 px-6 py-5 text-center text-xs text-foreground/50 lg:px-8">
-        © 2026 Blackswan — Facility Core System
+        © 2026 N3uralia — Facility Core System
       </footer>
 
       <style>{`
