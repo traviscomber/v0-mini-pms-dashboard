@@ -662,17 +662,7 @@ export function LoginShell({
 
       {/* FEATURES */}
       <section id="plataforma" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="mb-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.featuresLabel}</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            {lang === "es" ? "Todo lo que necesita tu hotel." : "Everything your hotel needs."}
-          </h2>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {c.features.map((feat, i) => (
-            <FeatureCard key={feat.title} icon={ICON_MAP[feat.icon]} title={feat.title} description={feat.description} index={i} />
-          ))}
-        </div>
+        <PlatformSection lang={lang} features={c.features} label={c.featuresLabel} />
       </section>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
