@@ -11,9 +11,32 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Yagán | Facility Core System',
-  description: 'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
+  metadataBase: new URL('https://www.yagan.app'),
+  title: {
+    default: 'Yagán | Facility Core System',
+    template: '%s | Yagán',
+  },
+  description:
+    'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
   generator: 'v0.app',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Yagán | Facility Core System',
+    description:
+      'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
+    url: 'https://www.yagan.app',
+    siteName: 'Yagán',
+    locale: 'es_CL',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yagán | Facility Core System',
+    description:
+      'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
+  },
   icons: {
     icon: [
       {
@@ -40,10 +63,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark bg-background`}>
-      <body className="font-sans antialiased bg-background text-foreground">
-        <Providers>
-          {children}
-        </Providers>
+      <body className="bg-background font-sans text-foreground antialiased">
+        <Providers>{children}</Providers>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
