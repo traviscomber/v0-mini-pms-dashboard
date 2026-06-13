@@ -1039,7 +1039,7 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
   }, [entries, nextIdx, counter]);
 
   return (
-    <div className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden" style={{ maxHeight: "calc(100vh - 90px)" }}>
+    <div className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden" style={{ height: "calc(100vh - 90px)", maxHeight: "720px", minHeight: "480px" }}>
       {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-border/50 px-4 py-2.5">
         <div className="flex items-center gap-2">
@@ -1055,7 +1055,7 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
       </div>
 
       {/* Scrollable feed */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ scrollBehavior: "smooth" }}>
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ scrollBehavior: "smooth" }}>
         {entries.map((entry, i) => {
           const m = entry.msg;
           const isNewest = i === entries.length - 1;
