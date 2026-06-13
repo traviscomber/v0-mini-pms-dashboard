@@ -6,6 +6,7 @@ import AlertBanner from "./AlertBanner";
 import AgentControlTower from "./AgentControlTower";
 import ExecutiveBriefing from "./ExecutiveBriefing";
 import SmartActionBoard from "./SmartActionBoard";
+import SmartMessageBoard from "./SmartMessageBoard";
 import TodayCommandCenter from "./TodayCommandCenter";
 import type { Alert, Reservation, Room, Task } from "../types";
 
@@ -42,7 +43,7 @@ export default function OperationsCommandSuite({
             <div>
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">Three layers, one operating truth.</h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/65">
-                Start with the executive read, let the agent stack propose the next best move, then execute from today’s command center.
+                Start with the executive read, let the agent stack propose the next best move, then execute from today's command center.
               </p>
             </div>
           </div>
@@ -84,7 +85,7 @@ export default function OperationsCommandSuite({
         </div>
 
         <div className="space-y-3">
-          <SectionLabel number="03" title="Today’s Command Center" subtitle="The work that needs human attention right now." />
+          <SectionLabel number="03" title="Today's Command Center" subtitle="The work that needs human attention right now." />
           <TodayCommandCenter
             reservations={reservations}
             rooms={rooms}
@@ -93,6 +94,11 @@ export default function OperationsCommandSuite({
           />
         </div>
       </div>
+
+      <SmartMessageBoard
+        reservations={reservations}
+        onNavigate={() => onNavigate("messaging")}
+      />
     </section>
   );
 }
