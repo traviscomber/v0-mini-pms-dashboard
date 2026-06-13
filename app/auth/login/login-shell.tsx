@@ -63,6 +63,8 @@ export function LoginShell({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (typeof window === 'undefined') return;
+    
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -133,8 +135,8 @@ export function LoginShell({
   }, []);
 
   return (
-    <div className="relative min-h-[100svh] overflow-hidden bg-background text-foreground">
-      <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-50" />
+    <div suppressHydrationWarning className="relative min-h-[100svh] overflow-hidden bg-background text-foreground">
+      <canvas ref={canvasRef} aria-hidden="true" suppressHydrationWarning className="pointer-events-none absolute inset-0 h-full w-full opacity-50" />
 
       <div
         aria-hidden="true"
@@ -273,14 +275,14 @@ export function LoginShell({
 
             <div className="mt-5">
               {tab === "signin" ? (
-                <form action={signInAction} className="space-y-4" noValidate>
+                <form action={signInAction} className="space-y-4" noValidate suppressHydrationWarning>
                   <input type="hidden" name="next" value={next} />
                   <AuthInput label="Email" name="email" type="email" placeholder="you@n3uralia.com" autoComplete="email" />
                   <AuthInput label="Password" name="password" type="password" placeholder="••••••••" autoComplete="current-password" />
                   <AuthButton label="Sign in to workspace" />
                 </form>
               ) : (
-                <form action={signUpAction} className="space-y-4" noValidate>
+                <form action={signUpAction} className="space-y-4" noValidate suppressHydrationWarning>
                   <AuthInput label="Full name" name="fullName" type="text" placeholder="Your name" />
                   <AuthInput label="Email" name="email" type="email" placeholder="you@n3uralia.com" autoComplete="email" />
                   <AuthInput
