@@ -310,7 +310,7 @@ export function LoginShell({
                     tone="output"
                     icon={<LineChart className="h-4 w-4" />}
                     title="Resultado claro"
-                    text="La equipo ve una acción concreta, con contexto y trazabilidad."
+                    text="El equipo ve una acción concreta, con contexto y trazabilidad."
                   />
                 </div>
               </div>
@@ -345,7 +345,7 @@ export function LoginShell({
           <section id="agents" className="rounded-3xl border border-border bg-card/80 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.12)] backdrop-blur animate-[lp-rise_0.9s_ease_0.15s_both]">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Agent stack</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Equipo de agentes</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight">Agentes pequeños, responsabilidades claras.</h2>
               </div>
               <p className="max-w-xl text-sm leading-6 text-foreground/65">
