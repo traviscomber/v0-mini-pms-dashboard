@@ -23,7 +23,7 @@ const copy = {
     badge: "Operaciones hoteleras de siguiente nivel",
     headline: "Una torre de control\npara tu hotel.",
     subheadline:
-      "N3uralia une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
+      "Yagán une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
     cta: "Solicitar acceso",
     stats: [
       { label: "Ocupacion promedio", value: "94%", delta: "+12%" },
@@ -107,7 +107,7 @@ const copy = {
       supabaseWarning:
         "Supabase no esta configurado. Agrega las variables de entorno para habilitar la autenticacion.",
     },
-    footer: "© 2026 N3uralia — Plataforma de hospitalidad agentiva",
+    footer: "© 2026 Yagán — Sistema Integral de Operaciones",
   },
   en: {
     tagline: "Agentic PMS for serious hoteliers",
@@ -120,7 +120,7 @@ const copy = {
     badge: "Next-generation hotel operations",
     headline: "One control tower\nfor your hotel.",
     subheadline:
-      "N3uralia brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
+      "Yagán brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
     cta: "Request access",
     stats: [
       { label: "Average occupancy", value: "94%", delta: "+12%" },
@@ -204,7 +204,7 @@ const copy = {
       supabaseWarning:
         "Supabase is not configured. Add environment variables to enable authentication.",
     },
-    footer: "© 2026 N3uralia — Agentic hospitality platform",
+    footer: "© 2026 Yagán — Integrated Operations Platform",
   },
 } satisfies Record<Lang, unknown>;
 
@@ -735,16 +735,16 @@ export function LoginShell({
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
                   <span className="text-[10px] font-black text-primary-foreground">N3</span>
                 </div>
-                <span className="text-sm font-semibold tracking-tight">N3uralia</span>
+                <span className="text-sm font-semibold tracking-tight">Yagán</span>
               </div>
               <p className="text-sm leading-relaxed text-foreground/55 max-w-[220px]">
                 {lang === "es"
-                  ? "PMS agentivo para hoteleros. Ingresos, operaciones y huespedes en una sola torre de control."
-                  : "Agentic PMS for hoteliers. Revenue, operations, and guests in one control tower."}
+                  ? "Sistema integral de operaciones. Integramos reservas, operaciones, administración e infraestructura."
+                  : "Integrated operations system. We bring together reservations, operations, administration and infrastructure."}
               </p>
               <div className="flex flex-col gap-1.5 text-xs text-foreground/40">
-                <span>N3uralia Inc. — {lang === "es" ? "Plataforma SaaS" : "SaaS Platform"}</span>
-                <a href="mailto:hola@n3uralia.com" className="transition hover:text-foreground/70">hola@n3uralia.com</a>
+                <span>Yagán — {lang === "es" ? "Plataforma SaaS" : "SaaS Platform"}</span>
+                <a href="mailto:hola@yagan.app" className="transition hover:text-foreground/70">hola@yagan.app</a>
               </div>
               {/* Social proof / LLM-readable authority signals */}
               <div className="flex flex-wrap gap-2 pt-1">
@@ -818,14 +818,14 @@ export function LoginShell({
               </p>
               <ul className="space-y-2.5 text-sm text-foreground/55">
                 {(lang === "es" ? [
-                  { label: "Acerca de N3uralia",   href: "#" },
+                  { label: "Acerca de Yagán",   href: "#" },
                   { label: "Blog y recursos",      href: "#" },
                   { label: "Solicitar demo",        href: "#" },
                   { label: "Precios",              href: "#" },
                   { label: "Terminos de servicio", href: "#" },
                   { label: "Politica de privacidad", href: "#" },
                 ] : [
-                  { label: "About N3uralia",    href: "#" },
+                  { label: "About Yagán",    href: "#" },
                   { label: "Blog & resources",  href: "#" },
                   { label: "Request a demo",    href: "#" },
                   { label: "Pricing",           href: "#" },
@@ -861,8 +861,8 @@ export function LoginShell({
             </p>
             <p className="text-xs leading-relaxed text-foreground/35 max-w-4xl">
               {lang === "es"
-                ? "N3uralia es un sistema de gestion hotelera (PMS) de nueva generacion impulsado por agentes de inteligencia artificial. Automatiza revenue management, operaciones, housekeeping, mensajeria con huespedes e integraciones con OTAs como Booking.com y Expedia. Disenado para hoteles boutique, cadenas regionales, hostales y gestores de apartamentos que buscan reducir errores operativos, aumentar la tarifa media diaria (ADR) y mejorar la experiencia del huesped sin aumentar el equipo."
-                : "N3uralia is a next-generation hotel property management system (PMS) powered by AI agents. It automates revenue management, operations, housekeeping, guest messaging, and OTA integrations including Booking.com and Expedia. Designed for boutique hotels, regional chains, hostels, and apartment managers seeking to reduce operational errors, increase average daily rate (ADR), and improve guest experience without growing headcount."}
+                ? "Yagán es un sistema de gestion hotelera (PMS) de nueva generacion impulsado por agentes de inteligencia artificial. Automatiza revenue management, operaciones, housekeeping, mensajeria con huespedes e integraciones con OTAs como Booking.com y Expedia. Disenado para hoteles boutique, cadenas regionales, hostales y gestores de apartamentos que buscan reducir errores operativos, aumentar la tarifa media diaria (ADR) y mejorar la experiencia del huesped sin aumentar el equipo."
+                : "Yagán is a next-generation hotel property management system (PMS) powered by AI agents. It automates revenue management, operations, housekeeping, guest messaging, and OTA integrations including Booking.com and Expedia. Designed for boutique hotels, regional chains, hostels, and apartment managers seeking to reduce operational errors, increase average daily rate (ADR), and improve guest experience without growing headcount."}
             </p>
             {/* Structured keyword anchors for GEO / LLMO */}
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -887,7 +887,7 @@ export function LoginShell({
         <div className="border-t border-border/30">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-foreground/35">
-              <span>{lang === "es" ? "© 2026 N3uralia. Todos los derechos reservados." : "© 2026 N3uralia. All rights reserved."}</span>
+              <span>{lang === "es" ? "© 2026 Yagán. Todos los derechos reservados." : "© 2026 Yagán. All rights reserved."}</span>
               <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Terminos" : "Terms"}</a>
               <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Privacidad" : "Privacy"}</a>
               <a href="#" className="transition hover:text-foreground/60">Sitemap</a>
