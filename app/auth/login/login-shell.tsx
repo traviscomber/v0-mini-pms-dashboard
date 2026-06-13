@@ -980,6 +980,169 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
 /* ─────────────────────────────────────────
    SUB-COMPONENTS
 ───────────────────────────────────────── */
+
+/* ── Feature Visual: per-feature canvas animation ── */
+function FeatureVisual({ index }: { index: number }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const raf = useRef(0);
+  useEffect(() => {
+    const c = ref.current; if (!c) return;
+    const ctx = c.getContext("2d")!;
+    const W = c.width = c.offsetWidth || 420;
+    const H = c.height = c.offsetHeight || 320;
+    const draw = (ts: number) => {
+      const t = ts / 1000;
+      ctx.clearRect(0, 0, W, H);
+      if (index === 0) {
+        for (let r = 1; r <= 4; r++) {
+          ctx.beginPath(); ctx.arc(W/2, H*0.42, r*34+Math.sin(t*0.8+r)*4, 0, Math.PI*2);
+          ctx.strokeStyle = `oklch(0.60 0.28 320 / ${0.04+r*0.04})`; ctx.lineWidth=1; ctx.stroke();
+        }
+        ctx.beginPath(); ctx.arc(W/2, H*0.42, 6+Math.sin(t*2)*2, 0, Math.PI*2);
+        ctx.fillStyle="oklch(0.60 0.28 320 / 0.9)"; ctx.fill();
+        [0.72,0.91,0.58,0.84].forEach((v,i)=>{
+          const bh=H*0.22*v, x=W*0.16+i*(W*0.19), by=H*0.82-bh;
+          ctx.fillStyle=`oklch(0.60 0.28 320 / ${0.22+v*0.3})`;
+          ctx.beginPath(); ctx.roundRect(x,by,W*0.14,bh,3); ctx.fill();
+        });
+      }
+      if (index === 1) {
+        const N=[{x:W*.5,y:H*.18},{x:W*.18,y:H*.48},{x:W*.5,y:H*.52},{x:W*.82,y:H*.48},{x:W*.33,y:H*.80},{x:W*.67,y:H*.80}];
+        [[0,1],[0,2],[0,3],[2,4],[2,5],[1,4],[3,5]].forEach(([a,b],ei)=>{
+          const p=((t*0.6+ei*0.3)%1);
+          ctx.beginPath(); ctx.moveTo(N[a].x,N[a].y); ctx.lineTo(N[b].x,N[b].y);
+          ctx.strokeStyle="oklch(0.55 0.25 300 / 0.18)"; ctx.lineWidth=1; ctx.stroke();
+          ctx.beginPath(); ctx.arc(N[a].x+(N[b].x-N[a].x)*p, N[a].y+(N[b].y-N[a].y)*p, 2.5,0,Math.PI*2);
+          ctx.fillStyle="oklch(0.60 0.28 320 / 0.8)"; ctx.fill();
+        });
+        N.forEach((n,ni)=>{
+          ctx.beginPath(); ctx.arc(n.x,n.y,7+Math.sin(t*1.5+ni)*2,0,Math.PI*2);
+          ctx.fillStyle=ni===0?"oklch(0.60 0.28 320 / 0.9)":"oklch(0.55 0.25 300 / 0.55)"; ctx.fill();
+        });
+      }
+      if (index === 2) {
+        const cols=6,rows=4,cw=W/(cols+1),ch=H/(rows+2);
+        const st=[0,0,1,2,0,0,1,0,0,2,0,1,0,3,0,0,1,0,0,0,2,0,0,1];
+        const cl=["oklch(0.60 0.28 320/0.75)","oklch(0.55 0.25 300/0.65)","oklch(0.68 0.18 80/0.70)","oklch(0.50 0.26 340/0.60)"];
+        for(let r=0;r<rows;r++) for(let c2=0;c2<cols;c2++){
+          const s=st[r*cols+c2], x=cw*(c2+0.5), y=ch*(r+1);
+          ctx.fillStyle=cl[s]; ctx.beginPath(); ctx.roundRect(x,y,cw*.75,ch*.72,4); ctx.fill();
+          if(s===1){ctx.beginPath();ctx.arc(x+cw*.65,y+5,2+Math.sin(t*2+r+c2)*1.2,0,Math.PI*2);ctx.fillStyle="oklch(0.98 0 0/0.5)";ctx.fill();}
+        }
+      }
+      if (index === 3) {
+        const pts=[0.45,0.52,0.48,0.61,0.58,0.70,0.67,0.78,0.75,0.88];
+        const pad=W*.1,aw=W-pad*2,ah=H*.55,base=H*.75;
+        for(let g=0;g<4;g++){ctx.beginPath();ctx.moveTo(pad,base-ah*(g/3));ctx.lineTo(W-pad,base-ah*(g/3));ctx.strokeStyle="oklch(0.98 0 0/0.05)";ctx.lineWidth=1;ctx.stroke();}
+        ctx.beginPath(); pts.forEach((v,i)=>{const x=pad+(i/(pts.length-1))*aw,y=base-ah*v;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+        ctx.lineTo(W-pad,base); ctx.lineTo(pad,base); ctx.closePath();
+        const g2=ctx.createLinearGradient(0,base-ah,0,base);
+        g2.addColorStop(0,"oklch(0.60 0.28 320/0.22)"); g2.addColorStop(1,"oklch(0.60 0.28 320/0.0)");
+        ctx.fillStyle=g2; ctx.fill();
+        ctx.beginPath(); pts.forEach((v,i)=>{const x=pad+(i/(pts.length-1))*aw,y=base-ah*v;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+        ctx.strokeStyle="oklch(0.60 0.28 320/0.85)"; ctx.lineWidth=2; ctx.stroke();
+        const lx=W-pad,ly=base-ah*.88,glow=Math.sin(t*2)*4+8;
+        ctx.beginPath();ctx.arc(lx,ly,glow,0,Math.PI*2);ctx.fillStyle="oklch(0.60 0.28 320/0.12)";ctx.fill();
+        ctx.beginPath();ctx.arc(lx,ly,4,0,Math.PI*2);ctx.fillStyle="oklch(0.60 0.28 320/1)";ctx.fill();
+      }
+      raf.current = requestAnimationFrame(draw);
+    };
+    raf.current = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf.current);
+  }, [index]);
+  return <canvas ref={ref} className="h-full w-full" style={{ display:"block" }} />;
+}
+
+function PlatformSection({ lang, features, label }: {
+  lang: Lang;
+  features: { title: string; description: string; icon: string }[];
+  label: string;
+}) {
+  const [active, setActive] = useState(0);
+  const [dir, setDir]       = useState<"down"|"up">("down");
+  useEffect(() => {
+    const t = setTimeout(() => { setDir("down"); setActive(a=>(a+1)%features.length); }, 4000);
+    return () => clearTimeout(t);
+  }, [active, features.length]);
+  const pick = (i: number) => { if (i===active) return; setDir(i>active?"down":"up"); setActive(i); };
+  const f = features[active];
+  return (
+    <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
+      <div className="flex-1 space-y-10 lg:max-w-[50%]">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{label}</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            {lang==="es"?"Todo lo que necesita tu hotel.":"Everything your hotel needs."}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-foreground/55">
+            {lang==="es"
+              ?"Una plataforma que conecta ingresos, operaciones, huespedes e integraciones en un solo flujo inteligente."
+              :"One platform connecting revenue, operations, guests, and integrations in a single intelligent flow."}
+          </p>
+        </div>
+        <div className="space-y-2">
+          {features.map((feat, i) => (
+            <button key={feat.title} onClick={()=>pick(i)}
+              className={["group w-full rounded-2xl border px-5 py-4 text-left transition-all duration-300",
+                i===active?"border-primary/30 bg-primary/8":"border-border/50 bg-card/30 hover:border-border hover:bg-card/60"].join(" ")}>
+              <div className="flex items-center gap-3">
+                <div className={["flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border transition-all duration-300",
+                  i===active?"border-primary/30 bg-primary/15 text-primary":"border-border/50 bg-card/60 text-foreground/40 group-hover:text-foreground/70"].join(" ")}>
+                  {ICON_MAP[feat.icon]}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={["text-sm font-semibold transition-colors duration-200",
+                    i===active?"text-foreground":"text-foreground/60 group-hover:text-foreground/80"].join(" ")}>{feat.title}</p>
+                  {i===active&&(
+                    <p className="mt-1 text-sm leading-relaxed text-foreground/55" style={{animation:"msg-in 0.35s ease both"}}>{feat.description}</p>
+                  )}
+                </div>
+                {i===active&&(
+                  <div className="ml-2 h-10 w-0.5 shrink-0 overflow-hidden rounded-full bg-border/40">
+                    <div className="w-full rounded-full bg-primary" style={{animation:"progress-fill 4s linear both"}}/>
+                  </div>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="w-full lg:sticky lg:top-20 lg:w-[46%]">
+        <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/40" style={{height:"420px"}}>
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-border/50 bg-card/80 px-4 py-2.5 backdrop-blur-sm">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60"/>
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary"/>
+              </span>
+              <span key={active} className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/40" style={{animation:"msg-in 0.3s ease both"}}>{f.title}</span>
+            </div>
+            <div className="flex gap-1">
+              {features.map((_,i)=>(
+                <button key={i} onClick={()=>pick(i)} aria-label={`Feature ${i+1}`}
+                  className={["h-1.5 rounded-full transition-all duration-300",i===active?"w-5 bg-primary":"w-1.5 bg-border/50 hover:bg-border"].join(" ")}/>
+              ))}
+            </div>
+          </div>
+          <div key={active} className="absolute inset-0 pt-10"
+            style={{animation:`${dir==="down"?"plat-in-down":"plat-in-up"} 0.4s cubic-bezier(.16,1,.3,1) both`}}>
+            <FeatureVisual index={active}/>
+          </div>
+          <div key={`d${active}`} className="absolute inset-x-0 bottom-0 border-t border-border/50 bg-card/80 px-5 py-4 backdrop-blur-sm"
+            style={{animation:"msg-in 0.4s ease 0.15s both"}}>
+            <p className="text-sm leading-relaxed text-foreground/70">{f.description}</p>
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @keyframes progress-fill{from{height:0%}to{height:100%}}
+        @keyframes plat-in-down{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes plat-in-up  {from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+      `}</style>
+    </div>
+  );
+}
+
 function FeatureCard({ icon, title, description, index }: {
   icon: ReactNode; title: string; description: string; index: number;
 }) {
