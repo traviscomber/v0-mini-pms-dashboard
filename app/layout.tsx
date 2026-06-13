@@ -10,11 +10,11 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const SITE_URL = 'https://n3uralia.com'
-const SITE_NAME = 'N3uralia'
-const TITLE = 'N3uralia — AI-Powered Hotel PMS & Revenue Management Platform'
+const SITE_URL = 'https://www.yagan.app'
+const SITE_NAME = 'Yagán'
+const TITLE = 'Yagán | Facility Core System'
 const DESCRIPTION =
-  'N3uralia is an agentic property management system (PMS) for hotels. Automate revenue management, housekeeping, guest messaging, and OTA integrations with specialist AI agents. Built for boutique hotels, regional chains, and apartment managers.'
+  'Yagán is a multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one integrated control tower. Powered by AI agents for intelligent operations coordination.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -24,12 +24,9 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   keywords: [
-    'hotel PMS', 'agentic PMS', 'AI hotel software', 'revenue management hotel',
-    'hotel operations platform', 'property management system', 'boutique hotel software',
-    'hotel automation', 'housekeeping management', 'OTA integration',
-    'Booking.com integration', 'Expedia integration', 'hotel revenue agent',
-    'ADR optimisation', 'hotel upsell automation', 'guest messaging hotel',
-    'PMS hotelero IA', 'software hotel boutique', 'revenue management automatico',
+    'facility management', 'core system', 'hospitality management', 'operations platform',
+    'hotel operations software', 'property management', 'FMS software',
+    'integrated operations', 'business operations', 'facility coordination',
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -65,7 +62,7 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: 'N3uralia — AI Hotel PMS',
+        alt: 'Yagán — Facility Core System',
       },
     ],
   },
@@ -74,20 +71,20 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     images: [`${SITE_URL}/og-image.png`],
-    creator: '@n3uralia',
-    site: '@n3uralia',
+    creator: '@yagan_app',
+    site: '@yagan_app',
   },
-  generator: 'N3uralia',
+  generator: 'Yagán',
   applicationName: SITE_NAME,
   referrer: 'origin-when-cross-origin',
-  category: 'Hotel Technology / Property Management Software',
+  category: 'Facility Management Software',
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png',  media: '(prefers-color-scheme: dark)' },
+      { url: '/yagan-logo-corporate.png', sizes: '32x32', type: 'image/png' },
+      { url: '/yagan-logo-corporate.png', sizes: '64x64', type: 'image/png' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/yagan-logo-corporate.png',
   },
 }
 

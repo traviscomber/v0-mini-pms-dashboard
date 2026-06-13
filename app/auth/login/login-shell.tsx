@@ -23,7 +23,7 @@ const copy = {
     badge: "Operaciones hoteleras de siguiente nivel",
     headline: "Una torre de control\npara tu hotel.",
     subheadline:
-      "N3uralia une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
+      "Yagán une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
     cta: "Solicitar acceso",
     stats: [
       { label: "Ocupacion promedio", value: "94%", delta: "+12%" },
@@ -107,7 +107,7 @@ const copy = {
       supabaseWarning:
         "Supabase no esta configurado. Agrega las variables de entorno para habilitar la autenticacion.",
     },
-    footer: "© 2026 N3uralia — Plataforma de hospitalidad agentiva",
+    footer: "© 2026 Yagán — Sistema Integral de Operaciones",
   },
   en: {
     tagline: "Agentic PMS for serious hoteliers",
@@ -120,7 +120,7 @@ const copy = {
     badge: "Next-generation hotel operations",
     headline: "One control tower\nfor your hotel.",
     subheadline:
-      "N3uralia brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
+      "Yagán brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
     cta: "Request access",
     stats: [
       { label: "Average occupancy", value: "94%", delta: "+12%" },
@@ -204,7 +204,7 @@ const copy = {
       supabaseWarning:
         "Supabase is not configured. Add environment variables to enable authentication.",
     },
-    footer: "© 2026 N3uralia — Agentic hospitality platform",
+    footer: "© 2026 Yagán — Integrated Operations Platform",
   },
 } satisfies Record<Lang, unknown>;
 
@@ -549,18 +549,16 @@ export function LoginShell({
   };
 
   return (
-    <div suppressHydrationWarning className="relative min-h-[100svh] overflow-x-hidden bg-background text-foreground">
-
+    <div suppressHydrationWarning className="relative min-h-[100svh] bg-background text-foreground">
       <header
-        className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
+        className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-xl transition-all duration-300"
         style={{ animation: "lp-drop 0.5s ease both" }}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5 lg:px-10">
-          <a href="/" className="flex items-center gap-3 group">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <span className="text-[10px] font-black tracking-tight text-primary-foreground">N3</span>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5 lg:px-10 overflow-x-hidden">
+          <a href="/" className="group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black transition-transform hover:scale-110">
+              <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-11 w-11 object-contain" />
             </div>
-            <p className="text-sm font-bold tracking-[0.08em] text-foreground group-hover:text-primary transition-colors">N3URALIA</p>
           </a>
 
           <nav className="hidden items-center gap-1 lg:flex">
@@ -732,19 +730,19 @@ export function LoginShell({
             {/* Brand column */}
             <div className="space-y-4 lg:col-span-1">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-                  <span className="text-[10px] font-black text-primary-foreground">N3</span>
+                <div className="flex h-8 w-8 items-center justify-center rounded bg-black">
+                  <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-7 w-7 object-contain" />
                 </div>
-                <span className="text-sm font-semibold tracking-tight">N3uralia</span>
+                <span className="text-sm font-semibold tracking-tight">Yagán</span>
               </div>
               <p className="text-sm leading-relaxed text-foreground/55 max-w-[220px]">
                 {lang === "es"
-                  ? "PMS agentivo para hoteleros. Ingresos, operaciones y huespedes en una sola torre de control."
-                  : "Agentic PMS for hoteliers. Revenue, operations, and guests in one control tower."}
+                  ? "Sistema integral de operaciones. Integramos reservas, operaciones, administración e infraestructura."
+                  : "Integrated operations system. We bring together reservations, operations, administration and infrastructure."}
               </p>
               <div className="flex flex-col gap-1.5 text-xs text-foreground/40">
-                <span>N3uralia Inc. — {lang === "es" ? "Plataforma SaaS" : "SaaS Platform"}</span>
-                <a href="mailto:hola@n3uralia.com" className="transition hover:text-foreground/70">hola@n3uralia.com</a>
+                <span>Yagán — {lang === "es" ? "Plataforma SaaS" : "SaaS Platform"}</span>
+                <a href="mailto:hola@yagan.app" className="transition hover:text-foreground/70">hola@yagan.app</a>
               </div>
               {/* Social proof / LLM-readable authority signals */}
               <div className="flex flex-wrap gap-2 pt-1">
@@ -818,14 +816,14 @@ export function LoginShell({
               </p>
               <ul className="space-y-2.5 text-sm text-foreground/55">
                 {(lang === "es" ? [
-                  { label: "Acerca de N3uralia",   href: "#" },
+                  { label: "Acerca de Yagán",   href: "#" },
                   { label: "Blog y recursos",      href: "#" },
                   { label: "Solicitar demo",        href: "#" },
                   { label: "Precios",              href: "#" },
                   { label: "Terminos de servicio", href: "#" },
                   { label: "Politica de privacidad", href: "#" },
                 ] : [
-                  { label: "About N3uralia",    href: "#" },
+                  { label: "About Yagán",    href: "#" },
                   { label: "Blog & resources",  href: "#" },
                   { label: "Request a demo",    href: "#" },
                   { label: "Pricing",           href: "#" },
@@ -861,8 +859,8 @@ export function LoginShell({
             </p>
             <p className="text-xs leading-relaxed text-foreground/35 max-w-4xl">
               {lang === "es"
-                ? "N3uralia es un sistema de gestion hotelera (PMS) de nueva generacion impulsado por agentes de inteligencia artificial. Automatiza revenue management, operaciones, housekeeping, mensajeria con huespedes e integraciones con OTAs como Booking.com y Expedia. Disenado para hoteles boutique, cadenas regionales, hostales y gestores de apartamentos que buscan reducir errores operativos, aumentar la tarifa media diaria (ADR) y mejorar la experiencia del huesped sin aumentar el equipo."
-                : "N3uralia is a next-generation hotel property management system (PMS) powered by AI agents. It automates revenue management, operations, housekeeping, guest messaging, and OTA integrations including Booking.com and Expedia. Designed for boutique hotels, regional chains, hostels, and apartment managers seeking to reduce operational errors, increase average daily rate (ADR), and improve guest experience without growing headcount."}
+                ? "Yagán es un sistema de gestion hotelera (PMS) de nueva generacion impulsado por agentes de inteligencia artificial. Automatiza revenue management, operaciones, housekeeping, mensajeria con huespedes e integraciones con OTAs como Booking.com y Expedia. Disenado para hoteles boutique, cadenas regionales, hostales y gestores de apartamentos que buscan reducir errores operativos, aumentar la tarifa media diaria (ADR) y mejorar la experiencia del huesped sin aumentar el equipo."
+                : "Yagán is a next-generation hotel property management system (PMS) powered by AI agents. It automates revenue management, operations, housekeeping, guest messaging, and OTA integrations including Booking.com and Expedia. Designed for boutique hotels, regional chains, hostels, and apartment managers seeking to reduce operational errors, increase average daily rate (ADR), and improve guest experience without growing headcount."}
             </p>
             {/* Structured keyword anchors for GEO / LLMO */}
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -887,7 +885,7 @@ export function LoginShell({
         <div className="border-t border-border/30">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-foreground/35">
-              <span>{lang === "es" ? "© 2026 N3uralia. Todos los derechos reservados." : "© 2026 N3uralia. All rights reserved."}</span>
+              <span>{lang === "es" ? "© 2026 Yagán. Todos los derechos reservados." : "© 2026 Yagán. All rights reserved."}</span>
               <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Terminos" : "Terms"}</a>
               <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Privacidad" : "Privacy"}</a>
               <a href="#" className="transition hover:text-foreground/60">Sitemap</a>
@@ -1041,89 +1039,99 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden" style={{ height: "calc(100vh - 90px)", maxHeight: "720px", minHeight: "480px" }}>
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-border/50 px-4 py-2.5">
+      <div className="flex shrink-0 items-center justify-between border-b border-border/50 bg-background/30 px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/40">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/60">
             {lang === "es" ? "Actividad de agentes — en vivo" : "Agent activity — live"}
           </span>
         </div>
-        <span className="text-[10px] text-foreground/25">{entries.length * 2} {lang === "es" ? "eventos hoy" : "events today"}</span>
+        <span className="text-xs font-medium text-foreground/40">{entries.length * 2} {lang === "es" ? "eventos" : "events"}</span>
       </div>
 
       {/* Scrollable feed */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ scrollBehavior: "smooth" }}>
-        {entries.map((entry, i) => {
-          const m = entry.msg;
-          const isNewest = i === entries.length - 1;
-          return (
-            <div
-              key={entry.id}
-              style={{
-                opacity: isNewest ? 1 : 0.72 - (entries.length - 1 - i) * 0.08,
-                animation: "msg-in 0.45s cubic-bezier(.16,1,.3,1) both",
-              }}
-            >
-              {/* Agent chip */}
-              <div className={["flex items-center justify-between rounded-xl border px-3 py-2", m.border, m.bg].join(" ")}>
-                <div className="flex items-center gap-2.5">
-                  <div className={["flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
-                    <span className={m.color}>{m.agent[0]}</span>
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-3 py-3" style={{ scrollBehavior: "smooth" }}>
+        <div className="space-y-2.5">
+          {entries.map((entry, i) => {
+            const m = entry.msg;
+            const isNewest = i === entries.length - 1;
+            return (
+              <div
+                key={entry.id}
+                className="group"
+                style={{
+                  opacity: isNewest ? 1 : 0.72 - (entries.length - 1 - i) * 0.08,
+                  animation: "msg-in 0.45s cubic-bezier(.16,1,.3,1) both",
+                }}
+              >
+                {/* Agent card */}
+                <div className={["rounded-lg border backdrop-blur-sm transition-all duration-300 overflow-hidden", m.border, m.bg].join(" ")}>
+                  {/* Card header with agent info and badge */}
+                  <div className="flex items-start justify-between gap-3 px-3.5 py-3">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className={["flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
+                        <span className={m.color}>{m.agent[0]}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={["text-xs font-bold leading-tight truncate", m.color].join(" ")}>{m.agent}</p>
+                        <p className="text-[11px] text-foreground/35 leading-tight">{m.role}</p>
+                      </div>
+                    </div>
+                    {m.tag && (
+                      <span className={["rounded-full border px-2.5 py-1 text-[10px] font-semibold whitespace-nowrap", TAG_STYLES[m.tag.tone]].join(" ")}>
+                        {lang === "es" ? m.tag.es : m.tag.en}
+                      </span>
+                    )}
                   </div>
-                  <div>
-                    <p className={["text-xs font-semibold leading-tight", m.color].join(" ")}>{m.agent}</p>
-                    <p className="text-[9px] text-foreground/35">{m.role}</p>
+
+                  {/* Divider */}
+                  <div className={["border-t", m.border.replace("border", "border-opacity-20")].join(" ")} />
+
+                  {/* Message content */}
+                  <div className="px-3.5 py-3 space-y-2">
+                    <p className="text-sm leading-snug text-foreground/85 font-medium">
+                      {lang === "es" ? m.message.es : m.message.en}
+                    </p>
+                    {m.detail && (
+                      <div
+                        style={{
+                          opacity: entry.showDetail ? 1 : 0,
+                          transform: entry.showDetail ? "translateY(0)" : "translateY(4px)",
+                          transition: "opacity 0.3s ease, transform 0.3s ease",
+                          maxHeight: entry.showDetail ? "200px" : "0",
+                          overflow: "hidden",
+                        }}
+                        className="space-y-0"
+                      >
+                        <div className={["h-px", m.border.replace("border", "border-opacity-20")].join(" ")} />
+                        <p className="text-xs leading-relaxed text-foreground/50 pt-2">
+                          {lang === "es" ? m.detail.es : m.detail.en}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                {m.tag && (
-                  <span className={["rounded-full border px-2 py-0.5 text-[9px] font-semibold", TAG_STYLES[m.tag.tone]].join(" ")}>
-                    {lang === "es" ? m.tag.es : m.tag.en}
-                  </span>
-                )}
               </div>
+            );
+          })}
 
-              {/* Message text */}
-              <div className="mt-2 px-1 space-y-1.5">
-                <p className="text-sm leading-relaxed text-foreground/80">
-                  {lang === "es" ? m.message.es : m.message.en}
-                </p>
-                {m.detail && (
-                  <p
-                    style={{
-                      opacity: entry.showDetail ? 1 : 0,
-                      transform: entry.showDetail ? "translateY(0)" : "translateY(4px)",
-                      transition: "opacity 0.3s ease, transform 0.3s ease",
-                    }}
-                    className="text-sm leading-relaxed text-foreground/45"
-                  >
-                    {lang === "es" ? m.detail.es : m.detail.en}
-                  </p>
-                )}
-              </div>
-
-              {/* Divider between entries except last */}
-              {i < entries.length - 1 && (
-                <div className="mt-4 border-t border-border/30" />
-              )}
-            </div>
-          );
-        })}
-
-        {/* Typing indicator for incoming message */}
-        <div className="flex items-center gap-1.5 px-1" style={{ animation: "msg-in 0.4s ease both" }}>
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:0ms]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:150ms]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:300ms]" />
+          {/* Typing indicator for incoming message */}
+          <div className="flex items-center gap-2 px-3.5 py-2" style={{ animation: "msg-in 0.4s ease both" }}>
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:150ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:300ms]" />
+            <span className="text-[10px] text-foreground/25 ml-1">{lang === "es" ? "Nuevo evento en línea..." : "New event incoming..."}</span>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="shrink-0 border-t border-border/40 px-4 py-3">
-        <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-background/50 px-3 py-2 text-xs text-foreground/30">
-          <span className="flex-1">{lang === "es" ? "Agentes monitoreando en tiempo real…" : "Agents monitoring in real time…"}</span>
+      <div className="shrink-0 border-t border-border/40 bg-background/20 px-3.5 py-3">
+        <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-background/50 px-3 py-2 text-xs text-foreground/35">
+          <span className="flex-1">{lang === "es" ? "Monitoreando en tiempo real…" : "Monitoring in real time…"}</span>
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary/60" />
         </div>
       </div>
