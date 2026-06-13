@@ -16,6 +16,7 @@ interface OperationsCommandSuiteProps {
   rooms: Room[];
   tasks: Task[];
   onNavigate: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar") => void;
+  onExecute: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => void;
   onSelectReservation?: (reservation: Reservation) => void;
 }
 
@@ -26,6 +27,7 @@ export default function OperationsCommandSuite({
   rooms,
   tasks,
   onNavigate,
+  onExecute,
   onSelectReservation,
 }: OperationsCommandSuiteProps) {
   return (
@@ -67,6 +69,7 @@ export default function OperationsCommandSuite({
         rooms={rooms}
         tasks={tasks}
         onNavigate={onNavigate}
+        onExecute={onExecute}
       />
 
       <div className="space-y-3">
