@@ -552,15 +552,14 @@ export function LoginShell({
     <div suppressHydrationWarning className="relative min-h-[100svh] overflow-x-hidden bg-background text-foreground">
 
       <header
-        className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
+        className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-xl transition-all duration-300"
         style={{ animation: "lp-drop 0.5s ease both" }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5 lg:px-10">
-          <a href="/" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black">
-              <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-9 w-9 object-contain" />
+          <a href="/" className="group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black transition-transform hover:scale-110">
+              <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-11 w-11 object-contain" />
             </div>
-            <p className="text-sm font-bold tracking-[0.08em] text-foreground group-hover:text-primary transition-colors">Yagán</p>
           </a>
 
           <nav className="hidden items-center gap-1 lg:flex">
