@@ -43,17 +43,54 @@ export async function createWorkspaceAction(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.rpc("bootstrap_workspace", {
-    organization_name: organizationName,
-    organization_slug: appendSuffix(slugify(organizationName)),
-    property_currency: propertyCurrency,
-    property_name: propertyName,
-    property_slug: appendSuffix(slugify(propertyName)),
-    property_timezone: propertyTimezone,
-  });
 
-  if (error) {
-    redirect(buildSetupRedirect(error.message));
+  // Always use direct SQL insert with created_by and user_id
+  const orgId = randomUUID();
+  const propId = randomUUID();
+  const orgSlug = appendSuffix(slugify(organizationName));
+  const propSlug = appendSuffix(slugify(propertyName));
+  
+  const { error: orgError } = await supabase
+    .from("organizations")
+    .insert({
+      id: orgId,
+      name: organizationName,
+      slug: orgSlug,
+      created_by: viewer.user.id,
+    });
+
+  if (orgError) {
+    redirect(buildSetupRedirect(`Failed to create organization: ${orgError.message}`));
+  }
+
+  const { error: propError } = await supabase
+    .from("properties")
+    .insert({
+      id: propId,
+      organization_id: orgId,
+      name: propertyName,
+      slug: propSlug,
+      currency: propertyCurrency,
+      timezone: propertyTimezone,
+      user_id: viewer.user.id,
+    });
+
+  if (propError) {
+    redirect(buildSetupRedirect(`Failed to create property: ${propError.message}`));
+  }
+
+  const { error: memberError } = await supabase
+    .from("memberships")
+    .insert({
+      id: randomUUID(),
+      user_id: viewer.user.id,
+      organization_id: orgId,
+      role: "owner",
+      is_default: true,
+    });
+
+  if (memberError) {
+    redirect(buildSetupRedirect(`Failed to create membership: ${memberError.message}`));
   }
 
   revalidatePath("/", "layout");

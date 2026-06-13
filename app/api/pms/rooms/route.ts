@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { guardPmsApi } from "@/lib/auth/api";
 import { slugify } from "@/lib/platform/slug";
 import { getSql } from "@/lib/pms/postgres-client";
+import { getViewerContext } from "@/lib/auth/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,12 +20,70 @@ interface RoomInput {
 export async function POST(request: Request) {
   const { response: guardResponse, scope } = await guardPmsApi();
 
-  if (guardResponse) {
-    return guardResponse;
-  }
+  let propertyId: string;
+  let userId: string;
+  let organizationId: string;
 
-  if (!scope) {
+  // If guardResponse exists and isn't "no property", return the error
+  if (guardResponse) {
+    // Only allow proceeding if it's a "no active property" error (409)
+    // This happens during onboarding when workspace is set up but no property selected
+    const errorBody = await guardResponse.json();
+    if (errorBody.message !== "No active property selected") {
+      return guardResponse;
+    }
+
+    // For onboarding: fetch viewer context and create/use a default property
+    const viewer = await getViewerContext();
+
+    if (!viewer.user || !viewer.activeMembership) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    userId = viewer.user.id;
+    organizationId = viewer.activeMembership.organizationId;
+    const sql = getSql();
+
+    // Get or create a default property for this organization
+    const existingProperty = await sql`
+      select id from properties 
+      where organization_id = ${organizationId}
+      limit 1
+    `.catch(() => null);
+
+    if (existingProperty && existingProperty.length > 0) {
+      propertyId = existingProperty[0].id;
+    } else {
+      propertyId = randomUUID();
+      const propertySlug = `default-${propertyId.replace(/-/g, "").slice(0, 6)}`;
+
+      await sql`
+        insert into properties (
+          id,
+          organization_id,
+          name,
+          slug,
+          timezone,
+          currency
+        )
+        values (
+          ${propertyId},
+          ${organizationId},
+          'My Property',
+          ${propertySlug},
+          'UTC',
+          'USD'
+        )
+        on conflict do nothing
+      `;
+    }
+  } else if (!scope) {
     return NextResponse.json({ message: "No active scope" }, { status: 409 });
+  } else {
+    // Normal path with valid scope
+    propertyId = scope.propertyId;
+    userId = scope.userId;
+    organizationId = scope.organizationId;
   }
 
   let body: { rooms: RoomInput[] };
@@ -61,7 +120,7 @@ export async function POST(request: Request) {
       )
       values (
         ${id},
-        ${scope.propertyId},
+        ${propertyId},
         ${room.name.trim()},
         ${slug},
         ${room.type ?? "room"},
