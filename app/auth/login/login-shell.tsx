@@ -52,39 +52,39 @@ const PLATFORM_PILLARS = [
   },
 ];
 
-const CHILE_FOCUSES = [
+const BFCS_MODULES = [
   {
-    title: "Pensado para Chile",
-    text: "Precios en CLP, copy en español y una experiencia clara para equipos locales.",
+    title: "Admin General",
+    text: "Presupuestos, personas, energía y gobierno del sistema en una sola vista.",
   },
   {
-    title: "Recepción y operaciones",
-    text: "Ideal para hoteles urbanos, apart-hoteles, hostales boutique y servicios multi-sitio.",
+    title: "Hospitality",
+    text: "Guest services, concierge y atención al cliente con contexto y trazabilidad.",
   },
   {
-    title: "Época alta y feriados",
-    text: "Ayuda a anticipar carga en verano, fines de semana largos y temporadas de alta demanda.",
+    title: "Landscaping & Farming",
+    text: "Orchards, vineyards, livestock y fuel coordinados como operación viva.",
   },
   {
-    title: "Control serio",
-    text: "Cada recomendación queda trazada para que el equipo decida con confianza.",
+    title: "Infrastructure",
+    text: "Properties, assets, inventory y mantenimiento en un solo hub operativo.",
   },
 ];
 
-const CITY_PROFILES = [
+const SITE_PROFILES = [
   {
     city: "Santiago",
-    label: "Operación corporativa",
-    text: "Recepción ordenada, tareas claras y seguimiento de activos con trazabilidad diaria.",
+    label: "HQ + operación urbana",
+    text: "Ideal para administración central, hospitality y coordinación de tareas de alto volumen.",
   },
   {
     city: "Valparaíso",
-    label: "Hospitality costero",
-    text: "Flujos de atención, reservas y servicios listos para estancias cortas y escapadas de fin de semana.",
+    label: "Operación distribuida",
+    text: "Perfecto para sedes con servicios mixtos, rotación frecuente y múltiples responsables.",
   },
   {
     city: "Patagonia",
-    label: "Campo y operaciones remotas",
+    label: "Terreno y remotas",
     text: "Más anticipación, comunicación proactiva y margen operativo para clima, traslados y cambios de itinerario.",
   },
 ];
@@ -228,7 +228,7 @@ export function LoginShell({
           </div>
           <nav className="hidden items-center gap-6 text-sm text-foreground/65 md:flex">
             <a href="#platform" className="transition hover:text-foreground">Plataforma</a>
-            <a href="#chile" className="transition hover:text-foreground">Chile</a>
+            <a href="#modules" className="transition hover:text-foreground">Módulos</a>
             <a href="#workflow" className="transition hover:text-foreground">Cómo funciona</a>
             <a href="#security" className="transition hover:text-foreground">Seguridad</a>
           </nav>
@@ -367,14 +367,14 @@ export function LoginShell({
             </div>
           </section>
 
-          <section id="chile" className="space-y-4">
+          <section id="modules" className="space-y-4">
             <SectionHeading
-              eyebrow="Chile"
-              title="Lo hacemos útil para Blackswan en Santiago, Valparaíso y Patagonia."
-              text="La página debe sentirse cercana a la operación real del cliente, con copy que haga clic para cada tipo de sede."
+              eyebrow="Módulos BFCS"
+              title="Cuatro bloques para operar Blackswan sin fricción."
+              text="La portada debe mostrar la estructura real del cliente, no una promesa genérica."
             />
             <div className="grid gap-4 md:grid-cols-2">
-              {CHILE_FOCUSES.map((item, index) => (
+              {BFCS_MODULES.map((item, index) => (
                 <article
                   key={item.title}
                   className="rounded-3xl border border-border bg-card/80 p-5 animate-[lp-rise_0.75s_ease_both]"
@@ -392,7 +392,7 @@ export function LoginShell({
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
-              {CITY_PROFILES.map((city, index) => (
+              {SITE_PROFILES.map((city, index) => (
                 <article
                   key={city.city}
                   className="relative overflow-hidden rounded-3xl border border-border bg-card/80 p-5 animate-[lp-rise_0.8s_ease_both]"
@@ -404,7 +404,7 @@ export function LoginShell({
                   <p className="mt-4 text-sm leading-6 text-foreground/65">{city.text}</p>
                   <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground/65">
                     <Sparkles className="h-3.5 w-3.5 text-primary" />
-                    Copy local para esta operación
+                    Copy local para esta sede
                   </div>
                 </article>
               ))}
