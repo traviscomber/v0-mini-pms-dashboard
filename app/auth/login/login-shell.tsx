@@ -315,17 +315,6 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
   return (
     <div suppressHydrationWarning className="relative min-h-[100svh] overflow-hidden bg-background text-foreground">
 
-      {/* Canvas */}
-      <canvas ref={canvasRef} aria-hidden="true" suppressHydrationWarning
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-40" />
-
-      {/* Royal glow — Iridescent Magenta */}
-      <div aria-hidden="true" className="pointer-events-none absolute -left-40 -top-40 h-[32rem] w-[32rem] rounded-full blur-3xl animate-[lp-float_14s_ease-in-out_infinite]"
-        style={{ background: "radial-gradient(circle, oklch(0.60 0.28 320 / 0.18) 0%, transparent 65%)" }} />
-      {/* Royal glow — Sapphire Violet */}
-      <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 -right-28 h-[28rem] w-[28rem] rounded-full blur-3xl animate-[lp-float_18s_ease-in-out_infinite]"
-        style={{ background: "radial-gradient(circle, oklch(0.55 0.25 300 / 0.12) 0%, transparent 68%)" }} />
-
       {/* ── HEADER ── */}
       <header className="relative z-10 border-b border-border/70 bg-card/70 backdrop-blur-xl animate-[lp-drop_0.7s_ease_both]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
@@ -354,9 +343,9 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
       </header>
 
       {/* ── MAIN ── */}
-      <main className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(380px,0.85fr)] lg:items-start lg:px-8 lg:py-14">
+      <main className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-2 lg:items-start lg:px-8 lg:py-14">
 
-        {/* ── LEFT COLUMN ── */}
+        {/* ── LEFT COLUMN: TEXT ── */}
         <section className="space-y-8">
 
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary animate-[lp-rise_0.8s_ease_both]">
@@ -374,7 +363,7 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
           </div>
 
           {/* Stats */}
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2">
             {c.stats.map((stat, i) => (
               <MetricCard key={stat.label} {...stat} delay={i * 0.08} />
             ))}
@@ -438,8 +427,27 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
 
         </section>
 
-        {/* ── RIGHT COLUMN — Auth card ── */}
-        <section aria-label={c.auth.label} className="lg:sticky lg:top-8" id="auth-card">
+        {/* ── RIGHT COLUMN: ANIMATED HERO ── */}
+        <section className="relative hidden h-[600px] lg:block">
+          {/* Canvas animation background */}
+          <canvas ref={canvasRef} aria-hidden="true" suppressHydrationWarning
+            className="pointer-events-none absolute inset-0 h-full w-full rounded-3xl animate-[lp-rise_1s_ease_0.2s_both]" />
+          
+          {/* Royal glow orbs */}
+          <div aria-hidden="true" className="pointer-events-none absolute -left-20 -top-20 h-[280px] w-[280px] rounded-full blur-3xl animate-[lp-float_14s_ease-in-out_infinite]"
+            style={{ background: "radial-gradient(circle, oklch(0.60 0.28 320 / 0.25) 0%, transparent 65%)" }} />
+          <div aria-hidden="true" className="pointer-events-none absolute -bottom-20 -right-20 h-[240px] w-[240px] rounded-full blur-3xl animate-[lp-float_18s_ease-in-out_infinite]"
+            style={{ background: "radial-gradient(circle, oklch(0.55 0.25 300 / 0.18) 0%, transparent 68%)" }} />
+          
+          {/* Decorative gradient border */}
+          <div className="absolute inset-0 rounded-3xl border border-primary/20" />
+        </section>
+
+      </main>
+
+      {/* ── AUTH CARD (Below hero on all screens) ── */}
+      <section aria-label={c.auth.label} className="relative z-10 mx-auto max-w-7xl px-6 py-10 lg:px-8">
+        <div className="mx-auto max-w-md">
           <div className="rounded-[28px] border border-border bg-card/90 p-6 shadow-[0_32px_100px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:p-7 animate-[lp-card_0.9s_ease_0.1s_both]">
 
             <div className="space-y-2">
@@ -507,8 +515,8 @@ export function LoginShell({ next, message, supabaseReady, signInAction, signUpA
 
             <p className="mt-4 text-center text-xs leading-5 text-foreground/50">{c.auth.legal}</p>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       <footer className="relative z-10 border-t border-border/70 px-6 py-5 text-center text-xs text-foreground/50 lg:px-8">
         {c.footer}
