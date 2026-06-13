@@ -680,8 +680,8 @@ export function LoginShell({
       </div>
 
       {/* AGENTS + AUTH */}
-      <section id="agentes" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
+      <section id="agentes" className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-14">
 
           {/* ── Left: text + pills + why cards + security ── */}
           <div className="flex-1 space-y-8 lg:max-w-[52%]">
@@ -726,7 +726,7 @@ export function LoginShell({
           </div>
 
           {/* ── Right: animated agent messages demo ── */}
-          <div className="w-full lg:sticky lg:top-24 lg:w-[44%] lg:self-stretch">
+          <div className="w-full lg:sticky lg:top-20 lg:w-[44%]">
             <AgentMessagesDemo lang={lang} />
           </div>
 
