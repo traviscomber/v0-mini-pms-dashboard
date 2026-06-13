@@ -726,7 +726,7 @@ export function LoginShell({
           </div>
 
           {/* ── Right: animated agent messages demo ── */}
-          <div className="w-full lg:sticky lg:top-24 lg:w-[44%]">
+          <div className="w-full lg:sticky lg:top-24 lg:w-[44%] lg:self-stretch">
             <AgentMessagesDemo lang={lang} />
           </div>
 
@@ -836,28 +836,54 @@ const TAG_STYLES: Record<"green" | "yellow" | "red" | "blue", string> = {
   blue:   "bg-primary/10 text-primary border-primary/25",
 };
 
+type ChatEntry = { msg: AgentMsg; showDetail: boolean; id: number };
+
 function AgentMessagesDemo({ lang }: { lang: Lang }) {
-  const [active, setActive]       = useState(0);
-  const [visible, setVisible]     = useState(true);
-  const [showDetail, setShowDetail] = useState(false);
+  const [entries, setEntries] = useState<ChatEntry[]>([
+    { msg: AGENT_MESSAGES[0], showDetail: false, id: 0 },
+  ]);
+  const [nextIdx, setNextIdx] = useState(1);
+  const [counter, setCounter] = useState(1);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to bottom whenever entries change
   useEffect(() => {
-    setVisible(true);
-    setShowDetail(false);
-    const t1 = setTimeout(() => setShowDetail(true), 550);
-    const t2 = setTimeout(() => setVisible(false), 3700);
-    const t3 = setTimeout(() => {
-      setActive(a => (a + 1) % AGENT_MESSAGES.length);
-    }, 4200);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [active]);
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [entries]);
 
-  const msg = AGENT_MESSAGES[active];
+  // Show detail for newly added entry after 600ms
+  useEffect(() => {
+    const last = entries[entries.length - 1];
+    if (last && !last.showDetail) {
+      const t = setTimeout(() => {
+        setEntries(prev =>
+          prev.map(e => e.id === last.id ? { ...e, showDetail: true } : e)
+        );
+      }, 600);
+      return () => clearTimeout(t);
+    }
+  }, [entries]);
+
+  // Append next message every 3.5s, cycling; keep last 6 visible
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const newEntry: ChatEntry = {
+        msg: AGENT_MESSAGES[nextIdx % AGENT_MESSAGES.length],
+        showDetail: false,
+        id: counter,
+      };
+      setEntries(prev => [...prev.slice(-5), newEntry]);
+      setNextIdx(i => i + 1);
+      setCounter(c => c + 1);
+    }, 3500);
+    return () => clearTimeout(t);
+  }, [entries, nextIdx, counter]);
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card/40 overflow-hidden">
+    <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden" style={{ minHeight: "520px" }}>
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-border/50 px-4 py-2.5">
+      <div className="flex shrink-0 items-center justify-between border-b border-border/50 px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
@@ -867,49 +893,86 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
             {lang === "es" ? "Actividad de agentes — en vivo" : "Agent activity — live"}
           </span>
         </div>
-        <div className="flex items-center gap-1">
-          {AGENT_MESSAGES.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)} aria-label={`Message ${i + 1}`}
-              className={["h-1.5 rounded-full transition-all duration-300", i === active ? "w-4 bg-primary" : "w-1.5 bg-border/60 hover:bg-border"].join(" ")} />
-          ))}
-        </div>
+        <span className="text-[10px] text-foreground/25">{entries.length * 2} {lang === "es" ? "eventos hoy" : "events today"}</span>
       </div>
 
-      {/* Message */}
-      <div style={{ minHeight: "140px" }} className="p-4">
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(-6px)", transition: "opacity 0.35s ease, transform 0.35s ease" }}>
-          {/* Agent chip */}
-          <div className={["flex items-center justify-between rounded-xl border px-3 py-2", msg.border, msg.bg].join(" ")}>
-            <div className="flex items-center gap-2.5">
-              <div className={["flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs font-black", msg.border, msg.bg].join(" ")}>
-                <span className={msg.color}>{msg.agent[0]}</span>
+      {/* Scrollable feed */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ scrollBehavior: "smooth" }}>
+        {entries.map((entry, i) => {
+          const m = entry.msg;
+          const isNewest = i === entries.length - 1;
+          return (
+            <div
+              key={entry.id}
+              style={{
+                opacity: isNewest ? 1 : 0.72 - (entries.length - 1 - i) * 0.08,
+                animation: "msg-in 0.45s cubic-bezier(.16,1,.3,1) both",
+              }}
+            >
+              {/* Agent chip */}
+              <div className={["flex items-center justify-between rounded-xl border px-3 py-2", m.border, m.bg].join(" ")}>
+                <div className="flex items-center gap-2.5">
+                  <div className={["flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
+                    <span className={m.color}>{m.agent[0]}</span>
+                  </div>
+                  <div>
+                    <p className={["text-xs font-semibold leading-tight", m.color].join(" ")}>{m.agent}</p>
+                    <p className="text-[9px] text-foreground/35">{m.role}</p>
+                  </div>
+                </div>
+                {m.tag && (
+                  <span className={["rounded-full border px-2 py-0.5 text-[9px] font-semibold", TAG_STYLES[m.tag.tone]].join(" ")}>
+                    {lang === "es" ? m.tag.es : m.tag.en}
+                  </span>
+                )}
               </div>
-              <div>
-                <p className={["text-xs font-semibold leading-tight", msg.color].join(" ")}>{msg.agent}</p>
-                <p className="text-[9px] text-foreground/35">{msg.role}</p>
+
+              {/* Message text */}
+              <div className="mt-2 px-1 space-y-1.5">
+                <p className="text-sm leading-relaxed text-foreground/80">
+                  {lang === "es" ? m.message.es : m.message.en}
+                </p>
+                {m.detail && (
+                  <p
+                    style={{
+                      opacity: entry.showDetail ? 1 : 0,
+                      transform: entry.showDetail ? "translateY(0)" : "translateY(4px)",
+                      transition: "opacity 0.3s ease, transform 0.3s ease",
+                    }}
+                    className="text-sm leading-relaxed text-foreground/45"
+                  >
+                    {lang === "es" ? m.detail.es : m.detail.en}
+                  </p>
+                )}
               </div>
+
+              {/* Divider between entries except last */}
+              {i < entries.length - 1 && (
+                <div className="mt-4 border-t border-border/30" />
+              )}
             </div>
-            {msg.tag && (
-              <span className={["rounded-full border px-2 py-0.5 text-[9px] font-semibold", TAG_STYLES[msg.tag.tone]].join(" ")}>
-                {lang === "es" ? msg.tag.es : msg.tag.en}
-              </span>
-            )}
-          </div>
+          );
+        })}
 
-          {/* Message text */}
-          <div className="mt-2.5 px-1 space-y-1.5">
-            <p className="text-sm leading-relaxed text-foreground/80">
-              {lang === "es" ? msg.message.es : msg.message.en}
-            </p>
-            {msg.detail && (
-              <p style={{ opacity: showDetail ? 1 : 0, transform: showDetail ? "translateY(0)" : "translateY(4px)", transition: "opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s" }}
-                className="text-sm leading-relaxed text-foreground/45">
-                {lang === "es" ? msg.detail.es : msg.detail.en}
-              </p>
-            )}
-          </div>
+        {/* Typing indicator for incoming message */}
+        <div className="flex items-center gap-1.5 px-1" style={{ animation: "msg-in 0.4s ease both" }}>
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:0ms]" />
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:150ms]" />
+          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:300ms]" />
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="shrink-0 border-t border-border/40 px-4 py-3">
+        <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-background/50 px-3 py-2 text-xs text-foreground/30">
+          <span className="flex-1">{lang === "es" ? "Agentes monitoreando en tiempo real…" : "Agents monitoring in real time…"}</span>
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary/60" />
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes msg-in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+      `}</style>
     </div>
   );
 }
