@@ -575,7 +575,7 @@ export function LoginShell({
           </nav>
 
           <div className="flex items-center gap-2">
-            <button onClick={toggleLang} suppressHydrationWarning
+            <button onClick={toggleLang}
               aria-label="Toggle language"
               className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-2.5 py-1.5 text-xs font-medium text-foreground/60 transition hover:border-primary/30 hover:text-primary">
               <Globe className="h-3 w-3" />
@@ -894,7 +894,7 @@ export function LoginShell({
               <span className="text-[10px] text-foreground/25">
                 {lang === "es" ? "Disponible en" : "Available in"} ES · EN
               </span>
-              <button onClick={toggleLang} suppressHydrationWarning
+              <button onClick={toggleLang}
                 className="rounded-lg border border-border/50 px-3 py-1.5 text-xs text-foreground/40 transition hover:border-border hover:text-foreground/70">
                 {lang === "es" ? "English" : "Espanol"}
               </button>
@@ -1361,7 +1361,6 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
       <input
         name={name} type={type} placeholder={placeholder}
         autoComplete={autoComplete} minLength={minLength}
-        suppressHydrationWarning
         className="h-11 w-full rounded-xl border border-border/60 bg-background/60 px-3.5 text-sm text-foreground outline-none transition placeholder:text-foreground/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
       />
       {hint && <span className="text-[11px] text-foreground/40">{hint}</span>}
@@ -1371,7 +1370,7 @@ function AuthInput({ label, name, type, placeholder, autoComplete, hint, minLeng
 
 function AuthButton({ label }: { label: string }) {
   return (
-    <button type="submit" suppressHydrationWarning
+    <button type="submit"
       className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 active:scale-[0.98]">
       {label}
       <ArrowRight className="h-3.5 w-3.5" />
