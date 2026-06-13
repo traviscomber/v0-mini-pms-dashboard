@@ -8,6 +8,7 @@ import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
 import OnboardingWizard from "./components/OnboardingWizard";
 import ChannelManager from "./components/ChannelManager";
+import AgentControlTower from "./components/AgentControlTower";
 import ExecutiveBriefing from "./components/ExecutiveBriefing";
 import CommunicationTemplates from "./components/CommunicationTemplates";
 import ConflictDetectionUI from "./components/ConflictDetectionUI";
@@ -219,6 +220,8 @@ export default function PMSApp() {
             {activeSection === "operations" ? (
               <ExecutiveBriefing isLoading={isLoading} reservations={reservations} rooms={rooms} tasks={tasks} />
             ) : null}
+
+            {activeSection === "operations" ? <AgentControlTower /> : null}
 
             {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
 

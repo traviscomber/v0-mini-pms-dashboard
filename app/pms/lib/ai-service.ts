@@ -2,6 +2,7 @@
 
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
+import { EXECUTION_MODEL } from './agent-config';
 
 export async function predictPricing(params: {
   basePrice: number;
@@ -23,7 +24,7 @@ Return ONLY valid JSON:
 
   try {
     const { text } = await generateText({
-      model: openai('gpt-4o-mini'),
+      model: openai(EXECUTION_MODEL),
       prompt,
       temperature: 0.7,
     });
@@ -56,7 +57,7 @@ Return ONLY valid JSON:
 
   try {
     const { text } = await generateText({
-      model: openai('gpt-4o-mini'),
+      model: openai(EXECUTION_MODEL),
       prompt,
       temperature: 0.6,
     });
@@ -90,7 +91,7 @@ Return ONLY valid JSON:
 
   try {
     const { text } = await generateText({
-      model: openai('gpt-4o-mini'),
+      model: openai(EXECUTION_MODEL),
       prompt,
       temperature: 0.5,
     });
