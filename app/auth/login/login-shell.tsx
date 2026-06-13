@@ -557,8 +557,8 @@ export function LoginShell({
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5 lg:px-10">
           <a href="/" className="flex items-center gap-3 group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black">
-              <img src="/yagan-logo-dark.png" alt="Yagán" className="h-7 w-7 object-contain" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black">
+              <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-9 w-9 object-contain" />
             </div>
             <p className="text-sm font-bold tracking-[0.08em] text-foreground group-hover:text-primary transition-colors">Yagán</p>
           </a>
@@ -732,8 +732,8 @@ export function LoginShell({
             {/* Brand column */}
             <div className="space-y-4 lg:col-span-1">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded bg-black">
-                  <img src="/yagan-logo-dark.png" alt="Yagán" className="h-6 w-6 object-contain" />
+                <div className="flex h-8 w-8 items-center justify-center rounded bg-black">
+                  <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-7 w-7 object-contain" />
                 </div>
                 <span className="text-sm font-semibold tracking-tight">Yagán</span>
               </div>
