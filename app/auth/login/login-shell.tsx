@@ -409,7 +409,7 @@ function Notice({ tone, text }: { tone: "accent" | "warning"; text: string }) {
         "rounded-2xl border px-4 py-3 text-sm",
         tone === "accent"
           ? "border-primary/20 bg-primary/10 text-primary"
-          : "border-amber-500/20 bg-amber-500/10 text-amber-200",
+          : "border-secondary/20 bg-secondary/10 text-secondary",
       ].join(" ")}
     >
       {text}
