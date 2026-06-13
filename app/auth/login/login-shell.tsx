@@ -233,7 +233,7 @@ const ICON_MAP: Record<string, ReactNode> = {
 };
 
 /* ─────────────────────────────────────────
-   HERO PANEL — Animated right column
+   COUNT-UP HOOK
 ───────────────────────────────────────── */
 function useCountUp(target: number, duration = 1400, delay = 600) {
   const [value, setValue] = useState(0);
@@ -253,144 +253,272 @@ function useCountUp(target: number, duration = 1400, delay = 600) {
   return value;
 }
 
-const AGENT_TASKS_ES = [
-  { agent: "Revenue Strategist",   task: "Ajuste de tarifa +12% viernes",           icon: "trend", done: true  },
-  { agent: "Operations Commander", task: "3 cuartos pendientes de limpieza",         icon: "zap",   done: false },
-  { agent: "Chief of Staff",       task: "Briefing ejecutivo listo para revision",   icon: "check", done: true  },
-  { agent: "Guest Concierge",      task: "Bienvenida enviada a 4 llegadas hoy",      icon: "check", done: true  },
-  { agent: "Revenue Strategist",   task: "Ocupacion proyectada 96% fin de semana",   icon: "trend", done: true  },
-];
-const AGENT_TASKS_EN = [
-  { agent: "Revenue Strategist",   task: "Rate adjustment +12% Friday",              icon: "trend", done: true  },
-  { agent: "Operations Commander", task: "3 rooms pending cleaning",                 icon: "zap",   done: false },
-  { agent: "Chief of Staff",       task: "Executive briefing ready for review",      icon: "check", done: true  },
-  { agent: "Guest Concierge",      task: "Welcome sent to 4 arrivals today",         icon: "check", done: true  },
-  { agent: "Revenue Strategist",   task: "Occupancy projected 96% weekend",          icon: "trend", done: true  },
-];
+/* ─────────────────────────────────────────
+   HERO CANVAS — Live hotel floor plan
+───────────────────────────────────────── */
+type RoomStatus = "occupied" | "vacant" | "housekeeping" | "maintenance" | "checkout";
 
-function HeroPanel({ lang }: { lang: Lang }) {
-  const arrivals   = useCountUp(12, 1200, 800);
-  const departures = useCountUp(8,  1000, 950);
-  const hk         = useCountUp(94, 1400, 700);
+const STATUS_COLORS: Record<RoomStatus, { fill: string; stroke: string }> = {
+  occupied:     { fill: "oklch(0.60 0.28 320 / 0.30)", stroke: "oklch(0.60 0.28 320 / 0.80)" },
+  vacant:       { fill: "oklch(0.98 0 0 / 0.04)",      stroke: "oklch(0.98 0 0 / 0.13)"       },
+  housekeeping: { fill: "oklch(0.55 0.25 300 / 0.28)", stroke: "oklch(0.55 0.25 300 / 0.75)"  },
+  maintenance:  { fill: "oklch(0.50 0.26 340 / 0.25)", stroke: "oklch(0.50 0.26 340 / 0.70)"  },
+  checkout:     { fill: "oklch(0.60 0.23 60  / 0.20)", stroke: "oklch(0.60 0.23 60  / 0.65)"  },
+};
 
-  const tasks = lang === "es" ? AGENT_TASKS_ES : AGENT_TASKS_EN;
-  const [visibleCount, setVisibleCount] = useState(2);
-  const [cursor, setCursor] = useState(true);
+const STATUSES: RoomStatus[] = ["occupied", "vacant", "housekeeping", "maintenance", "checkout"];
+
+function HeroCanvas({ lang }: { lang: Lang }) {
+  const canvasRef  = useRef<HTMLCanvasElement>(null);
+  const arrivals   = useCountUp(12, 1400, 900);
+  const departures = useCountUp(8,  1200, 1050);
+  const hk         = useCountUp(94, 1600, 750);
   const [ping, setPing] = useState(false);
 
   useEffect(() => {
-    const i = setInterval(() => setCursor(c => !c), 530);
+    const i = setInterval(() => setPing(p => !p), 2400);
     return () => clearInterval(i);
   }, []);
 
   useEffect(() => {
-    const i = setInterval(() => setPing(p => !p), 2200);
-    return () => clearInterval(i);
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas || typeof window === "undefined") return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-  useEffect(() => {
-    setVisibleCount(2);
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    tasks.forEach((_, i) => {
-      if (i >= 2) timeouts.push(setTimeout(() => setVisibleCount(i + 1), 1800 + i * 1600));
-    });
-    return () => timeouts.forEach(clearTimeout);
+    const COLS = 6, ROWS = 5, TOTAL = COLS * ROWS;
+    const rooms = Array.from({ length: TOTAL }, (_, i) => ({
+      status: STATUSES[i % STATUSES.length] as RoomStatus,
+      pulse: 0,
+      targetPulse: (i % 3 === 0) ? 0.7 : 0.1,
+      nextChange: 80 + (i * 37) % 220,
+      num: 101 + i,
+    }));
+
+    let frame = 0, af = 0;
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width  = canvas.offsetWidth  * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const drawAurora = (w: number, h: number, t: number) => {
+      ctx.save();
+      ctx.translate(w * 0.79, h * 0.17);
+      const r = Math.min(w, h) * 0.29;
+
+      for (let ring = 9; ring >= 0; ring--) {
+        const progress = ring / 9;
+        const ringR    = r * (0.25 + progress * 0.75);
+        const wx       = Math.sin(t * 0.65 + ring * 0.85) * 9;
+        const wy       = Math.cos(t * 0.48 + ring * 0.65) * 7;
+        const hue      = 320 + Math.sin(t * 0.38 + ring * 0.45) * 32;
+        const alpha    = (0.13 - progress * 0.01) * (0.55 + 0.45 * Math.sin(t * 0.55 + ring));
+        const chroma   = 0.27 - progress * 0.05;
+        const l        = 0.57 + progress * 0.06;
+
+        const g = ctx.createRadialGradient(wx, wy, 0, wx, wy, ringR);
+        g.addColorStop(0,   `oklch(${l} ${chroma} ${hue} / ${Math.min(alpha * 3.2, 0.9)})`);
+        g.addColorStop(0.4, `oklch(${l} ${chroma} ${hue - 18} / ${alpha})`);
+        g.addColorStop(1,   `oklch(${l - 0.04} ${chroma - 0.06} ${hue - 35} / 0)`);
+
+        ctx.beginPath();
+        ctx.arc(wx, wy, ringR, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      const core = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.16);
+      core.addColorStop(0,   `oklch(0.70 0.31 ${318 + Math.sin(t) * 14} / 0.75)`);
+      core.addColorStop(0.6, `oklch(0.62 0.28 320 / 0.30)`);
+      core.addColorStop(1,   `oklch(0.60 0.28 320 / 0)`);
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.16, 0, Math.PI * 2);
+      ctx.fillStyle = core;
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    const drawFloorPlan = (w: number, h: number) => {
+      const pad   = w * 0.055;
+      const planW = w * 0.73;
+      const planH = h * 0.60;
+      const sx    = pad;
+      const sy    = h * 0.275;
+      const cellW = planW / COLS;
+      const cellH = planH / ROWS;
+      const gap   = 6, rad = 7;
+
+      ctx.fillStyle   = "oklch(0.085 0.012 280 / 0.58)";
+      ctx.strokeStyle = "oklch(0.98 0 0 / 0.055)";
+      ctx.lineWidth   = 1;
+      ctx.beginPath();
+      ctx.roundRect(sx - 7, sy - 7, planW + 14, planH + 14, 16);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "oklch(0.60 0.28 320 / 0.52)";
+      ctx.font      = `bold ${Math.round(h * 0.022)}px monospace`;
+      ctx.textAlign = "left";
+      ctx.fillText("PISO 1  \u2500  HOTEL", sx, sy - 15);
+
+      rooms.forEach((room, i) => {
+        const col = i % COLS;
+        const row = Math.floor(i / COLS);
+        const x   = sx + col * cellW + gap / 2;
+        const y   = sy + row * cellH + gap / 2;
+        const rw  = cellW - gap;
+        const rh  = cellH - gap;
+        const { fill, stroke } = STATUS_COLORS[room.status];
+        const g   = room.pulse;
+
+        ctx.fillStyle   = fill;
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth   = g > 0.5 ? 1.9 : 0.9;
+        ctx.beginPath();
+        ctx.roundRect(x, y, rw, rh, rad);
+        ctx.fill();
+        ctx.stroke();
+
+        if (g > 0.08) {
+          const base = stroke.substring(0, stroke.lastIndexOf("/"));
+          const pg   = ctx.createRadialGradient(
+            x + rw / 2, y + rh / 2, 0,
+            x + rw / 2, y + rh / 2, Math.max(rw, rh) * 0.72
+          );
+          pg.addColorStop(0, `${base}/ ${Math.min(g * 0.50, 0.5)})`);
+          pg.addColorStop(1, `${base}/ 0)`);
+          ctx.fillStyle = pg;
+          ctx.beginPath();
+          ctx.roundRect(x, y, rw, rh, rad);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = `oklch(0.88 0 0 / ${0.22 + g * 0.48})`;
+        ctx.font      = `${Math.round(cellH * 0.20)}px monospace`;
+        ctx.textAlign = "center";
+        ctx.fillText(String(room.num), x + rw / 2, y + rh * 0.63);
+
+        if (room.status !== "vacant") {
+          const base = stroke.substring(0, stroke.lastIndexOf("/"));
+          ctx.beginPath();
+          ctx.arc(x + rw - 8, y + 8, 2.8, 0, Math.PI * 2);
+          ctx.fillStyle = `${base}/ 0.88)`;
+          ctx.fill();
+        }
+      });
+    };
+
+    const drawLegend = (w: number, h: number) => {
+      const entries: [string, string][] = [
+        [lang === "es" ? "Ocupado"    : "Occupied",  "oklch(0.60 0.28 320 / 0.85)"],
+        ["Housekeeping",                               "oklch(0.55 0.25 300 / 0.85)"],
+        [lang === "es" ? "Check-out"  : "Checkout",  "oklch(0.60 0.23 60  / 0.85)"],
+        [lang === "es" ? "Disponible" : "Vacant",    "oklch(0.65 0 0 / 0.38)"],
+      ];
+      const y0 = h * 0.955, x0 = w * 0.056, step = w * 0.172;
+      ctx.font = `${Math.round(h * 0.019)}px sans-serif`;
+      entries.forEach(([label, color], i) => {
+        const x = x0 + i * step;
+        ctx.beginPath();
+        ctx.arc(x + 5, y0, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.fillStyle = "oklch(0.65 0 0 / 0.50)";
+        ctx.textAlign = "left";
+        ctx.fillText(label, x + 14, y0 + 4);
+      });
+    };
+
+    const draw = () => {
+      const w = canvas.offsetWidth, h = canvas.offsetHeight;
+      const t = frame / 60;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "oklch(0.07 0.008 280)";
+      ctx.fillRect(0, 0, w, h);
+
+      for (let gx = 0; gx < w; gx += 30) {
+        for (let gy = 0; gy < h; gy += 30) {
+          ctx.beginPath();
+          ctx.arc(gx, gy, 0.7, 0, Math.PI * 2);
+          ctx.fillStyle = "oklch(0.98 0 0 / 0.035)";
+          ctx.fill();
+        }
+      }
+
+      drawAurora(w, h, t);
+      drawFloorPlan(w, h);
+      drawLegend(w, h);
+
+      rooms.forEach((room) => {
+        room.pulse += (room.targetPulse - room.pulse) * 0.032;
+        room.nextChange--;
+        if (room.nextChange <= 0) {
+          const next = (STATUSES.indexOf(room.status) + 1 + Math.floor(Math.random() * (STATUSES.length - 1))) % STATUSES.length;
+          room.status      = STATUSES[next];
+          room.targetPulse = 0.88;
+          room.nextChange  = 110 + Math.floor(Math.random() * 260);
+        }
+        if (room.pulse > 0.74) room.targetPulse = 0.05;
+      });
+
+      frame++;
+      af = requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+    return () => { cancelAnimationFrame(af); window.removeEventListener("resize", resize); };
   }, [lang]);
 
   const ml = lang === "es"
-    ? { arrivals: "Llegadas", departures: "Salidas", hk: "Housekeeping", occ: "Ocupacion", live: "en vivo", status: "Estado operacional", agent: "Agente activo", done: "listo" }
-    : { arrivals: "Arrivals", departures: "Departures", hk: "Housekeeping", occ: "Occupancy", live: "live", status: "Operational status", agent: "Active agent", done: "done" };
+    ? { arrivals: "Llegadas", dep: "Salidas", hk: "HK", live: "en vivo", status: "Estado operacional" }
+    : { arrivals: "Arrivals",  dep: "Departures", hk: "HK", live: "live",    status: "Operational status" };
 
   return (
-    <>
-      {/* Status card */}
-      <div className="absolute left-6 right-6 top-6"
-        style={{ animation: "lp-rise 0.9s cubic-bezier(.16,1,.3,1) 0.4s both" }}>
-        <div className="rounded-2xl border border-border/50 bg-card/85 p-4 shadow-xl backdrop-blur-md">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ml.status}</p>
+    <div className="absolute inset-0">
+      <canvas ref={canvasRef} aria-hidden="true" suppressHydrationWarning
+        className="absolute inset-0 h-full w-full" />
+
+      <div className="absolute right-4 top-4"
+        style={{ animation: "lp-rise 1s cubic-bezier(.16,1,.3,1) 0.55s both" }}>
+        <div className="rounded-2xl border border-primary/20 bg-background/78 px-4 py-3 shadow-2xl backdrop-blur-md">
+          <div className="mb-2 flex items-center justify-between gap-6">
+            <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-primary">{ml.status}</p>
             <span className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-1.5 w-1.5">
                 <span className={`absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${ping ? "animate-ping" : ""}`} />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
               </span>
-              <span className="text-[9px] font-semibold uppercase tracking-widest text-primary/70">{ml.live}</span>
+              <span className="text-[8px] font-semibold uppercase tracking-widest text-primary/60">{ml.live}</span>
             </span>
           </div>
-
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <div className="flex gap-5">
             {[
-              { label: ml.arrivals,   value: arrivals,   suffix: ""  },
-              { label: ml.departures, value: departures, suffix: ""  },
-              { label: ml.hk,         value: hk,         suffix: "%" },
+              { label: ml.arrivals, value: arrivals,   suffix: "" },
+              { label: ml.dep,      value: departures, suffix: "" },
+              { label: ml.hk,       value: hk,         suffix: "%" },
             ].map((item) => (
-              <div key={item.label}
-                className="rounded-xl border border-border/40 bg-background/60 px-3 py-2.5 transition-colors hover:border-primary/30 hover:bg-primary/5">
-                <p className="text-[10px] text-foreground/45">{item.label}</p>
-                <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-foreground">
+              <div key={item.label}>
+                <p className="text-[9px] text-foreground/40">{item.label}</p>
+                <p className="mt-0.5 font-mono text-base font-semibold tabular-nums text-foreground">
                   {item.value}{item.suffix}
                 </p>
               </div>
             ))}
           </div>
-
-          <div className="mt-3">
-            <div className="mb-1 flex items-center justify-between">
-              <p className="text-[9px] text-foreground/40">{ml.occ}</p>
-              <p className="text-[9px] font-semibold text-primary">{hk}%</p>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-border/40">
-              <div className="h-full rounded-full bg-primary transition-all duration-700"
-                style={{ width: `${hk}%` }} />
-            </div>
+          <div className="mt-2.5 h-1 w-full overflow-hidden rounded-full bg-border/40">
+            <div className="h-full rounded-full bg-primary transition-all duration-700"
+              style={{ width: `${hk}%` }} />
           </div>
         </div>
       </div>
-
-      {/* Agent card */}
-      <div className="absolute bottom-6 left-6 right-6"
-        style={{ animation: "lp-rise 0.9s cubic-bezier(.16,1,.3,1) 0.6s both" }}>
-        <div className="rounded-2xl border border-border/50 bg-card/85 p-4 shadow-xl backdrop-blur-md">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ml.agent}</p>
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-semibold text-primary">
-              {visibleCount}/{tasks.length}
-            </span>
-          </div>
-
-          <div className="mt-3 space-y-2.5">
-            {tasks.slice(0, visibleCount).map((row, i) => (
-              <div key={i} className="flex items-start gap-2.5"
-                style={{ animation: i >= 2 ? "lp-rise 0.45s ease both" : "none" }}>
-                <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-                  row.icon === "trend" ? "border-primary/30 bg-primary/15"
-                  : row.icon === "zap" ? "border-secondary/30 bg-secondary/15"
-                  : "border-accent/30 bg-accent/15"
-                }`}>
-                  {row.icon === "trend" && <TrendingUp   className="h-2.5 w-2.5 text-primary"  />}
-                  {row.icon === "zap"   && <Zap          className="h-2.5 w-2.5 text-secondary" />}
-                  {row.icon === "check" && <CheckCircle2 className="h-2.5 w-2.5 text-accent"    />}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] font-semibold text-foreground/45">{row.agent}</p>
-                  <p className="text-xs text-foreground/80">
-                    {row.task}
-                    {i === visibleCount - 1 && visibleCount < tasks.length && (
-                      <span className={`ml-px inline-block h-3 w-0.5 align-middle bg-primary transition-opacity duration-100 ${cursor ? "opacity-100" : "opacity-0"}`} />
-                    )}
-                  </p>
-                </div>
-                {row.done && (
-                  <span className="ml-auto shrink-0 rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-medium text-accent">
-                    {ml.done}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
@@ -406,10 +534,8 @@ export function LoginShell({
 }: LoginShellProps) {
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [lang, setLang] = useState<Lang>("es");
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const c = copy[lang];
 
-  /* Language persistence */
   useEffect(() => {
     try {
       const saved = localStorage.getItem("n3-landing-lang") as Lang | null;
@@ -423,88 +549,21 @@ export function LoginShell({
     try { localStorage.setItem("n3-landing-lang", next); } catch { /* noop */ }
   };
 
-  /* Canvas — royal magenta particle web */
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || typeof window === "undefined") return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let af = 0;
-    const dots = Array.from({ length: 55 }, () => ({
-      x: Math.random(), y: Math.random(),
-      radius: Math.random() * 1.8 + 0.5,
-      vx: (Math.random() - 0.5) * 0.0012,
-      vy: (Math.random() - 0.5) * 0.0012,
-      alpha: Math.random() * 0.3 + 0.08,
-    }));
-
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.offsetWidth * dpr;
-      canvas.height = canvas.offsetHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const draw = () => {
-      const w = canvas.offsetWidth, h = canvas.offsetHeight;
-      ctx.clearRect(0, 0, w, h);
-      dots.forEach((dot, i) => {
-        dot.x += dot.vx; dot.y += dot.vy;
-        if (dot.x < 0) dot.x = 1;
-        if (dot.x > 1) dot.x = 0;
-        if (dot.y < 0) dot.y = 1;
-        if (dot.y > 1) dot.y = 0;
-        for (let j = i + 1; j < dots.length; j++) {
-          const o = dots[j];
-          const dx = (dot.x - o.x) * w, dy = (dot.y - o.y) * h;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 160) {
-            const opacity = 0.08 * (1 - dist / 160);
-            ctx.beginPath();
-            ctx.moveTo(dot.x * w, dot.y * h);
-            ctx.lineTo(o.x * w, o.y * h);
-            ctx.strokeStyle = `oklch(0.60 0.28 320 / ${opacity})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-        ctx.beginPath();
-        ctx.arc(dot.x * w, dot.y * h, dot.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `oklch(0.60 0.28 320 / ${dot.alpha})`;
-        ctx.fill();
-      });
-      af = window.requestAnimationFrame(draw);
-    };
-
-    resize(); draw();
-    window.addEventListener("resize", resize);
-    return () => {
-      window.cancelAnimationFrame(af);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
   return (
     <div suppressHydrationWarning className="relative min-h-[100svh] overflow-x-hidden bg-background text-foreground">
 
-      {/* ── HEADER ─────────────────────────── */}
       <header
         className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
         style={{ animation: "lp-drop 0.5s ease both" }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5 lg:px-10">
-          {/* Logo */}
           <a href="/" className="flex items-center gap-3 group">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
               <span className="text-[10px] font-black tracking-tight text-primary-foreground">N3</span>
             </div>
-            <div>
-              <p className="text-sm font-bold tracking-[0.08em] text-foreground group-hover:text-primary transition-colors">N3URALIA</p>
-            </div>
+            <p className="text-sm font-bold tracking-[0.08em] text-foreground group-hover:text-primary transition-colors">N3URALIA</p>
           </a>
 
-          {/* Nav */}
           <nav className="hidden items-center gap-1 lg:flex">
             {[
               { href: "#plataforma", label: c.nav.platform },
@@ -518,7 +577,6 @@ export function LoginShell({
             ))}
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
             <button onClick={toggleLang} suppressHydrationWarning
               aria-label="Toggle language"
@@ -534,10 +592,8 @@ export function LoginShell({
         </div>
       </header>
 
-      {/* ── HERO ───────────────────────────── */}
+      {/* HERO */}
       <section className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:px-10 lg:py-28">
-
-        {/* Left — text */}
         <div className="space-y-8">
           <div
             className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-xs font-medium tracking-wide text-primary"
@@ -576,7 +632,6 @@ export function LoginShell({
             </a>
           </div>
 
-          {/* Stats strip */}
           <div
             className="grid grid-cols-2 gap-3 sm:grid-cols-4"
             style={{ animation: "lp-rise 0.9s ease 0.24s both" }}
@@ -593,98 +648,20 @@ export function LoginShell({
           </div>
         </div>
 
-        {/* Right — animated canvas panel */}
+        {/* Right — animated hotel floor plan canvas */}
         <div
-          className="relative hidden h-[520px] overflow-hidden rounded-3xl border border-border/50 lg:block"
+          className="relative hidden h-[520px] overflow-hidden rounded-3xl border border-border/40 lg:block"
           style={{ animation: "lp-card 1s ease 0.1s both" }}
         >
-          {/* Canvas particle web */}
-          <canvas ref={canvasRef} aria-hidden="true" suppressHydrationWarning
-            className="absolute inset-0 h-full w-full" />
-
-          {/* Floating glow orbs */}
-          <div aria-hidden="true" className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full blur-3xl"
-            style={{
-              background: "radial-gradient(circle, oklch(0.60 0.28 320 / 0.22) 0%, transparent 65%)",
-              animation: "lp-float 12s ease-in-out infinite",
-            }} />
-          <div aria-hidden="true" className="pointer-events-none absolute -bottom-12 -right-12 h-64 w-64 rounded-full blur-3xl"
-            style={{
-              background: "radial-gradient(circle, oklch(0.55 0.25 300 / 0.18) 0%, transparent 65%)",
-              animation: "lp-float 16s ease-in-out 2s infinite",
-            }} />
-          <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-            style={{
-              background: "radial-gradient(circle, oklch(0.50 0.26 340 / 0.12) 0%, transparent 65%)",
-              animation: "lp-float 20s ease-in-out 4s infinite",
-            }} />
-
-          {/* Floating UI mockup cards */}
-          <div className="absolute left-6 top-6 right-6" style={{ animation: "lp-rise 1s ease 0.4s both" }}>
-            <div className="rounded-2xl border border-border/50 bg-card/80 p-4 backdrop-blur-md">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                  {lang === "es" ? "Estado operacional" : "Operational status"}
-                </p>
-                <div className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-              </div>
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                {[
-                  { label: lang === "es" ? "Llegadas" : "Arrivals", value: "12" },
-                  { label: lang === "es" ? "Salidas" : "Departures", value: "8" },
-                  { label: "Housekeeping", value: "94%" },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-xl border border-border/40 bg-background/60 px-3 py-2.5">
-                    <p className="text-[10px] text-foreground/45">{item.label}</p>
-                    <p className="mt-1 text-base font-semibold text-foreground">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute bottom-6 left-6 right-6" style={{ animation: "lp-rise 1s ease 0.55s both" }}>
-            <div className="rounded-2xl border border-border/50 bg-card/80 p-4 backdrop-blur-md">
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                {lang === "es" ? "Agente activo" : "Active agent"}
-              </p>
-              <div className="mt-3 space-y-2">
-                {[
-                  { agent: "Revenue Strategist", action: lang === "es" ? "Ajuste de tarifa +12% viernes" : "Rate adjustment +12% Friday", done: true },
-                  { agent: "Operations Commander", action: lang === "es" ? "3 cuartos pendientes de limpieza" : "3 rooms pending cleaning", done: false },
-                ].map((row) => (
-                  <div key={row.agent} className="flex items-start gap-3">
-                    <div className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${row.done ? "bg-primary/20" : "bg-secondary/20"}`}>
-                      {row.done
-                        ? <TrendingUp className="h-2.5 w-2.5 text-primary" />
-                        : <Zap className="h-2.5 w-2.5 text-secondary" />
-                      }
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-semibold text-foreground/50">{row.agent}</p>
-                      <p className="text-xs text-foreground/75">{row.action}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Subtle grid overlay */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: "linear-gradient(oklch(0.98 0 0) 1px, transparent 1px), linear-gradient(90deg, oklch(0.98 0 0) 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-            }} />
+          <HeroCanvas lang={lang} />
         </div>
       </section>
 
-      {/* ── DIVIDER ── */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       </div>
 
-      {/* ── FEATURES ───────────��───────────── */}
+      {/* FEATURES */}
       <section id="plataforma" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.featuresLabel}</p>
@@ -699,15 +676,12 @@ export function LoginShell({
         </div>
       </section>
 
-      {/* ── DIVIDER ── */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       </div>
 
-      {/* ── AGENTS + AUTH (side by side on desktop) ── */}
+      {/* AGENTS + AUTH */}
       <section id="agentes" className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1fr_400px] lg:items-start lg:px-10">
-
-        {/* Agents */}
         <div className="space-y-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.agentLabel}</p>
@@ -717,7 +691,6 @@ export function LoginShell({
             <p className="mt-4 max-w-lg text-base leading-relaxed text-foreground/60">{c.agentDesc}</p>
           </div>
 
-          {/* Agent pills */}
           <div className="flex flex-wrap gap-2">
             {c.agents.map((agent) => (
               <span key={agent}
@@ -727,14 +700,12 @@ export function LoginShell({
             ))}
           </div>
 
-          {/* Why cards */}
           <div className="grid gap-3 sm:grid-cols-3">
             {c.why.map((item) => (
               <WhyCard key={item.title} icon={ICON_MAP[item.icon]} title={item.title} text={item.text} />
             ))}
           </div>
 
-          {/* Security */}
           <div id="seguridad" className="rounded-3xl border border-border/60 bg-card/40 p-6">
             <div className="flex items-center gap-3">
               <Shield className="h-4 w-4 text-primary" />
@@ -752,18 +723,15 @@ export function LoginShell({
           </div>
         </div>
 
-        {/* Auth card */}
         <div id="auth-card" className="lg:sticky lg:top-24">
           <div className="rounded-[24px] border border-border/60 bg-card/90 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl sm:p-7"
             style={{ animation: "lp-card 0.9s ease 0.1s both" }}>
-
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">{c.auth.label}</p>
               <h2 className="mt-2 text-xl font-semibold tracking-tight">{c.auth.title}</h2>
               <p className="mt-1 text-sm text-foreground/55">{c.auth.subtitle}</p>
             </div>
 
-            {/* Tabs */}
             <div className="mt-5 flex rounded-xl border border-border/60 bg-background/60 p-0.5">
               {(["signin", "signup"] as const).map((v) => (
                 <button key={v} role="tab" aria-selected={tab === v}
@@ -779,7 +747,6 @@ export function LoginShell({
               ))}
             </div>
 
-            {/* Notices */}
             {(message || !supabaseReady) && (
               <div className="mt-4 space-y-2">
                 {message && <Notice tone="accent" text={message} />}
@@ -787,7 +754,6 @@ export function LoginShell({
               </div>
             )}
 
-            {/* Forms */}
             <div className="mt-5">
               {tab === "signin" ? (
                 <form action={signInAction} className="space-y-4" noValidate suppressHydrationWarning>
@@ -813,7 +779,6 @@ export function LoginShell({
               )}
             </div>
 
-            {/* After sign-in preview */}
             <div className="mt-5 rounded-xl border border-border/50 bg-background/50 p-4">
               <p className="text-xs font-semibold text-foreground/70">{c.auth.afterTitle}</p>
               <ul className="mt-3 space-y-2">
@@ -831,7 +796,6 @@ export function LoginShell({
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────── */}
       <footer className="border-t border-border/40 px-6 py-6 lg:px-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
@@ -847,7 +811,6 @@ export function LoginShell({
         </div>
       </footer>
 
-      {/* Inline keyframes */}
       <style>{`
         @keyframes lp-rise {
           from { opacity: 0; transform: translateY(16px); filter: blur(3px); }
@@ -858,8 +821,8 @@ export function LoginShell({
           to   { opacity: 1; transform: translateY(0);    }
         }
         @keyframes lp-float {
-          0%, 100% { transform: translate3d(0, 0, 0);      }
-          50%      { transform: translate3d(0, 22px, 0);    }
+          0%, 100% { transform: translate3d(0, 0, 0);   }
+          50%      { transform: translate3d(0, 22px, 0); }
         }
         @keyframes lp-card {
           from { opacity: 0; transform: translateY(20px) scale(0.98); }
