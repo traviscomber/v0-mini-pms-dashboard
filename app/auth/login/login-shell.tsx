@@ -7,7 +7,6 @@ import {
   Brain,
   CalendarDays,
   CheckCircle2,
-  ChevronRight,
   ClipboardList,
   LineChart,
   Lock,
@@ -60,7 +59,7 @@ const CHILE_FOCUSES = [
   },
   {
     title: "Recepción y operaciones",
-    text: "Ideal para hoteles urbanos, apart-hoteles, hostales boutique y operaciones multi-canal.",
+    text: "Ideal para hoteles urbanos, apart-hoteles, hostales boutique y operaciones multicanal.",
   },
   {
     title: "Época alta y feriados",
@@ -69,6 +68,24 @@ const CHILE_FOCUSES = [
   {
     title: "Control serio",
     text: "Cada recomendación queda trazada para que el equipo decida con confianza.",
+  },
+];
+
+const CITY_PROFILES = [
+  {
+    city: "Santiago",
+    label: "Hoteles urbanos y corporativos",
+    text: "Check-ins rápidos entre semana, cobros ordenados y mensajes listos antes del peak de recepción.",
+  },
+  {
+    city: "Valparaíso",
+    label: "Escapadas, terrazas y fines de semana largos",
+    text: "La operación se apoya en reservas de último minuto, comunicación cálida y una experiencia más flexible.",
+  },
+  {
+    city: "Patagonia",
+    label: "Lodges y turismo de naturaleza",
+    text: "Más anticipación, comunicación proactiva y margen operativo para clima, traslados y cambios de itinerario.",
   },
 ];
 
@@ -81,21 +98,30 @@ const AGENT_STACK = [
   "Trust Auditor",
 ];
 
-const WORKFLOW_STEPS = [
+const DAY_FLOW = [
   {
-    step: "1",
-    title: "Detecta señales",
-    text: "El sistema lee ocupación, cobros, llegadas y tareas abiertas en tiempo real.",
+    time: "07:00",
+    title: "Despierta la operación",
+    text: "Recepción, housekeeping y cobranzas arrancan con la lectura del estado real del hotel.",
+    tone: "sky",
   },
   {
-    step: "2",
-    title: "Prioriza acciones",
-    text: "Los agentes ordenan lo urgente: cobrar, preparar habitaciones o escribir al huésped.",
+    time: "11:30",
+    title: "Ajusta habitaciones y mensajes",
+    text: "Se asignan prioridades, se confirman salidas y se preparan mensajes para las próximas llegadas.",
+    tone: "violet",
   },
   {
-    step: "3",
-    title: "Ejecuta con control",
-    text: "El equipo actúa con trazabilidad, aprobaciones y una vista simple para decidir rápido.",
+    time: "16:00",
+    title: "Entra el bloque de check-ins",
+    text: "El sistema empuja alertas, tareas y mensajes para que la llegada sea ordenada y sin fricción.",
+    tone: "amber",
+  },
+  {
+    time: "21:00",
+    title: "Cierre y aprendizaje",
+    text: "Se revisa lo ocurrido, se cierran pendientes y queda el día listo para mañana.",
+    tone: "emerald",
   },
 ];
 
@@ -255,63 +281,87 @@ export function LoginShell({
             <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Cómo funciona</p>
-                <h2 className="mt-2 text-2xl font-semibold tracking-tight">Una animación simple del flujo de trabajo.</h2>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight">Un día en la operación, contado como una mini película.</h2>
               </div>
               <p className="max-w-xl text-sm leading-6 text-foreground/65">
-                El objetivo es que cualquier gerente o recepcionista entienda en segundos cómo pasa de datos a acción.
+                El objetivo es que cualquier gerente o recepcionista entienda en segundos cómo el sistema observa, decide y activa el trabajo.
               </p>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[0.88fr_1.12fr]">
+            <div className="mt-6 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
               <div className="space-y-3">
-                {WORKFLOW_STEPS.map((item, index) => (
-                  <div key={item.step} className="rounded-2xl border border-border bg-background/80 p-4">
+                {DAY_FLOW.map((item, index) => (
+                  <div key={item.time} className="rounded-2xl border border-border bg-background/80 p-4">
                     <div className="flex items-start gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-semibold text-primary">
-                        {item.step}
+                      <div className="flex h-10 w-16 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-xs font-semibold text-primary">
+                        {item.time}
                       </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
+                          <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-foreground/45">
+                            {index === 0 ? "mañana" : index === 1 ? "mediodía" : index === 2 ? "tarde" : "cierre"}
+                          </span>
+                        </div>
                         <p className="mt-1 text-sm leading-6 text-foreground/65">{item.text}</p>
                       </div>
-                    </div>
-                    <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border/50">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-emerald-400 animate-[lp-bar_4.5s_ease-in-out_infinite]"
-                        style={{ animationDelay: `${index * 0.7}s`, width: `${60 + index * 12}%` }}
-                      />
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="relative overflow-hidden rounded-[28px] border border-border bg-background/80 p-5">
-                <div className="absolute inset-x-10 top-8 h-0.5 bg-gradient-to-r from-primary/20 via-primary/60 to-transparent" />
-                <div className="grid gap-4">
-                  <FlowNode
-                    tone="input"
-                    icon={<ClipboardList className="h-4 w-4" />}
-                    title="Datos del día"
-                    text="Llegadas, salidas, cobros, tareas y mensajes abiertos."
-                  />
-                  <div className="flex justify-center">
-                    <ChevronRight className="h-6 w-6 animate-[lp-pulse_1.8s_ease-in-out_infinite] text-primary" />
+              <div className="relative overflow-hidden rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_40%),radial-gradient(circle_at_bottom,rgba(168,85,247,0.12),transparent_45%)]" />
+                <div className="absolute inset-x-10 top-8 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
+                <div className="relative grid gap-4">
+                  <div className="rounded-3xl border border-border/70 bg-background/75 p-4 shadow-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Reel operativo</p>
+                        <h3 className="mt-1 text-lg font-semibold text-foreground">La jornada se mueve en capas.</h3>
+                      </div>
+                      <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                        en vivo
+                      </span>
+                    </div>
+
+                    <div className="mt-5 grid gap-3">
+                      <FlowScene
+                        title="Mañana"
+                        subtitle="Recepción y housekeeping"
+                        accent="sky"
+                        icon={<ClipboardList className="h-4 w-4" />}
+                        detail="Entradas, salidas y habitaciones listas antes del peak."
+                        delay="0s"
+                      />
+                      <FlowScene
+                        title="Tarde"
+                        subtitle="Llegadas y mensajes"
+                        accent="violet"
+                        icon={<Brain className="h-4 w-4" />}
+                        detail="El copiloto propone el siguiente paso y prepara la respuesta."
+                        delay="0.9s"
+                      />
+                      <FlowScene
+                        title="Noche"
+                        subtitle="Cierre y aprendizaje"
+                        accent="emerald"
+                        icon={<LineChart className="h-4 w-4" />}
+                        detail="Queda una foto clara para arrancar mañana con menos fricción."
+                        delay="1.8s"
+                      />
+                    </div>
+
+                    <div className="mt-5 rounded-2xl border border-border bg-card/80 p-4">
+                      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-foreground/45">
+                        <span>Línea del día</span>
+                        <span>24h</span>
+                      </div>
+                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-border/50">
+                        <div className="h-full w-[72%] rounded-full bg-gradient-to-r from-sky-400 via-primary to-emerald-400 animate-[lp-progress_6s_ease-in-out_infinite]" />
+                      </div>
+                    </div>
                   </div>
-                  <FlowNode
-                    tone="processing"
-                    icon={<Brain className="h-4 w-4" />}
-                    title="Agentes inteligentes"
-                    text="Priorizan, redactan, recomiendan y avisan lo que importa."
-                  />
-                  <div className="flex justify-center">
-                    <ChevronRight className="h-6 w-6 animate-[lp-pulse_1.8s_ease-in-out_infinite] text-primary" />
-                  </div>
-                  <FlowNode
-                    tone="output"
-                    icon={<LineChart className="h-4 w-4" />}
-                    title="Resultado claro"
-                    text="El equipo ve una acción concreta, con contexto y trazabilidad."
-                  />
                 </div>
               </div>
             </div>
@@ -320,8 +370,8 @@ export function LoginShell({
           <section id="chile" className="space-y-4">
             <SectionHeading
               eyebrow="Chile"
-              title="Lo hacemos más útil para el contexto local."
-              text="La página debe sentirse cercana a la operación hotelera real del país, no a un demo genérico."
+              title="Lo hacemos más útil para Santiago, Valparaíso y Patagonia."
+              text="La página debe sentirse cercana a la operación real del país, con copy que haga clic para cada tipo de hotel."
             />
             <div className="grid gap-4 md:grid-cols-2">
               {CHILE_FOCUSES.map((item, index) => (
@@ -337,6 +387,25 @@ export function LoginShell({
                     <h3 className="text-base font-semibold">{item.title}</h3>
                   </div>
                   <p className="mt-4 text-sm leading-6 text-foreground/65">{item.text}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-3">
+              {CITY_PROFILES.map((city, index) => (
+                <article
+                  key={city.city}
+                  className="relative overflow-hidden rounded-3xl border border-border bg-card/80 p-5 animate-[lp-rise_0.8s_ease_both]"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
+                  <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{city.city}</p>
+                  <h3 className="mt-2 text-lg font-semibold text-foreground">{city.label}</h3>
+                  <p className="mt-4 text-sm leading-6 text-foreground/65">{city.text}</p>
+                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground/65">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    Copy local para esta operación
+                  </div>
                 </article>
               ))}
             </div>
@@ -482,13 +551,9 @@ export function LoginShell({
           from { opacity: 0; transform: translateY(22px) scale(0.985); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        @keyframes lp-bar {
-          0%, 100% { transform: translateX(-10%); opacity: 0.85; }
-          50% { transform: translateX(10%); opacity: 1; }
-        }
-        @keyframes lp-pulse {
-          0%, 100% { transform: translateX(0); opacity: 0.55; }
-          50% { transform: translateX(4px); opacity: 1; }
+        @keyframes lp-progress {
+          0%, 100% { transform: translateX(-14%); opacity: 0.78; }
+          50% { transform: translateX(14%); opacity: 1; }
         }
       `}</style>
     </div>
@@ -505,34 +570,50 @@ function SectionHeading({ eyebrow, title, text }: { eyebrow: string; title: stri
   );
 }
 
-function FlowNode({
-  tone,
-  icon,
+function FlowScene({
   title,
-  text,
+  subtitle,
+  detail,
+  accent,
+  icon,
+  delay,
 }: {
-  tone: "input" | "processing" | "output";
-  icon: ReactNode;
   title: string;
-  text: string;
+  subtitle: string;
+  detail: string;
+  accent: "sky" | "violet" | "emerald";
+  icon: ReactNode;
+  delay: string;
 }) {
-  const toneClass =
-    tone === "input"
-      ? "border-sky-500/20 bg-sky-500/10 text-sky-300"
-      : tone === "processing"
-        ? "border-primary/20 bg-primary/10 text-primary"
-        : "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
+  const accentClass =
+    accent === "sky"
+      ? "from-sky-400/20 via-sky-300/10 to-transparent text-sky-200"
+      : accent === "violet"
+        ? "from-primary/20 via-primary/10 to-transparent text-primary"
+        : "from-emerald-400/20 via-emerald-300/10 to-transparent text-emerald-200";
 
   return (
-    <div className={`rounded-3xl border p-4 ${toneClass}`}>
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-current/20 bg-background/70">
+    <div
+      className="relative overflow-hidden rounded-3xl border border-border bg-card/80 p-4 animate-[lp-rise_0.8s_ease_both]"
+      style={{ animationDelay: delay }}
+    >
+      <div className={`absolute inset-0 bg-gradient-to-r ${accentClass}`} />
+      <div className="relative flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-border bg-background/80 text-primary">
           {icon}
         </div>
         <div>
-          <h3 className="text-sm font-semibold">{title}</h3>
-          <p className="mt-1 text-sm leading-6 text-foreground/70">{text}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+            <span className="rounded-full border border-border bg-background/80 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-foreground/45">
+              {subtitle}
+            </span>
+          </div>
+          <p className="mt-1 text-sm leading-6 text-foreground/65">{detail}</p>
         </div>
+      </div>
+      <div className="relative mt-4 h-1.5 overflow-hidden rounded-full bg-border/50">
+        <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-primary via-accent to-emerald-400 animate-[lp-progress_5s_ease-in-out_infinite]" />
       </div>
     </div>
   );
