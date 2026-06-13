@@ -5,6 +5,9 @@ import { Activity, Layers3, Sparkles } from "lucide-react";
 import AlertBanner from "./AlertBanner";
 import AgentControlTower from "./AgentControlTower";
 import ExecutiveBriefing from "./ExecutiveBriefing";
+import OperationalSignalBoard from "./OperationalSignalBoard";
+import SmartActionBoard from "./SmartActionBoard";
+import SmartMessageBoard from "./SmartMessageBoard";
 import TodayCommandCenter from "./TodayCommandCenter";
 import type { Alert, Reservation, Room, Task } from "../types";
 
@@ -14,6 +17,8 @@ interface OperationsCommandSuiteProps {
   reservations: Reservation[];
   rooms: Room[];
   tasks: Task[];
+  onNavigate: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar") => void;
+  onExecute: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => void;
   onSelectReservation?: (reservation: Reservation) => void;
 }
 
@@ -23,6 +28,8 @@ export default function OperationsCommandSuite({
   reservations,
   rooms,
   tasks,
+  onNavigate,
+  onExecute,
   onSelectReservation,
 }: OperationsCommandSuiteProps) {
   return (
@@ -37,7 +44,7 @@ export default function OperationsCommandSuite({
             <div>
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">Three layers, one operating truth.</h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/65">
-                Start with the executive read, let the agent stack propose the next best move, then execute from today’s command center.
+                Start with the executive read, let the agent stack propose the next best move, then execute from today's command center.
               </p>
             </div>
           </div>
@@ -59,6 +66,22 @@ export default function OperationsCommandSuite({
 
       {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
 
+      <OperationalSignalBoard
+        alerts={alerts}
+        reservations={reservations}
+        rooms={rooms}
+        tasks={tasks}
+        onNavigate={onNavigate}
+      />
+
+      <SmartActionBoard
+        reservations={reservations}
+        rooms={rooms}
+        tasks={tasks}
+        onNavigate={onNavigate}
+        onExecute={onExecute}
+      />
+
       <div className="space-y-3">
         <SectionLabel number="01" title="Executive Briefing" subtitle={isLoading ? "Reading live PMS data..." : "Risk, cash flow, readiness, and the next best action."} />
         <ExecutiveBriefing isLoading={isLoading} reservations={reservations} rooms={rooms} tasks={tasks} />
@@ -71,7 +94,7 @@ export default function OperationsCommandSuite({
         </div>
 
         <div className="space-y-3">
-          <SectionLabel number="03" title="Today’s Command Center" subtitle="The work that needs human attention right now." />
+          <SectionLabel number="03" title="Today's Command Center" subtitle="The work that needs human attention right now." />
           <TodayCommandCenter
             reservations={reservations}
             rooms={rooms}
@@ -80,6 +103,11 @@ export default function OperationsCommandSuite({
           />
         </div>
       </div>
+
+      <SmartMessageBoard
+        reservations={reservations}
+        onNavigate={() => onNavigate("messaging")}
+      />
     </section>
   );
 }
@@ -105,4 +133,3 @@ function SectionLabel({
     </div>
   );
 }
-
