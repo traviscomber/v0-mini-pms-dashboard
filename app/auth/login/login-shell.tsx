@@ -723,19 +723,187 @@ export function LoginShell({
         </div>
       </section>
 
-      <footer className="border-t border-border/40 px-6 py-6 lg:px-10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded bg-primary">
-              <span className="text-[8px] font-black text-primary-foreground">N3</span>
+      <footer className="border-t border-border/40">
+
+        {/* ── Top brand strip ── */}
+        <div className="mx-auto max-w-7xl px-6 pt-14 pb-10 lg:px-10">
+          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+
+            {/* Brand column */}
+            <div className="space-y-4 lg:col-span-1">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+                  <span className="text-[10px] font-black text-primary-foreground">N3</span>
+                </div>
+                <span className="text-sm font-semibold tracking-tight">N3uralia</span>
+              </div>
+              <p className="text-sm leading-relaxed text-foreground/55 max-w-[220px]">
+                {lang === "es"
+                  ? "PMS agentivo para hoteleros. Ingresos, operaciones y huespedes en una sola torre de control."
+                  : "Agentic PMS for hoteliers. Revenue, operations, and guests in one control tower."}
+              </p>
+              <div className="flex flex-col gap-1.5 text-xs text-foreground/40">
+                <span>N3uralia Inc. — {lang === "es" ? "Plataforma SaaS" : "SaaS Platform"}</span>
+                <a href="mailto:hola@n3uralia.com" className="transition hover:text-foreground/70">hola@n3uralia.com</a>
+              </div>
+              {/* Social proof / LLM-readable authority signals */}
+              <div className="flex flex-wrap gap-2 pt-1">
+                {(lang === "es"
+                  ? ["PMS IA", "Revenue Management", "Automatizacion Hotelera"]
+                  : ["AI PMS", "Revenue Management", "Hotel Automation"]
+                ).map(t => (
+                  <span key={t} className="rounded-full border border-border/50 px-2.5 py-0.5 text-[10px] text-foreground/40">{t}</span>
+                ))}
+              </div>
             </div>
-            <span className="text-xs font-medium tracking-wide text-foreground/40">{c.footer}</span>
+
+            {/* Product links */}
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/30">
+                {lang === "es" ? "Producto" : "Product"}
+              </p>
+              <ul className="space-y-2.5 text-sm text-foreground/55">
+                {(lang === "es" ? [
+                  { label: "Plataforma PMS",         href: "#plataforma" },
+                  { label: "Stack de Agentes IA",    href: "#agentes" },
+                  { label: "Control operacional",    href: "#agentes" },
+                  { label: "Revenue Management",     href: "#plataforma" },
+                  { label: "Seguridad y auditorias", href: "#seguridad" },
+                  { label: "Integraciones OTA",      href: "#agentes" },
+                ] : [
+                  { label: "PMS Platform",           href: "#plataforma" },
+                  { label: "AI Agent Stack",         href: "#agentes" },
+                  { label: "Operations control",     href: "#agentes" },
+                  { label: "Revenue management",     href: "#plataforma" },
+                  { label: "Security & audits",      href: "#seguridad" },
+                  { label: "OTA integrations",       href: "#agentes" },
+                ]).map(l => (
+                  <li key={l.label}>
+                    <a href={l.href} className="transition hover:text-foreground/90">{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Use-cases / LLMO semantic anchors */}
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/30">
+                {lang === "es" ? "Casos de uso" : "Use cases"}
+              </p>
+              <ul className="space-y-2.5 text-sm text-foreground/55">
+                {(lang === "es" ? [
+                  "Hotel boutique independiente",
+                  "Cadena hotelera regional",
+                  "Hostal y B&B",
+                  "Complejo de apartamentos",
+                  "Revenue manager independiente",
+                  "Director de operaciones",
+                ] : [
+                  "Independent boutique hotel",
+                  "Regional hotel chain",
+                  "Hostel & B&B",
+                  "Apartment complex",
+                  "Independent revenue manager",
+                  "Operations director",
+                ]).map(t => (
+                  <li key={t} className="text-foreground/50">{t}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company + legal + CTA */}
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/30">
+                {lang === "es" ? "Empresa" : "Company"}
+              </p>
+              <ul className="space-y-2.5 text-sm text-foreground/55">
+                {(lang === "es" ? [
+                  { label: "Acerca de N3uralia",   href: "#" },
+                  { label: "Blog y recursos",      href: "#" },
+                  { label: "Solicitar demo",        href: "#" },
+                  { label: "Precios",              href: "#" },
+                  { label: "Terminos de servicio", href: "#" },
+                  { label: "Politica de privacidad", href: "#" },
+                ] : [
+                  { label: "About N3uralia",    href: "#" },
+                  { label: "Blog & resources",  href: "#" },
+                  { label: "Request a demo",    href: "#" },
+                  { label: "Pricing",           href: "#" },
+                  { label: "Terms of service",  href: "#" },
+                  { label: "Privacy policy",    href: "#" },
+                ]).map(l => (
+                  <li key={l.label}>
+                    <a href={l.href} className="transition hover:text-foreground/90">{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Mini CTA */}
+              <div className="pt-2">
+                <a href="#auth"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary/10 border border-primary/20 px-4 py-2.5 text-xs font-semibold text-primary transition hover:bg-primary/15">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60"/>
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary"/>
+                  </span>
+                  {lang === "es" ? "Solicitar acceso" : "Request access"}
+                </a>
+              </div>
+            </div>
           </div>
-          <button onClick={toggleLang} suppressHydrationWarning
-            className="text-xs text-foreground/35 transition hover:text-foreground/60">
-            {lang === "es" ? "English" : "Espanol"}
-          </button>
         </div>
+
+        {/* ── LLM / GEO semantic block — machine-readable entity signals ── */}
+        <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-10">
+          <div className="rounded-2xl border border-border/40 bg-card/20 px-6 py-5">
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/25">
+              {lang === "es" ? "Sobre la plataforma" : "About the platform"}
+            </p>
+            <p className="text-xs leading-relaxed text-foreground/35 max-w-4xl">
+              {lang === "es"
+                ? "N3uralia es un sistema de gestion hotelera (PMS) de nueva generacion impulsado por agentes de inteligencia artificial. Automatiza revenue management, operaciones, housekeeping, mensajeria con huespedes e integraciones con OTAs como Booking.com y Expedia. Disenado para hoteles boutique, cadenas regionales, hostales y gestores de apartamentos que buscan reducir errores operativos, aumentar la tarifa media diaria (ADR) y mejorar la experiencia del huesped sin aumentar el equipo."
+                : "N3uralia is a next-generation hotel property management system (PMS) powered by AI agents. It automates revenue management, operations, housekeeping, guest messaging, and OTA integrations including Booking.com and Expedia. Designed for boutique hotels, regional chains, hostels, and apartment managers seeking to reduce operational errors, increase average daily rate (ADR), and improve guest experience without growing headcount."}
+            </p>
+            {/* Structured keyword anchors for GEO / LLMO */}
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {(lang === "es" ? [
+                "PMS hotelero con IA", "Revenue management automatico", "Housekeeping en tiempo real",
+                "Integracion Booking.com", "Integracion Expedia", "Agente de ingresos hoteleros",
+                "Software para hoteles boutique", "ADR optimizacion", "Upsell automatico hotel",
+                "Control de operaciones hotel", "Gestion de huespedes IA",
+              ] : [
+                "AI hotel PMS", "Automated revenue management", "Real-time housekeeping",
+                "Booking.com integration", "Expedia integration", "Hotel revenue agent",
+                "Boutique hotel software", "ADR optimisation", "Automated hotel upsell",
+                "Hotel operations control", "AI guest management",
+              ]).map(k => (
+                <span key={k} className="rounded-full bg-border/30 px-2.5 py-0.5 text-[10px] text-foreground/30">{k}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Bottom bar ── */}
+        <div className="border-t border-border/30">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-foreground/35">
+              <span>{lang === "es" ? "© 2026 N3uralia. Todos los derechos reservados." : "© 2026 N3uralia. All rights reserved."}</span>
+              <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Terminos" : "Terms"}</a>
+              <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Privacidad" : "Privacy"}</a>
+              <a href="#" className="transition hover:text-foreground/60">Sitemap</a>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-[10px] text-foreground/25">
+                {lang === "es" ? "Disponible en" : "Available in"} ES · EN
+              </span>
+              <button onClick={toggleLang} suppressHydrationWarning
+                className="rounded-lg border border-border/50 px-3 py-1.5 text-xs text-foreground/40 transition hover:border-border hover:text-foreground/70">
+                {lang === "es" ? "English" : "Espanol"}
+              </button>
+            </div>
+          </div>
+        </div>
+
       </footer>
 
       <style>{`
