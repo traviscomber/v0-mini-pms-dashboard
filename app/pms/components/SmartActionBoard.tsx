@@ -11,6 +11,7 @@ interface SmartActionBoardProps {
   rooms: Room[];
   tasks: Task[];
   onNavigate: (section: QuickTarget) => void;
+  onExecute: (target: QuickTarget, title: string, reason: string) => void;
 }
 
 type ActionItem = {
@@ -22,6 +23,7 @@ type ActionItem = {
   icon: typeof House;
   target: QuickTarget;
   accent: string;
+  executeLabel: string;
 };
 
 function toDate(value: unknown) {
@@ -29,7 +31,7 @@ function toDate(value: unknown) {
   return value instanceof Date ? value : new Date(value as string);
 }
 
-export default function SmartActionBoard({ reservations, rooms, tasks, onNavigate }: SmartActionBoardProps) {
+export default function SmartActionBoard({ reservations, rooms, tasks, onNavigate, onExecute }: SmartActionBoardProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -66,6 +68,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: BadgeDollarSign,
           target: "reservations",
           accent: "from-emerald-500/15 to-emerald-500/5",
+          executeLabel: "Create sales follow-up",
         }
       : {
           id: "occupancy-stable",
@@ -76,6 +79,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: Sparkles,
           target: "reservations",
           accent: "from-cyan-500/15 to-cyan-500/5",
+          executeLabel: "Lock pricing review",
         },
     housekeepingBacklog.length > 0
       ? {
@@ -87,6 +91,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: Wrench,
           target: "housekeeping",
           accent: "from-orange-500/15 to-orange-500/5",
+          executeLabel: "Create housekeeping task",
         }
       : {
           id: "housekeeping-clear",
@@ -97,6 +102,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: Wrench,
           target: "housekeeping",
           accent: "from-slate-500/15 to-slate-500/5",
+          executeLabel: "Confirm readiness",
         },
     overduePayments.length > 0
       ? {
@@ -108,6 +114,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: BadgeDollarSign,
           target: "ledger",
           accent: "from-rose-500/15 to-rose-500/5",
+          executeLabel: "Create collections task",
         }
       : {
           id: "communications",
@@ -118,6 +125,7 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
           icon: MessagesSquare,
           target: "messaging",
           accent: "from-purple-500/15 to-purple-500/5",
+          executeLabel: "Draft guest message",
         },
   ];
 
@@ -161,18 +169,26 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
             <p className="mt-4 text-sm leading-6 text-foreground/70">{action.reason}</p>
             <p className="mt-3 text-sm font-medium text-foreground">{action.impact}</p>
 
-            <button
-              type="button"
-              onClick={() => onNavigate(action.target)}
-              className="mt-5 inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
-            >
-              Go there
-              <ArrowRight className="h-4 w-4" />
-            </button>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => onExecute(action.target, action.title, action.reason)}
+                className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+              >
+                {action.executeLabel}
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate(action.target)}
+                className="inline-flex items-center gap-2 rounded-2xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
+              >
+                Go there
+              </button>
+            </div>
           </article>
         ))}
       </div>
     </section>
   );
 }
-

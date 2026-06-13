@@ -67,6 +67,7 @@ export default function PMSApp() {
   const [filters, setFilters] = useState<FilterOptions>(defaultFilters);
   const [isMobile, setIsMobile] = useState(false);
   const [propertyName, setPropertyName] = useState("");
+  const [actionBanner, setActionBanner] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -203,6 +204,33 @@ export default function PMSApp() {
     setActiveSection(section);
   };
 
+  const handleExecuteAction = (target: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => {
+    const now = new Date();
+    const nextTask = {
+      id: `smart-${now.getTime()}`,
+      propertyId: rooms[0]?.propertyId ?? "prop-smart",
+      roomId: rooms[0]?.id ?? "room-smart",
+      reservationId: reservations[0]?.id,
+      type: target === "ledger" ? "payment" : target === "messaging" ? "communication" : target === "calendar" ? "check_in" : target === "housekeeping" ? "cleaning" : "admin",
+      title,
+      description: reason,
+      status: "pending",
+      priority: target === "ledger" ? "urgent" : target === "housekeeping" ? "high" : "normal",
+      assignedTo: undefined,
+      dueDate: now,
+      completedAt: undefined,
+      completedBy: undefined,
+      notes: `Generated from smart action board: ${title}`,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    setTasks((currentTasks) => [nextTask, ...currentTasks]);
+    setActionBanner(`${title} added to the work queue.`);
+    setActiveSection(target);
+    window.setTimeout(() => setActionBanner(null), 3500);
+  };
+
   return (
     <div className="flex h-screen bg-background">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
@@ -221,6 +249,12 @@ export default function PMSApp() {
               {liveError ? <span className="text-xs text-red-300">{liveError}</span> : null}
             </div>
 
+            {actionBanner ? (
+              <div className="rounded-2xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-primary">
+                {actionBanner}
+              </div>
+            ) : null}
+
             {activeSection === "operations" ? (
               <OperationsCommandSuite
                 alerts={alerts}
@@ -229,6 +263,7 @@ export default function PMSApp() {
                 rooms={rooms}
                 tasks={tasks}
                 onNavigate={handleNavigateFromActions}
+                onExecute={handleExecuteAction}
                 onSelectReservation={handleSelectReservation}
               />
             ) : null}
