@@ -40,10 +40,10 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
             <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
               Workspace setup
             </span>
-            <h1 className="text-4xl font-bold tracking-tight text-card-foreground">Provision your hospitality workspace</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-card-foreground">Provision your workspace</h1>
             <p className="max-w-3xl text-base text-muted-foreground sm:text-lg">
-              This step creates the first organization, owner membership, and property context that future PMS,
-              payments, housekeeping, and automation flows will hang from.
+              This step creates the first organization, owner membership, and site context that future platform
+              operations, maintenance, hospitality, and automation flows will hang from.
             </p>
           </div>
         </section>
@@ -67,12 +67,12 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
               <div className="mt-6 rounded-2xl border border-border bg-background/70 p-5 text-sm text-card-foreground">
                 <p className="font-medium">What the migration creates</p>
                 <ul className="mt-3 space-y-2 text-muted-foreground">
-                  <li>`profiles`, `organizations`, `memberships`, `properties`, `units`</li>
-                  <li>`guests`, `reservations`, `tasks`, `audit_logs`</li>
-                  <li>Owner/admin/manager/staff roles plus RLS helpers</li>
-                  <li>A secure `bootstrap_workspace(...)` function for onboarding</li>
-                </ul>
-              </div>
+                <li>`profiles`, `organizations`, `memberships`, `properties`, `units`</li>
+                <li>`guests`, `reservations`, `tasks`, `audit_logs`</li>
+                <li>Owner/admin/manager/staff roles plus RLS helpers</li>
+                <li>A secure `bootstrap_workspace(...)` function for onboarding</li>
+              </ul>
+            </div>
             </article>
 
             <article className="rounded-3xl border border-border bg-card p-8 shadow-sm">
@@ -106,7 +106,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                   name="organizationName"
                   required
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="N3uralia Hospitality Group"
+                  placeholder="N3uralia Group"
                 />
               </label>
 
@@ -117,7 +117,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                   name="propertyName"
                   required
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="Santiago Central Apartments"
+                  placeholder="Main Operations Hub"
                 />
               </label>
 
@@ -141,7 +141,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                     defaultValue="USD"
                     maxLength={3}
                     className="w-full rounded-xl border border-border bg-background px-4 py-3 uppercase text-card-foreground outline-none transition focus:border-primary"
-                    placeholder="USD"
+                    placeholder="CLP"
                   />
                 </label>
               </div>
@@ -158,19 +158,19 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
               <div>
                 <h2 className="text-lg font-semibold text-card-foreground">This creates</h2>
                 <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  <li>An organization record tied to your owner account</li>
-                  <li>A default owner membership with protected access</li>
-                  <li>The first property scaffold for multi-location expansion</li>
-                  <li>The base entity context for units, guests, folios, and tasks</li>
-                </ul>
-              </div>
+                <li>An organization record tied to your owner account</li>
+                <li>A default owner membership with protected access</li>
+                <li>The first site scaffold for multi-location expansion</li>
+                <li>The base entity context for units, guests, folios, and tasks</li>
+              </ul>
+            </div>
 
-              <div className="rounded-2xl border border-border bg-background/70 p-5 text-sm text-muted-foreground">
-                After setup, the next technical step is migrating the current room and reservation repository into these
-                tenant-aware tables so each property has isolated inventory and operations.
-              </div>
-            </aside>
-          </section>
+            <div className="rounded-2xl border border-border bg-background/70 p-5 text-sm text-muted-foreground">
+                After setup, the next technical step is migrating the current rooms, reservations, and work queues into
+                these tenant-aware tables so each site has isolated inventory and operations.
+            </div>
+          </aside>
+        </section>
         )}
       </div>
     </main>
