@@ -1225,7 +1225,7 @@ function PlatformSection({ lang, features, label }: {
   const pick = (i: number) => { if (i===active) return; setDir(i>active?"down":"up"); setActive(i); };
   const f = features[active];
   return (
-    <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
+    <div className="flex flex-col gap-12 lg:flex-row-reverse lg:items-start lg:gap-16">
       <div className="flex-1 space-y-10 lg:max-w-[50%]">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{label}</p>
@@ -1265,7 +1265,7 @@ function PlatformSection({ lang, features, label }: {
           ))}
         </div>
       </div>
-      <div className="w-full lg:sticky lg:top-20 lg:w-[46%]">
+      <div className="w-full lg:sticky lg:top-20 lg:w-[46%] lg:self-start">
         <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/40" style={{height:"420px"}}>
           <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-border/50 bg-card/80 px-4 py-2.5 backdrop-blur-sm">
             <div className="flex items-center gap-2">
