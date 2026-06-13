@@ -680,48 +680,56 @@ export function LoginShell({
       </div>
 
       {/* AGENTS + AUTH */}
-      <section id="agentes" className="mx-auto max-w-3xl px-6 py-20 lg:px-10">
-        <div className="space-y-8">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.agentLabel}</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style={{ whiteSpace: "pre-line" }}>
-              {c.agentTitle}
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-foreground/60">{c.agentDesc}</p>
-          </div>
+      <section id="agentes" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
 
-          <div className="flex flex-wrap gap-2">
-            {c.agents.map((agent) => (
-              <span key={agent}
-                className="rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-foreground/70 transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/8 hover:text-primary">
-                {agent}
-              </span>
-            ))}
-          </div>
-
-          <AgentMessagesDemo lang={lang} />
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {c.why.map((item) => (
-              <WhyCard key={item.title} icon={ICON_MAP[item.icon]} title={item.title} text={item.text} />
-            ))}
-          </div>
-
-          <div id="seguridad" className="rounded-3xl border border-border/60 bg-card/40 p-6">
-            <div className="flex items-center gap-3">
-              <Shield className="h-4 w-4 text-primary" />
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.secLabel}</p>
+          {/* ── Left: text + pills + why cards + security ── */}
+          <div className="flex-1 space-y-8 lg:max-w-[52%]">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.agentLabel}</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style={{ whiteSpace: "pre-line" }}>
+                {c.agentTitle}
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-foreground/60">{c.agentDesc}</p>
             </div>
-            <h3 className="mt-3 text-xl font-semibold">{c.secTitle}</h3>
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              {c.secTiles.map((tile) => (
-                <div key={tile.title} className="rounded-2xl border border-border/50 bg-background/50 p-4">
-                  <p className="text-sm font-semibold text-foreground">{tile.title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/55">{tile.text}</p>
-                </div>
+
+            <div className="flex flex-wrap gap-2">
+              {c.agents.map((agent) => (
+                <span key={agent}
+                  className="rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-foreground/70 transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/8 hover:text-primary">
+                  {agent}
+                </span>
               ))}
             </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {c.why.map((item) => (
+                <WhyCard key={item.title} icon={ICON_MAP[item.icon]} title={item.title} text={item.text} />
+              ))}
+            </div>
+
+            <div id="seguridad" className="rounded-3xl border border-border/60 bg-card/40 p-6">
+              <div className="flex items-center gap-3">
+                <Shield className="h-4 w-4 text-primary" />
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.secLabel}</p>
+              </div>
+              <h3 className="mt-3 text-xl font-semibold">{c.secTitle}</h3>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                {c.secTiles.map((tile) => (
+                  <div key={tile.title} className="rounded-2xl border border-border/50 bg-background/50 p-4">
+                    <p className="text-sm font-semibold text-foreground">{tile.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/55">{tile.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+
+          {/* ── Right: animated agent messages demo ── */}
+          <div className="w-full lg:sticky lg:top-24 lg:w-[44%]">
+            <AgentMessagesDemo lang={lang} />
+          </div>
+
         </div>
       </section>
 
