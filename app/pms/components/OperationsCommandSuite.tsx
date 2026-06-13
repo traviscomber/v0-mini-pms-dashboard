@@ -5,6 +5,7 @@ import { Activity, Layers3, Sparkles } from "lucide-react";
 import AlertBanner from "./AlertBanner";
 import AgentControlTower from "./AgentControlTower";
 import ExecutiveBriefing from "./ExecutiveBriefing";
+import OperationalSignalBoard from "./OperationalSignalBoard";
 import SmartActionBoard from "./SmartActionBoard";
 import SmartMessageBoard from "./SmartMessageBoard";
 import TodayCommandCenter from "./TodayCommandCenter";
@@ -64,6 +65,14 @@ export default function OperationsCommandSuite({
       </div>
 
       {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
+
+      <OperationalSignalBoard
+        alerts={alerts}
+        reservations={reservations}
+        rooms={rooms}
+        tasks={tasks}
+        onNavigate={onNavigate}
+      />
 
       <SmartActionBoard
         reservations={reservations}
