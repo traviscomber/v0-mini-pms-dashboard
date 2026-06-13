@@ -443,6 +443,7 @@ function AuthInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         minLength={minLength}
+        suppressHydrationWarning
         className="h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition placeholder:text-foreground/35 focus:border-primary/40 focus:ring-2 focus:ring-primary/20"
       />
       {hint ? <span className="text-xs text-foreground/45">{hint}</span> : null}
@@ -454,6 +455,7 @@ function AuthButton({ label }: { label: string }) {
   return (
     <button
       type="submit"
+      suppressHydrationWarning
       className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
     >
       {label}
