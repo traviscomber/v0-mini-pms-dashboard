@@ -1041,89 +1041,99 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden" style={{ height: "calc(100vh - 90px)", maxHeight: "720px", minHeight: "480px" }}>
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-border/50 px-4 py-2.5">
+      <div className="flex shrink-0 items-center justify-between border-b border-border/50 bg-background/30 px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/40">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/60">
             {lang === "es" ? "Actividad de agentes — en vivo" : "Agent activity — live"}
           </span>
         </div>
-        <span className="text-[10px] text-foreground/25">{entries.length * 2} {lang === "es" ? "eventos hoy" : "events today"}</span>
+        <span className="text-xs font-medium text-foreground/40">{entries.length * 2} {lang === "es" ? "eventos" : "events"}</span>
       </div>
 
       {/* Scrollable feed */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ scrollBehavior: "smooth" }}>
-        {entries.map((entry, i) => {
-          const m = entry.msg;
-          const isNewest = i === entries.length - 1;
-          return (
-            <div
-              key={entry.id}
-              style={{
-                opacity: isNewest ? 1 : 0.72 - (entries.length - 1 - i) * 0.08,
-                animation: "msg-in 0.45s cubic-bezier(.16,1,.3,1) both",
-              }}
-            >
-              {/* Agent chip */}
-              <div className={["flex items-center justify-between rounded-xl border px-3 py-2", m.border, m.bg].join(" ")}>
-                <div className="flex items-center gap-2.5">
-                  <div className={["flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
-                    <span className={m.color}>{m.agent[0]}</span>
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-3 py-3" style={{ scrollBehavior: "smooth" }}>
+        <div className="space-y-2.5">
+          {entries.map((entry, i) => {
+            const m = entry.msg;
+            const isNewest = i === entries.length - 1;
+            return (
+              <div
+                key={entry.id}
+                className="group"
+                style={{
+                  opacity: isNewest ? 1 : 0.72 - (entries.length - 1 - i) * 0.08,
+                  animation: "msg-in 0.45s cubic-bezier(.16,1,.3,1) both",
+                }}
+              >
+                {/* Agent card */}
+                <div className={["rounded-lg border backdrop-blur-sm transition-all duration-300 overflow-hidden", m.border, m.bg].join(" ")}>
+                  {/* Card header with agent info and badge */}
+                  <div className="flex items-start justify-between gap-3 px-3.5 py-3">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className={["flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
+                        <span className={m.color}>{m.agent[0]}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={["text-xs font-bold leading-tight truncate", m.color].join(" ")}>{m.agent}</p>
+                        <p className="text-[11px] text-foreground/35 leading-tight">{m.role}</p>
+                      </div>
+                    </div>
+                    {m.tag && (
+                      <span className={["rounded-full border px-2.5 py-1 text-[10px] font-semibold whitespace-nowrap", TAG_STYLES[m.tag.tone]].join(" ")}>
+                        {lang === "es" ? m.tag.es : m.tag.en}
+                      </span>
+                    )}
                   </div>
-                  <div>
-                    <p className={["text-xs font-semibold leading-tight", m.color].join(" ")}>{m.agent}</p>
-                    <p className="text-[9px] text-foreground/35">{m.role}</p>
+
+                  {/* Divider */}
+                  <div className={["border-t", m.border.replace("border", "border-opacity-20")].join(" ")} />
+
+                  {/* Message content */}
+                  <div className="px-3.5 py-3 space-y-2">
+                    <p className="text-sm leading-snug text-foreground/85 font-medium">
+                      {lang === "es" ? m.message.es : m.message.en}
+                    </p>
+                    {m.detail && (
+                      <div
+                        style={{
+                          opacity: entry.showDetail ? 1 : 0,
+                          transform: entry.showDetail ? "translateY(0)" : "translateY(4px)",
+                          transition: "opacity 0.3s ease, transform 0.3s ease",
+                          maxHeight: entry.showDetail ? "200px" : "0",
+                          overflow: "hidden",
+                        }}
+                        className="space-y-0"
+                      >
+                        <div className={["h-px", m.border.replace("border", "border-opacity-20")].join(" ")} />
+                        <p className="text-xs leading-relaxed text-foreground/50 pt-2">
+                          {lang === "es" ? m.detail.es : m.detail.en}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                {m.tag && (
-                  <span className={["rounded-full border px-2 py-0.5 text-[9px] font-semibold", TAG_STYLES[m.tag.tone]].join(" ")}>
-                    {lang === "es" ? m.tag.es : m.tag.en}
-                  </span>
-                )}
               </div>
+            );
+          })}
 
-              {/* Message text */}
-              <div className="mt-2 px-1 space-y-1.5">
-                <p className="text-sm leading-relaxed text-foreground/80">
-                  {lang === "es" ? m.message.es : m.message.en}
-                </p>
-                {m.detail && (
-                  <p
-                    style={{
-                      opacity: entry.showDetail ? 1 : 0,
-                      transform: entry.showDetail ? "translateY(0)" : "translateY(4px)",
-                      transition: "opacity 0.3s ease, transform 0.3s ease",
-                    }}
-                    className="text-sm leading-relaxed text-foreground/45"
-                  >
-                    {lang === "es" ? m.detail.es : m.detail.en}
-                  </p>
-                )}
-              </div>
-
-              {/* Divider between entries except last */}
-              {i < entries.length - 1 && (
-                <div className="mt-4 border-t border-border/30" />
-              )}
-            </div>
-          );
-        })}
-
-        {/* Typing indicator for incoming message */}
-        <div className="flex items-center gap-1.5 px-1" style={{ animation: "msg-in 0.4s ease both" }}>
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:0ms]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:150ms]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:300ms]" />
+          {/* Typing indicator for incoming message */}
+          <div className="flex items-center gap-2 px-3.5 py-2" style={{ animation: "msg-in 0.4s ease both" }}>
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:150ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary/50 [animation-delay:300ms]" />
+            <span className="text-[10px] text-foreground/25 ml-1">{lang === "es" ? "Nuevo evento en línea..." : "New event incoming..."}</span>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="shrink-0 border-t border-border/40 px-4 py-3">
-        <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-background/50 px-3 py-2 text-xs text-foreground/30">
-          <span className="flex-1">{lang === "es" ? "Agentes monitoreando en tiempo real…" : "Agents monitoring in real time…"}</span>
+      <div className="shrink-0 border-t border-border/40 bg-background/20 px-3.5 py-3">
+        <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-background/50 px-3 py-2 text-xs text-foreground/35">
+          <span className="flex-1">{lang === "es" ? "Monitoreando en tiempo real…" : "Monitoring in real time…"}</span>
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary/60" />
         </div>
       </div>
