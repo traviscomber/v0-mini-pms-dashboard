@@ -233,6 +233,168 @@ const ICON_MAP: Record<string, ReactNode> = {
 };
 
 /* ─────────────────────────────────────────
+   HERO PANEL — Animated right column
+───────────────────────────────────────── */
+function useCountUp(target: number, duration = 1400, delay = 600) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const start = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setValue(Math.round(eased * target));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [target, duration, delay]);
+  return value;
+}
+
+const AGENT_TASKS_ES = [
+  { agent: "Revenue Strategist",   task: "Ajuste de tarifa +12% viernes",           icon: "trend", done: true  },
+  { agent: "Operations Commander", task: "3 cuartos pendientes de limpieza",         icon: "zap",   done: false },
+  { agent: "Chief of Staff",       task: "Briefing ejecutivo listo para revision",   icon: "check", done: true  },
+  { agent: "Guest Concierge",      task: "Bienvenida enviada a 4 llegadas hoy",      icon: "check", done: true  },
+  { agent: "Revenue Strategist",   task: "Ocupacion proyectada 96% fin de semana",   icon: "trend", done: true  },
+];
+const AGENT_TASKS_EN = [
+  { agent: "Revenue Strategist",   task: "Rate adjustment +12% Friday",              icon: "trend", done: true  },
+  { agent: "Operations Commander", task: "3 rooms pending cleaning",                 icon: "zap",   done: false },
+  { agent: "Chief of Staff",       task: "Executive briefing ready for review",      icon: "check", done: true  },
+  { agent: "Guest Concierge",      task: "Welcome sent to 4 arrivals today",         icon: "check", done: true  },
+  { agent: "Revenue Strategist",   task: "Occupancy projected 96% weekend",          icon: "trend", done: true  },
+];
+
+function HeroPanel({ lang }: { lang: Lang }) {
+  const arrivals   = useCountUp(12, 1200, 800);
+  const departures = useCountUp(8,  1000, 950);
+  const hk         = useCountUp(94, 1400, 700);
+
+  const tasks = lang === "es" ? AGENT_TASKS_ES : AGENT_TASKS_EN;
+  const [visibleCount, setVisibleCount] = useState(2);
+  const [cursor, setCursor] = useState(true);
+  const [ping, setPing] = useState(false);
+
+  useEffect(() => {
+    const i = setInterval(() => setCursor(c => !c), 530);
+    return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    const i = setInterval(() => setPing(p => !p), 2200);
+    return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    setVisibleCount(2);
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    tasks.forEach((_, i) => {
+      if (i >= 2) timeouts.push(setTimeout(() => setVisibleCount(i + 1), 1800 + i * 1600));
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, [lang]);
+
+  const ml = lang === "es"
+    ? { arrivals: "Llegadas", departures: "Salidas", hk: "Housekeeping", occ: "Ocupacion", live: "en vivo", status: "Estado operacional", agent: "Agente activo", done: "listo" }
+    : { arrivals: "Arrivals", departures: "Departures", hk: "Housekeeping", occ: "Occupancy", live: "live", status: "Operational status", agent: "Active agent", done: "done" };
+
+  return (
+    <>
+      {/* Status card */}
+      <div className="absolute left-6 right-6 top-6"
+        style={{ animation: "lp-rise 0.9s cubic-bezier(.16,1,.3,1) 0.4s both" }}>
+        <div className="rounded-2xl border border-border/50 bg-card/85 p-4 shadow-xl backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ml.status}</p>
+            <span className="flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className={`absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${ping ? "animate-ping" : ""}`} />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              <span className="text-[9px] font-semibold uppercase tracking-widest text-primary/70">{ml.live}</span>
+            </span>
+          </div>
+
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            {[
+              { label: ml.arrivals,   value: arrivals,   suffix: ""  },
+              { label: ml.departures, value: departures, suffix: ""  },
+              { label: ml.hk,         value: hk,         suffix: "%" },
+            ].map((item) => (
+              <div key={item.label}
+                className="rounded-xl border border-border/40 bg-background/60 px-3 py-2.5 transition-colors hover:border-primary/30 hover:bg-primary/5">
+                <p className="text-[10px] text-foreground/45">{item.label}</p>
+                <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-foreground">
+                  {item.value}{item.suffix}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3">
+            <div className="mb-1 flex items-center justify-between">
+              <p className="text-[9px] text-foreground/40">{ml.occ}</p>
+              <p className="text-[9px] font-semibold text-primary">{hk}%</p>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-border/40">
+              <div className="h-full rounded-full bg-primary transition-all duration-700"
+                style={{ width: `${hk}%` }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Agent card */}
+      <div className="absolute bottom-6 left-6 right-6"
+        style={{ animation: "lp-rise 0.9s cubic-bezier(.16,1,.3,1) 0.6s both" }}>
+        <div className="rounded-2xl border border-border/50 bg-card/85 p-4 shadow-xl backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ml.agent}</p>
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-semibold text-primary">
+              {visibleCount}/{tasks.length}
+            </span>
+          </div>
+
+          <div className="mt-3 space-y-2.5">
+            {tasks.slice(0, visibleCount).map((row, i) => (
+              <div key={i} className="flex items-start gap-2.5"
+                style={{ animation: i >= 2 ? "lp-rise 0.45s ease both" : "none" }}>
+                <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                  row.icon === "trend" ? "border-primary/30 bg-primary/15"
+                  : row.icon === "zap" ? "border-secondary/30 bg-secondary/15"
+                  : "border-accent/30 bg-accent/15"
+                }`}>
+                  {row.icon === "trend" && <TrendingUp   className="h-2.5 w-2.5 text-primary"  />}
+                  {row.icon === "zap"   && <Zap          className="h-2.5 w-2.5 text-secondary" />}
+                  {row.icon === "check" && <CheckCircle2 className="h-2.5 w-2.5 text-accent"    />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-semibold text-foreground/45">{row.agent}</p>
+                  <p className="text-xs text-foreground/80">
+                    {row.task}
+                    {i === visibleCount - 1 && visibleCount < tasks.length && (
+                      <span className={`ml-px inline-block h-3 w-0.5 align-middle bg-primary transition-opacity duration-100 ${cursor ? "opacity-100" : "opacity-0"}`} />
+                    )}
+                  </p>
+                </div>
+                {row.done && (
+                  <span className="ml-auto shrink-0 rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-medium text-accent">
+                    {ml.done}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────── */
 export function LoginShell({
@@ -522,7 +684,7 @@ export function LoginShell({
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       </div>
 
-      {/* ── FEATURES ───────────────────────── */}
+      {/* ── FEATURES ───────────��───────────── */}
       <section id="plataforma" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.featuresLabel}</p>
