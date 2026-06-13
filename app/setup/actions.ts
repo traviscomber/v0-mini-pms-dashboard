@@ -43,7 +43,9 @@ export async function createWorkspaceAction(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.rpc("bootstrap_workspace", {
+
+  // Try RPC first, fallback to SQL if RPC fails due to schema cache
+  const { data: rpcData, error: rpcError } = await supabase.rpc("bootstrap_workspace", {
     organization_name: organizationName,
     organization_slug: appendSuffix(slugify(organizationName)),
     property_currency: propertyCurrency,
@@ -52,8 +54,55 @@ export async function createWorkspaceAction(formData: FormData) {
     property_timezone: propertyTimezone,
   });
 
-  if (error) {
-    redirect(buildSetupRedirect(error.message));
+  if (rpcError && rpcError.message.includes("schema cache")) {
+    // Fallback to direct SQL insert
+    const orgId = randomUUID();
+    const propId = randomUUID();
+    const orgSlug = appendSuffix(slugify(organizationName));
+    const propSlug = appendSuffix(slugify(propertyName));
+    
+    const { error: orgError } = await supabase
+      .from("organizations")
+      .insert({
+        id: orgId,
+        name: organizationName,
+        slug: orgSlug,
+      });
+
+    if (orgError) {
+      redirect(buildSetupRedirect(`Failed to create organization: ${orgError.message}`));
+    }
+
+    const { error: propError } = await supabase
+      .from("properties")
+      .insert({
+        id: propId,
+        organization_id: orgId,
+        name: propertyName,
+        slug: propSlug,
+        currency: propertyCurrency,
+        timezone: propertyTimezone,
+      });
+
+    if (propError) {
+      redirect(buildSetupRedirect(`Failed to create property: ${propError.message}`));
+    }
+
+    const { error: memberError } = await supabase
+      .from("memberships")
+      .insert({
+        id: randomUUID(),
+        user_id: viewer.user.id,
+        organization_id: orgId,
+        role: "owner",
+        is_default: true,
+      });
+
+    if (memberError) {
+      redirect(buildSetupRedirect(`Failed to create membership: ${memberError.message}`));
+    }
+  } else if (rpcError) {
+    redirect(buildSetupRedirect(rpcError.message));
   }
 
   revalidatePath("/", "layout");
