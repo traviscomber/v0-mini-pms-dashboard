@@ -40,6 +40,10 @@ export default function Page() {
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">Facility core system for modern operations.</h1>
           </div>
           <div className="flex flex-wrap gap-3">
+            <Link href="/case-studies" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              Case studies
+              <ArrowRight className="h-4 w-4 text-primary" />
+            </Link>
             <Link href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
               Blackswan case study
               <ArrowRight className="h-4 w-4 text-primary" />
@@ -47,6 +51,9 @@ export default function Page() {
             <Link href="/demo" className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
               Internal demo
               <Sparkles className="h-4 w-4" />
+            </Link>
+            <Link href="/walkthrough" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              Book a walkthrough
             </Link>
             <Link href="/auth/login" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
               Sign in
@@ -105,8 +112,14 @@ export default function Page() {
             </div>
 
             <div className="mt-6 flex flex-col gap-3">
+              <Link href="/case-studies" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+                Browse case studies
+              </Link>
               <Link href="/case-studies/blackswan" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
                 View Blackswan case study
+              </Link>
+              <Link href="/walkthrough" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+                Book a walkthrough
               </Link>
               <Link href="/demo" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
                 Open internal demo
