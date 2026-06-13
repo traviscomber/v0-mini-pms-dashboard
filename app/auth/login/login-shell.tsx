@@ -700,6 +700,8 @@ export function LoginShell({
             ))}
           </div>
 
+          <AgentMessagesDemo lang={lang} />
+
           <div className="grid gap-3 sm:grid-cols-3">
             {c.why.map((item) => (
               <WhyCard key={item.title} icon={ICON_MAP[item.icon]} title={item.title} text={item.text} />
@@ -829,6 +831,150 @@ export function LoginShell({
           to   { opacity: 1; transform: translateY(0)    scale(1);    }
         }
       `}</style>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   AGENT MESSAGES DEMO
+───────────────────────────────────────── */
+type AgentMsg = {
+  agent: string;
+  role: string;
+  color: string;
+  border: string;
+  bg: string;
+  message: { es: string; en: string };
+  detail?: { es: string; en: string };
+  tag?: { es: string; en: string; tone: "green" | "yellow" | "red" | "blue" };
+};
+
+const AGENT_MESSAGES: AgentMsg[] = [
+  {
+    agent: "Revenue Strategist", role: "Ingresos",
+    color: "text-primary", border: "border-primary/25", bg: "bg-primary/8",
+    message: { es: "Demanda alta detectada para el viernes 20 jun. 8 habitaciones disponibles.", en: "High demand detected for Friday Jun 20. 8 rooms still available." },
+    detail:  { es: "Recomiendo subir tarifa de $187 a $215 (+15%). Ocupacion proyectada: 97%.", en: "Recommend raising rate from $187 to $215 (+15%). Projected occupancy: 97%." },
+    tag: { es: "Accion sugerida", en: "Suggested action", tone: "green" },
+  },
+  {
+    agent: "Operations Commander", role: "Operaciones",
+    color: "text-accent", border: "border-accent/25", bg: "bg-accent/8",
+    message: { es: "3 habitaciones de check-out pendientes de limpieza: 204, 311, 408.", en: "3 checkout rooms pending housekeeping: 204, 311, 408." },
+    detail:  { es: "Equipo A asignado. ETA 45 min. Hab. 311 llega a las 14:00 — prioridad alta.", en: "Team A assigned. ETA 45 min. Rm. 311 arrives at 14:00 — high priority." },
+    tag: { es: "En progreso", en: "In progress", tone: "yellow" },
+  },
+  {
+    agent: "Guest Concierge", role: "Huespedes",
+    color: "text-secondary", border: "border-secondary/25", bg: "bg-secondary/8",
+    message: { es: "Huesped VIP Martinez (hab. 501) solicita late check-out y traslado al aeropuerto.", en: "VIP guest Martinez (rm. 501) requests late check-out and airport transfer." },
+    detail:  { es: "Late check-out hasta las 15:00 confirmado. Traslado reservado para las 16:30.", en: "Late check-out until 15:00 confirmed. Transfer booked for 16:30." },
+    tag: { es: "Resuelto", en: "Resolved", tone: "green" },
+  },
+  {
+    agent: "Trust Auditor", role: "Auditoria",
+    color: "text-destructive", border: "border-destructive/25", bg: "bg-destructive/8",
+    message: { es: "Anomalia detectada: 4 cargos de minibar sin registro de huesped activo.", en: "Anomaly detected: 4 minibar charges with no active guest record." },
+    detail:  { es: "Cargos del 12-jun aislados. Requiere revision manual antes del cierre de turno.", en: "Charges from Jun-12 isolated. Requires manual review before shift close." },
+    tag: { es: "Requiere revision", en: "Needs review", tone: "red" },
+  },
+  {
+    agent: "Chief of Staff", role: "Orquestador",
+    color: "text-primary", border: "border-primary/25", bg: "bg-primary/8",
+    message: { es: "Resumen ejecutivo listo. RevPAR hoy: $271 (+9% vs ayer). Sin alertas criticas.", en: "Executive briefing ready. RevPAR today: $271 (+9% vs yesterday). No critical alerts." },
+    detail:  { es: "Proxima accion: revisar propuesta de Revenue Strategist antes de las 13:00.", en: "Next action: review Revenue Strategist proposal before 13:00." },
+    tag: { es: "Resumen diario", en: "Daily briefing", tone: "blue" },
+  },
+  {
+    agent: "Integrations Engineer", role: "Integraciones",
+    color: "text-accent", border: "border-accent/25", bg: "bg-accent/8",
+    message: { es: "Sync con OTA completado: 12 reservas nuevas desde Booking.com y Expedia.", en: "OTA sync complete: 12 new reservations from Booking.com and Expedia." },
+    detail:  { es: "Inventario actualizado en todos los canales. Sin conflictos de disponibilidad.", en: "Inventory updated across all channels. No availability conflicts." },
+    tag: { es: "Sincronizado", en: "Synced", tone: "green" },
+  },
+];
+
+const TAG_STYLES: Record<"green" | "yellow" | "red" | "blue", string> = {
+  green:  "bg-green-500/10 text-green-400 border-green-500/30",
+  yellow: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+  red:    "bg-destructive/10 text-destructive border-destructive/30",
+  blue:   "bg-primary/10 text-primary border-primary/25",
+};
+
+function AgentMessagesDemo({ lang }: { lang: Lang }) {
+  const [active, setActive]       = useState(0);
+  const [visible, setVisible]     = useState(true);
+  const [showDetail, setShowDetail] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+    setShowDetail(false);
+    const t1 = setTimeout(() => setShowDetail(true), 550);
+    const t2 = setTimeout(() => setVisible(false), 3700);
+    const t3 = setTimeout(() => {
+      setActive(a => (a + 1) % AGENT_MESSAGES.length);
+    }, 4200);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [active]);
+
+  const msg = AGENT_MESSAGES[active];
+
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card/40 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-border/50 px-4 py-2.5">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/40">
+            {lang === "es" ? "Actividad de agentes — en vivo" : "Agent activity — live"}
+          </span>
+        </div>
+        <div className="flex items-center gap-1">
+          {AGENT_MESSAGES.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)} aria-label={`Message ${i + 1}`}
+              className={["h-1.5 rounded-full transition-all duration-300", i === active ? "w-4 bg-primary" : "w-1.5 bg-border/60 hover:bg-border"].join(" ")} />
+          ))}
+        </div>
+      </div>
+
+      {/* Message */}
+      <div style={{ minHeight: "140px" }} className="p-4">
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(-6px)", transition: "opacity 0.35s ease, transform 0.35s ease" }}>
+          {/* Agent chip */}
+          <div className={["flex items-center justify-between rounded-xl border px-3 py-2", msg.border, msg.bg].join(" ")}>
+            <div className="flex items-center gap-2.5">
+              <div className={["flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs font-black", msg.border, msg.bg].join(" ")}>
+                <span className={msg.color}>{msg.agent[0]}</span>
+              </div>
+              <div>
+                <p className={["text-xs font-semibold leading-tight", msg.color].join(" ")}>{msg.agent}</p>
+                <p className="text-[9px] text-foreground/35">{msg.role}</p>
+              </div>
+            </div>
+            {msg.tag && (
+              <span className={["rounded-full border px-2 py-0.5 text-[9px] font-semibold", TAG_STYLES[msg.tag.tone]].join(" ")}>
+                {lang === "es" ? msg.tag.es : msg.tag.en}
+              </span>
+            )}
+          </div>
+
+          {/* Message text */}
+          <div className="mt-2.5 px-1 space-y-1.5">
+            <p className="text-sm leading-relaxed text-foreground/80">
+              {lang === "es" ? msg.message.es : msg.message.en}
+            </p>
+            {msg.detail && (
+              <p style={{ opacity: showDetail ? 1 : 0, transform: showDetail ? "translateY(0)" : "translateY(4px)", transition: "opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s" }}
+                className="text-sm leading-relaxed text-foreground/45">
+                {lang === "es" ? msg.detail.es : msg.detail.en}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
