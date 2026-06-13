@@ -90,10 +90,10 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                 <span
                   className={`text-xs font-bold px-2 py-1 rounded ${
                     price.recommended === 'Increase'
-                      ? 'bg-chart-2/20 text-green-700'
+                      ? 'bg-accent/20 text-accent'
                       : price.recommended === 'Decrease'
-                      ? 'bg-destructive/20 text-red-700'
-                      : 'bg-card/500/20 text-foreground/80'
+                      ? 'bg-destructive/20 text-destructive'
+                      : 'bg-primary/20 text-primary'
                   }`}
                 >
                   {price.recommended}
@@ -105,7 +105,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                   Base: <span className="text-foreground/60">${price.basePrice}</span> →{' '}
                   <span className="font-bold text-foreground">${price.dynamicPrice}</span>
                 </p>
-                <p className={`${price.priceChange > 0 ? 'text-green-600' : price.priceChange < 0 ? 'text-destructive' : ''}`}>
+                <p className={`${price.priceChange > 0 ? 'text-accent' : price.priceChange < 0 ? 'text-destructive' : 'text-foreground/60'}`}>
                   {price.priceChange > 0 ? '+' : ''}{price.priceChange} ({price.percentageChange}%)
                 </p>
                 <p className="text-foreground/60 text-xs">{price.reason}</p>
@@ -121,10 +121,10 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
             {pricingForecast.map((day: any) => (
               <div key={day.date} className={`p-2 rounded text-center text-xs border ${
                 day.type === 'weekend'
-                  ? 'bg-accent500/10 border-purple-500'
+                  ? 'bg-accent/10 border-accent'
                   : day.type === 'season'
-                  ? 'bg-destructive500/10 border-destructive500'
-                  : 'bg-card/500/10 border-border'
+                  ? 'bg-destructive/10 border-destructive'
+                  : 'bg-primary/10 border-primary'
               }`}>
                 <p className="font-semibold">{day.dayName}</p>
                 <p className="text-foreground/60">×{day.multiplier}</p>
@@ -140,7 +140,7 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
         <div className="flex items-center gap-2 mb-4">
           <Mail className="text-primary" size={24} />
           <h2 className="text-xl font-bold text-foreground">Notificaciones a Guests</h2>
-          <span className="ml-auto bg-destructive/20 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
+          <span className="ml-auto bg-destructive/20 text-destructive px-3 py-1 rounded-full text-sm font-bold">
             {totalPending} pendientes
           </span>
         </div>
@@ -152,9 +152,9 @@ export default function SmartManagementHub({ rooms = [], reservations = [], task
                 key={notif.id}
                 className={`p-4 rounded border-l-4 ${
                   notif.sent
-                    ? 'bg-card/500/5 border-border'
+                    ? 'bg-card/50 border-border'
                     : notif.priority >= 2
-                    ? 'bg-destructive500/10 border-destructive500'
+                    ? 'bg-destructive/10 border-destructive'
                     : 'bg-primary/10 border-primary'
                 }`}
               >

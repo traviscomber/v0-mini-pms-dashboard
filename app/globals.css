@@ -147,40 +147,7 @@
   --sidebar-ring: oklch(0.60 0.28 320);
 }
 
-.dark {
-  --background: oklch(0.10 0.01 280);
-  --foreground: oklch(0.96 0 0);
-  --card: oklch(0.15 0.015 280);
-  --card-foreground: oklch(0.96 0 0);
-  --popover: oklch(0.17 0.015 280);
-  --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.52 0.24 280);
-  --primary-foreground: oklch(0.96 0 0);
-  --secondary: oklch(0.48 0.22 320);
-  --secondary-foreground: oklch(0.96 0 0);
-  --muted: oklch(0.30 0.04 280);
-  --muted-foreground: oklch(0.72 0.01 0);
-  --accent: oklch(0.58 0.20 290);
-  --accent-foreground: oklch(0.15 0.01 280);
-  --destructive: oklch(0.52 0.24 15);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 6%);
-  --ring: oklch(0.52 0.24 280);
-  --chart-1: oklch(0.52 0.24 280);
-  --chart-2: oklch(0.48 0.22 320);
-  --chart-3: oklch(0.58 0.20 290);
-  --chart-4: oklch(0.54 0.22 310);
-  --chart-5: oklch(0.50 0.20 300);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.15 0.015 280);
-  --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.52 0.24 280);
-  --sidebar-primary-foreground: oklch(0.96 0 0);
-  --sidebar-accent: oklch(0.48 0.22 320);
-  --sidebar-accent-foreground: oklch(0.96 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.52 0.24 280);
-}
+
 
 @layer base {
   * {
@@ -191,5 +158,48 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Landing Page Animations */
+@keyframes lp-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes lp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lp-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes lp-card {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
