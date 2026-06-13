@@ -23,32 +23,32 @@ interface LoginShellProps {
 }
 
 const HERO_STATS = [
-  { label: "Ocupación", value: "94%", delta: "+12%" },
-  { label: "ADR promedio", value: "$287.000 CLP", delta: "+8%" },
-  { label: "Ingresos mensuales", value: "$41M CLP", delta: "+23%" },
-  { label: "Tareas resueltas", value: "98%", delta: "+4%" },
+  { label: "Unidades activas", value: "4", delta: "BFCS" },
+  { label: "Operaciones cubiertas", value: "100%", delta: "Admin + field" },
+  { label: "Tiempo ahorrado", value: "—", delta: "Automation" },
+  { label: "Decisiones trazables", value: "100%", delta: "Audit-ready" },
 ];
 
 const PLATFORM_PILLARS = [
   {
     icon: Brain,
     title: "Lectura ejecutiva",
-    description: "Resumen claro de riesgo, caja, ocupación y la próxima mejor acción.",
+    description: "Resumen claro de estado, riesgos, prioridades y la próxima mejor acción.",
   },
   {
     icon: Wand2,
     title: "Automatización con agentes",
-    description: "Especialistas para ingresos, operaciones, mensajes, integraciones y control.",
+    description: "Especialistas para administración, hospitality, campo e infraestructura.",
   },
   {
     icon: CalendarDays,
     title: "Operación sin fricción",
-    description: "Llegadas, salidas, housekeeping y mantención coordinados en un solo lugar.",
+    description: "Reservas, mantenimiento, activos y servicios coordinados en un solo lugar.",
   },
   {
     icon: BarChart3,
-    title: "Más ingreso, menos pérdida",
-    description: "Señales de pricing, demanda y cobros visibles antes de que se pierdan ventas.",
+    title: "Más control, menos pérdida",
+    description: "Señales de costos, ocupación, mantenimientos y cobros visibles antes de que se pierdan oportunidades.",
   },
 ];
 
@@ -59,7 +59,7 @@ const CHILE_FOCUSES = [
   },
   {
     title: "Recepción y operaciones",
-    text: "Ideal para hoteles urbanos, apart-hoteles, hostales boutique y operaciones multicanal.",
+    text: "Ideal para hoteles urbanos, apart-hoteles, hostales boutique y servicios multi-sitio.",
   },
   {
     title: "Época alta y feriados",
@@ -74,17 +74,17 @@ const CHILE_FOCUSES = [
 const CITY_PROFILES = [
   {
     city: "Santiago",
-    label: "Hoteles urbanos y corporativos",
-    text: "Check-ins rápidos entre semana, cobros ordenados y mensajes listos antes del peak de recepción.",
+    label: "Operación corporativa",
+    text: "Recepción ordenada, tareas claras y seguimiento de activos con trazabilidad diaria.",
   },
   {
     city: "Valparaíso",
-    label: "Escapadas, terrazas y fines de semana largos",
-    text: "La operación se apoya en reservas de último minuto, comunicación cálida y una experiencia más flexible.",
+    label: "Hospitality costero",
+    text: "Flujos de atención, reservas y servicios listos para estancias cortas y escapadas de fin de semana.",
   },
   {
     city: "Patagonia",
-    label: "Lodges y turismo de naturaleza",
+    label: "Campo y operaciones remotas",
     text: "Más anticipación, comunicación proactiva y margen operativo para clima, traslados y cambios de itinerario.",
   },
 ];
@@ -102,19 +102,19 @@ const DAY_FLOW = [
   {
     time: "07:00",
     title: "Despierta la operación",
-    text: "Recepción, housekeeping y cobranzas arrancan con la lectura del estado real del hotel.",
+    text: "Recepción, administración y equipos de campo arrancan con la lectura del estado real de cada sede.",
     tone: "sky",
   },
   {
     time: "11:30",
     title: "Ajusta habitaciones y mensajes",
-    text: "Se asignan prioridades, se confirman salidas y se preparan mensajes para las próximas llegadas.",
+    text: "Se asignan prioridades, se confirman pendientes y se preparan mensajes para los siguientes movimientos.",
     tone: "violet",
   },
   {
     time: "16:00",
     title: "Entra el bloque de check-ins",
-    text: "El sistema empuja alertas, tareas y mensajes para que la llegada sea ordenada y sin fricción.",
+    text: "El sistema empuja alertas, tareas y mensajes para que cada interacción sea ordenada y sin fricción.",
     tone: "amber",
   },
   {
@@ -223,8 +223,8 @@ export function LoginShell({
       <header className="relative z-10 border-b border-border/70 bg-card/70 backdrop-blur-xl animate-[lp-drop_0.7s_ease_both]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">N3uralia</p>
-            <p className="text-xs text-foreground/60">PMS con agentes para operación hotelera en Chile</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">Blackswan FC</p>
+            <p className="text-xs text-foreground/60">BFCS para Blackswan — core system para operación multi-vertical</p>
           </div>
           <nav className="hidden items-center gap-6 text-sm text-foreground/65 md:flex">
             <a href="#platform" className="transition hover:text-foreground">Plataforma</a>
@@ -239,16 +239,16 @@ export function LoginShell({
         <section className="space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary animate-[lp-rise_0.8s_ease_both]">
             <Sparkles className="h-3.5 w-3.5" />
-            Operación hotelera moderna, lista para Chile
+            Blackswan Facility Core System
           </div>
 
           <div className="space-y-5 animate-[lp-rise_0.85s_ease_0.05s_both]">
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl xl:text-6xl">
-              Un centro de control para hoteles que necesitan ordenar, vender y responder mejor.
+              Un centro de control para Blackswan que organiza hospitality, administración, campo e infraestructura.
             </h1>
             <p className="max-w-2xl text-base leading-7 text-foreground/70 sm:text-lg">
-              N3uralia reúne reservas, ingresos, operación y comunicación en una sola vista ejecutiva.
-              Pensado para equipos en Chile que quieren menos fricción y más claridad todos los días.
+              BFCS reúne equipos, activos, reservas, mantenimiento y comunicación en una sola vista ejecutiva.
+              Pensado para la primera operación Blackswan, con control serio y claridad todos los días.
             </p>
           </div>
 
@@ -370,8 +370,8 @@ export function LoginShell({
           <section id="chile" className="space-y-4">
             <SectionHeading
               eyebrow="Chile"
-              title="Lo hacemos más útil para Santiago, Valparaíso y Patagonia."
-              text="La página debe sentirse cercana a la operación real del país, con copy que haga clic para cada tipo de hotel."
+              title="Lo hacemos útil para Blackswan en Santiago, Valparaíso y Patagonia."
+              text="La página debe sentirse cercana a la operación real del cliente, con copy que haga clic para cada tipo de sede."
             />
             <div className="grid gap-4 md:grid-cols-2">
               {CHILE_FOCUSES.map((item, index) => (
@@ -418,7 +418,7 @@ export function LoginShell({
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight">Agentes pequeños, responsabilidades claras.</h2>
               </div>
               <p className="max-w-xl text-sm leading-6 text-foreground/65">
-                Un orquestador principal y especialistas para ingresos, operación, experiencia, integraciones y confianza.
+                Un orquestador principal y especialistas para hospitality, administración, terreno, integraciones y confianza.
               </p>
             </div>
 
@@ -435,7 +435,7 @@ export function LoginShell({
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               <Callout icon={<CheckCircle2 className="h-4 w-4" />} title="Menos errores" text="Reduce atrasos, cobros olvidados y fallas de coordinación." />
-              <Callout icon={<ArrowRight className="h-4 w-4" />} title="Decisiones rápidas" text="Convierte actividad PMS en un plan claro desde un solo vistazo." />
+              <Callout icon={<ArrowRight className="h-4 w-4" />} title="Decisiones rápidas" text="Convierte actividad BFCS en un plan claro desde un solo vistazo." />
               <Callout icon={<Lock className="h-4 w-4" />} title="Listo para auditoría" text="Cada recomendación puede revisarse y aprobarse con trazabilidad." />
             </div>
           </section>
@@ -492,14 +492,14 @@ export function LoginShell({
               {tab === "signin" ? (
                 <form action={signInAction} className="space-y-4" noValidate>
                   <input type="hidden" name="next" value={next} />
-                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@hotel.cl" autoComplete="email" />
+                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@blackswan.cl" autoComplete="email" />
                   <AuthInput label="Contraseña" name="password" type="password" placeholder="••••••••" autoComplete="current-password" />
                   <AuthButton label="Entrar al workspace" />
                 </form>
               ) : (
                 <form action={signUpAction} className="space-y-4" noValidate>
                   <AuthInput label="Nombre completo" name="fullName" type="text" placeholder="Tu nombre" />
-                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@hotel.cl" autoComplete="email" />
+                  <AuthInput label="Correo" name="email" type="email" placeholder="tu@blackswan.cl" autoComplete="email" />
                   <AuthInput
                     label="Contraseña"
                     name="password"
@@ -518,8 +518,8 @@ export function LoginShell({
               <p className="font-medium text-foreground">Después de entrar</p>
               <ul className="mt-3 space-y-2 leading-6">
                 <li>• Briefing ejecutivo con riesgo, caja y ocupación</li>
-                <li>• Vista operativa con tareas, llegadas, salidas y housekeeping</li>
-                <li>• Torre de agentes para ingresos, operación y mensajes</li>
+                <li>• Vista operativa con tareas, sedes, activos y servicios</li>
+                <li>• Torre de agentes para administración, hospitality, campo y mantenimiento</li>
               </ul>
             </div>
 
@@ -531,7 +531,7 @@ export function LoginShell({
       </main>
 
       <footer className="relative z-10 border-t border-border/70 px-6 py-5 text-center text-xs text-foreground/50 lg:px-8">
-        © 2026 N3uralia — Plataforma hotelera con agentes
+        © 2026 Blackswan — Facility Core System
       </footer>
 
       <style>{`
