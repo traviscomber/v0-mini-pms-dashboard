@@ -5,6 +5,7 @@ import { Activity, Layers3, Sparkles } from "lucide-react";
 import AlertBanner from "./AlertBanner";
 import AgentControlTower from "./AgentControlTower";
 import ExecutiveBriefing from "./ExecutiveBriefing";
+import SmartActionBoard from "./SmartActionBoard";
 import TodayCommandCenter from "./TodayCommandCenter";
 import type { Alert, Reservation, Room, Task } from "../types";
 
@@ -14,6 +15,7 @@ interface OperationsCommandSuiteProps {
   reservations: Reservation[];
   rooms: Room[];
   tasks: Task[];
+  onNavigate: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar") => void;
   onSelectReservation?: (reservation: Reservation) => void;
 }
 
@@ -23,6 +25,7 @@ export default function OperationsCommandSuite({
   reservations,
   rooms,
   tasks,
+  onNavigate,
   onSelectReservation,
 }: OperationsCommandSuiteProps) {
   return (
@@ -58,6 +61,13 @@ export default function OperationsCommandSuite({
       </div>
 
       {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
+
+      <SmartActionBoard
+        reservations={reservations}
+        rooms={rooms}
+        tasks={tasks}
+        onNavigate={onNavigate}
+      />
 
       <div className="space-y-3">
         <SectionLabel number="01" title="Executive Briefing" subtitle={isLoading ? "Reading live PMS data..." : "Risk, cash flow, readiness, and the next best action."} />
@@ -105,4 +115,3 @@ function SectionLabel({
     </div>
   );
 }
-

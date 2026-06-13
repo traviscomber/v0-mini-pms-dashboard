@@ -199,6 +199,10 @@ export default function PMSApp() {
     await deleteReservation(id);
   };
 
+  const handleNavigateFromActions = (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar") => {
+    setActiveSection(section);
+  };
+
   return (
     <div className="flex h-screen bg-background">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
@@ -224,6 +228,7 @@ export default function PMSApp() {
                 reservations={reservations}
                 rooms={rooms}
                 tasks={tasks}
+                onNavigate={handleNavigateFromActions}
                 onSelectReservation={handleSelectReservation}
               />
             ) : null}
