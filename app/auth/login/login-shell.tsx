@@ -532,7 +532,6 @@ export function LoginShell({
   signInAction,
   signUpAction,
 }: LoginShellProps) {
-  const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [lang, setLang] = useState<Lang>("es");
   const c = copy[lang];
 
@@ -584,7 +583,7 @@ export function LoginShell({
               <Globe className="h-3 w-3" />
               {lang === "es" ? "EN" : "ES"}
             </button>
-            <a href="#auth-card"
+            <a href="/auth/login"
               className="hidden rounded-lg border border-border/60 bg-card/60 px-3.5 py-1.5 text-sm font-medium text-foreground/70 transition hover:border-primary/30 hover:bg-primary/10 hover:text-primary sm:block">
               {c.nav.signin}
             </a>
@@ -621,7 +620,7 @@ export function LoginShell({
             className="flex flex-wrap items-center gap-3"
             style={{ animation: "lp-rise 0.85s ease 0.18s both" }}
           >
-            <a href="#auth-card"
+            <a href="/auth/login"
               className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:brightness-110 active:scale-[0.98]">
               {c.cta}
               <ArrowRight className="h-4 w-4" />
@@ -681,7 +680,7 @@ export function LoginShell({
       </div>
 
       {/* AGENTS + AUTH */}
-      <section id="agentes" className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1fr_400px] lg:items-start lg:px-10">
+      <section id="agentes" className="mx-auto max-w-3xl px-6 py-20 lg:px-10">
         <div className="space-y-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.agentLabel}</p>
@@ -722,78 +721,6 @@ export function LoginShell({
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        <div id="auth-card" className="lg:sticky lg:top-24">
-          <div className="rounded-[24px] border border-border/60 bg-card/90 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl sm:p-7"
-            style={{ animation: "lp-card 0.9s ease 0.1s both" }}>
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">{c.auth.label}</p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight">{c.auth.title}</h2>
-              <p className="mt-1 text-sm text-foreground/55">{c.auth.subtitle}</p>
-            </div>
-
-            <div className="mt-5 flex rounded-xl border border-border/60 bg-background/60 p-0.5">
-              {(["signin", "signup"] as const).map((v) => (
-                <button key={v} role="tab" aria-selected={tab === v}
-                  onClick={() => setTab(v)} suppressHydrationWarning
-                  className={[
-                    "flex-1 rounded-[10px] py-2 text-sm font-medium transition",
-                    tab === v
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-foreground/55 hover:text-foreground",
-                  ].join(" ")}>
-                  {v === "signin" ? c.auth.tabSignin : c.auth.tabSignup}
-                </button>
-              ))}
-            </div>
-
-            {(message || !supabaseReady) && (
-              <div className="mt-4 space-y-2">
-                {message && <Notice tone="accent" text={message} />}
-                {!supabaseReady && <Notice tone="warning" text={c.auth.supabaseWarning} />}
-              </div>
-            )}
-
-            <div className="mt-5">
-              {tab === "signin" ? (
-                <form action={signInAction} className="space-y-4" noValidate suppressHydrationWarning>
-                  <input type="hidden" name="next" value={next} />
-                  <AuthInput label={c.auth.emailLabel} name="email" type="email"
-                    placeholder={c.auth.emailPlaceholder} autoComplete="email" />
-                  <AuthInput label={c.auth.passwordLabel} name="password" type="password"
-                    placeholder={c.auth.passwordPlaceholder} autoComplete="current-password" />
-                  <AuthButton label={c.auth.signinBtn} />
-                </form>
-              ) : (
-                <form action={signUpAction} className="space-y-4" noValidate suppressHydrationWarning>
-                  <input type="hidden" name="next" value={next} />
-                  <AuthInput label={c.auth.nameLabel} name="fullName" type="text"
-                    placeholder={c.auth.namePlaceholder} />
-                  <AuthInput label={c.auth.emailLabel} name="email" type="email"
-                    placeholder={c.auth.emailPlaceholder} autoComplete="email" />
-                  <AuthInput label={c.auth.passwordLabel} name="password" type="password"
-                    placeholder={c.auth.passwordPlaceholder} autoComplete="new-password"
-                    hint={c.auth.passwordHint} minLength={8} />
-                  <AuthButton label={c.auth.signupBtn} />
-                </form>
-              )}
-            </div>
-
-            <div className="mt-5 rounded-xl border border-border/50 bg-background/50 p-4">
-              <p className="text-xs font-semibold text-foreground/70">{c.auth.afterTitle}</p>
-              <ul className="mt-3 space-y-2">
-                {c.auth.afterItems.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-xs leading-relaxed text-foreground/55">
-                    <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className="mt-4 text-center text-[11px] leading-5 text-foreground/35">{c.auth.legal}</p>
           </div>
         </div>
       </section>
