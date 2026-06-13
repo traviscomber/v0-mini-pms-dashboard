@@ -154,9 +154,9 @@ export default function OperationalSignalBoard({
                         className={[
                           "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]",
                           signal.tone === "critical"
-                            ? "bg-red-500/10 text-red-300"
+                            ? "bg-destructive/10 text-destructive"
                             : signal.tone === "warning"
-                              ? "bg-amber-500/10 text-amber-300"
+                              ? "bg-secondary/10 text-secondary"
                               : "bg-primary/10 text-primary",
                         ].join(" ")}
                       >
@@ -170,7 +170,7 @@ export default function OperationalSignalBoard({
 
               <div className="mt-4 h-2 overflow-hidden rounded-full bg-border/40">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-emerald-400"
+                  className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-secondary"
                   style={{ width: `${signal.score}%` }}
                 />
               </div>
