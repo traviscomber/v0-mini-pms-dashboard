@@ -106,7 +106,7 @@ export default async function SetupPage({ searchParams }: SetupPageProps) {
                   name="organizationName"
                   required
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-card-foreground outline-none transition focus:border-primary"
-                  placeholder="Yagán Group"
+                  placeholder="N3uralia Group"
                 />
               </label>
 
