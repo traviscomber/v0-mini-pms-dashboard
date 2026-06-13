@@ -9,8 +9,6 @@ import BookingForm from "./components/BookingForm";
 import OnboardingWizard from "./components/OnboardingWizard";
 import UserProfileNavbar from "./components/UserProfileNavbar";
 import ChannelManager from "./components/ChannelManager";
-import AgentControlTower from "./components/AgentControlTower";
-import ExecutiveBriefing from "./components/ExecutiveBriefing";
 import CommunicationTemplates from "./components/CommunicationTemplates";
 import ConflictDetectionUI from "./components/ConflictDetectionUI";
 import FilterPanel from "./components/FilterPanel";
@@ -23,8 +21,8 @@ import PaymentLedger from "./components/PaymentLedger";
 import Reports from "./components/Reports";
 import ReservationDrawer from "./components/ReservationDrawer";
 import ReservationList from "./components/ReservationList";
+import OperationsCommandSuite from "./components/OperationsCommandSuite";
 import Sidebar from "./components/Sidebar";
-import TodayCommandCenter from "./components/TodayCommandCenter";
 import UserManagement from "./components/UserManagement";
 import { useAlerts } from "./hooks/use-alerts";
 import { createOperationalTasks, createPaymentEntries, useLivePms } from "./hooks/use-live-pms";
@@ -220,21 +218,17 @@ export default function PMSApp() {
             </div>
 
             {activeSection === "operations" ? (
-              <ExecutiveBriefing isLoading={isLoading} reservations={reservations} rooms={rooms} tasks={tasks} />
-            ) : null}
-
-            {activeSection === "operations" ? <AgentControlTower /> : null}
-
-            {alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
-
-            {activeSection === "operations" ? (
-              <TodayCommandCenter
+              <OperationsCommandSuite
+                alerts={alerts}
+                isLoading={isLoading}
                 reservations={reservations}
                 rooms={rooms}
                 tasks={tasks}
                 onSelectReservation={handleSelectReservation}
               />
             ) : null}
+
+            {activeSection !== "operations" && alerts.length > 0 ? <AlertBanner alerts={alerts} /> : null}
 
             {activeSection === "housekeeping"
               ? isMobile
