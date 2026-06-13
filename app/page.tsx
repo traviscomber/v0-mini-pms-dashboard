@@ -1,34 +1,34 @@
-import Link from "next/link";
-import { ArrowRight, Building2, BriefcaseBusiness, Globe2, ShieldCheck, Sparkles } from "lucide-react";
+import Link from 'next/link'
+import { ArrowRight, Building2, BriefcaseBusiness, Globe2, ShieldCheck, Sparkles } from 'lucide-react'
 
 const PRODUCT_PILLARS = [
   {
     icon: Building2,
-    title: "Operations core",
-    text: "One operating layer for hospitality, field services, assets, and maintenance.",
+    title: 'Operations core',
+    text: 'One operating layer for hospitality, field services, assets, and maintenance.',
   },
   {
     icon: BriefcaseBusiness,
-    title: "Executive control",
-    text: "Clear prioritization for leaders who need to move from signals to actions.",
+    title: 'Executive control',
+    text: 'Clear prioritization for leaders who need to move from signals to actions.',
   },
   {
     icon: ShieldCheck,
-    title: "Audit-ready",
-    text: "Every recommendation can be reviewed, approved, and traced.",
+    title: 'Audit-ready',
+    text: 'Every recommendation can be reviewed, approved, and traced.',
   },
   {
     icon: Globe2,
-    title: "Multi-vertical",
-    text: "Built to adapt across hospitality, admin, infrastructure, and remote operations.",
+    title: 'Multi-vertical',
+    text: 'Built to adapt across hospitality, admin, infrastructure, and remote operations.',
   },
-];
+]
 
 const PUBLIC_USE_CASES = [
-  "Hospitality teams that need operational clarity.",
-  "Property groups managing assets, people, and service delivery.",
-  "Field operations that depend on coordination and traceability.",
-];
+  'Hospitality teams that need operational clarity.',
+  'Property groups managing assets, people, and service delivery.',
+  'Field operations that depend on coordination and traceability.',
+]
 
 export default function Page() {
   return (
@@ -36,29 +36,47 @@ export default function Page() {
       <section className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
         <header className="flex flex-col gap-4 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">N3uralia</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">Yagán</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">Facility core system for modern operations.</h1>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/case-studies" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+            <Link
+              href="/case-studies"
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+            >
               Case studies
               <ArrowRight className="h-4 w-4 text-primary" />
             </Link>
-            <Link href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+            <Link
+              href="/case-studies/blackswan"
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+            >
               Blackswan case study
               <ArrowRight className="h-4 w-4 text-primary" />
             </Link>
-            <Link href="/demo" className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+            <Link
+              href="/demo"
+              className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+            >
               Internal demo
               <Sparkles className="h-4 w-4" />
             </Link>
-            <Link href="/walkthrough" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+            <Link
+              href="/walkthrough"
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+            >
               Book a walkthrough
             </Link>
-            <Link href="/trust" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+            <Link
+              href="/trust"
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+            >
               Trust
             </Link>
-            <Link href="/auth/login" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+            <Link
+              href="/auth/login"
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+            >
               Sign in
             </Link>
           </div>
@@ -75,14 +93,14 @@ export default function Page() {
                 Bring reservations, assets, tasks, and service delivery into one control plane.
               </h2>
               <p className="max-w-2xl text-base leading-7 text-foreground/70 sm:text-lg">
-                N3uralia helps teams make better decisions faster with a structured operating layer for hospitality,
+                Yagán helps teams make better decisions faster with a structured operating layer for hospitality,
                 infrastructure, and field operations.
               </p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               {PRODUCT_PILLARS.map((pillar) => {
-                const Icon = pillar.icon;
+                const Icon = pillar.icon
                 return (
                   <article key={pillar.title} className="rounded-3xl border border-border bg-card/80 p-5 shadow-sm">
                     <div className="flex items-center gap-3">
@@ -93,7 +111,7 @@ export default function Page() {
                     </div>
                     <p className="mt-4 text-sm leading-6 text-foreground/65">{pillar.text}</p>
                   </article>
-                );
+                )
               })}
             </div>
           </div>
@@ -115,19 +133,34 @@ export default function Page() {
             </div>
 
             <div className="mt-6 flex flex-col gap-3">
-              <Link href="/case-studies" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              <Link
+                href="/case-studies"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+              >
                 Browse case studies
               </Link>
-              <Link href="/case-studies/blackswan" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              <Link
+                href="/case-studies/blackswan"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+              >
                 View Blackswan case study
               </Link>
-              <Link href="/walkthrough" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              <Link
+                href="/walkthrough"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+              >
                 Book a walkthrough
               </Link>
-              <Link href="/trust" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5">
+              <Link
+                href="/trust"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 py-3 text-sm font-semibold transition hover:border-primary/30 hover:bg-primary/5"
+              >
                 Trust
               </Link>
-              <Link href="/demo" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+              <Link
+                href="/demo"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+              >
                 Open internal demo
               </Link>
             </div>
@@ -135,5 +168,5 @@ export default function Page() {
         </div>
       </section>
     </main>
-  );
+  )
 }
