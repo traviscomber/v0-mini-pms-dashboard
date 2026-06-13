@@ -7,6 +7,7 @@ import AuditLogViewer from "./components/AuditLogViewer";
 import AutomationDashboard from "./components/AutomationDashboard";
 import BookingForm from "./components/BookingForm";
 import OnboardingWizard from "./components/OnboardingWizard";
+import UserProfileNavbar from "./components/UserProfileNavbar";
 import ChannelManager from "./components/ChannelManager";
 import AgentControlTower from "./components/AgentControlTower";
 import ExecutiveBriefing from "./components/ExecutiveBriefing";
@@ -203,11 +204,12 @@ export default function PMSApp() {
   return (
     <div className="flex h-screen bg-background">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <UserProfileNavbar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <PageHeader section={activeSection} />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto pt-16">
           <div className="space-y-6 p-8">
             <div className="flex flex-wrap items-center gap-3">
               <span className={`rounded-full border px-3 py-1 text-xs font-medium ${mode === "live" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-secondary500/30 bg-secondary500/10 text-secondary300"}`}>
