@@ -553,6 +553,7 @@ export const translations = {
       loading: 'Syncing live PMS data...',
       risk: 'Risk',
       health: 'Health',
+      insight: 'Operational insight',
       score: 'Score',
       controlled: 'Controlled',
       watch: 'Watch',
@@ -574,6 +575,8 @@ export const translations = {
       actionProtect: 'Protect occupancy',
       actionProtectDesc: 'Forward-fill tomorrow if bookings stay below target.',
       focusLabel: 'Focus now',
+      primaryMove: 'Primary move',
+      primaryMoveLabel: 'Do this first',
     },
 
     // ===== DATE & TIME =====
@@ -1269,6 +1272,7 @@ export const translations = {
       loading: 'Sincronizando datos en vivo del PMS...',
       risk: 'Riesgo',
       health: 'Salud',
+      insight: 'Lectura operativa',
       score: 'Puntaje',
       controlled: 'Controlado',
       watch: 'En Observación',
@@ -1290,6 +1294,8 @@ export const translations = {
       actionProtect: 'Proteger ocupación',
       actionProtectDesc: 'Empuja inventario si las reservas siguen bajo el objetivo.',
       focusLabel: 'Foco ahora',
+      primaryMove: 'Movimiento principal',
+      primaryMoveLabel: 'Haz esto primero',
     },
 
     // ===== DATE & TIME =====
