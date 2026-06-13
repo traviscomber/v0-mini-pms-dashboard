@@ -17,7 +17,6 @@ const DESCRIPTION =
   'N3uralia is an agentic property management system (PMS) for hotels. Automate revenue management, housekeeping, guest messaging, and OTA integrations with specialist AI agents. Built for boutique hotels, regional chains, and apartment managers.'
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
@@ -82,34 +81,6 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   referrer: 'origin-when-cross-origin',
   category: 'Hotel Technology / Property Management Software',
-=======
-  metadataBase: new URL('https://www.yagan.app'),
-  title: {
-    default: 'Yagán | Facility Core System',
-    template: '%s | Yagán',
-  },
-  description:
-    'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
-  generator: 'v0.app',
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    title: 'Yagán | Facility Core System',
-    description:
-      'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
-    url: 'https://www.yagan.app',
-    siteName: 'Yagán',
-    locale: 'es_CL',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Yagán | Facility Core System',
-    description:
-      'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
-  },
->>>>>>> origin/main
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
@@ -262,7 +233,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark bg-background`}>
-<<<<<<< HEAD
       <head>
         <script
           type="application/ld+json"
@@ -273,10 +243,6 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
-=======
-      <body className="bg-background font-sans text-foreground antialiased">
-        <Providers>{children}</Providers>
->>>>>>> origin/main
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
