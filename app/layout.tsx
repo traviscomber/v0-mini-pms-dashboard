@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'N3uralia | Facility Core System',
+  title: 'Yagán | Facility Core System',
   description: 'A multi-vertical facility core system for hospitality, administration, field operations, and infrastructure in one control tower.',
   generator: 'v0.app',
   icons: {
