@@ -192,15 +192,19 @@ export default function TodayCommandCenter({
   const getRoleSummary = (role: string) => {
     const roleTasks = roleBuckets[role] ?? [];
     const urgentCount = roleTasks.filter((task) => task.priority === 'urgent' || task.priority === 'high').length;
+    const overdueCount = roleTasks.filter((task) => {
+      const diffMinutes = Math.round((new Date(task.dueDate).getTime() - now.getTime()) / 60000);
+      return diffMinutes < 0 && task.status !== 'completed' && task.status !== 'cancelled';
+    }).length;
     const dueSoonCount = roleTasks.filter((task) => {
       const diffMinutes = Math.round((new Date(task.dueDate).getTime() - now.getTime()) / 60000);
       return diffMinutes <= 120;
     }).length;
 
-    return { roleTasks, urgentCount, dueSoonCount };
+    return { roleTasks, urgentCount, overdueCount, dueSoonCount };
   };
 
-  const handleRoleAction = (role: string, action: "execute" | "open") => {
+  const handleRoleAction = (role: string, action: "execute" | "open" | "escalate") => {
     const target = roleTargets[role] ?? 'reservations';
     const summary = getRoleSummary(role);
     const nextTask = summary.roleTasks[0];
@@ -214,9 +218,13 @@ export default function TodayCommandCenter({
     onExecute?.(
       target,
       `${roleLabel} follow-up`,
-      nextTask
-        ? `Shift board assigned ${nextTask.title.toLowerCase()} to ${roleLabel.toLowerCase()}.`
-        : `Create the next ${roleLabel.toLowerCase()} action for today's shift board.`,
+      action === "escalate"
+        ? nextTask
+          ? `Escalate ${nextTask.title.toLowerCase()} for ${roleLabel.toLowerCase()} because it is already behind SLA.`
+          : `Escalate the ${roleLabel.toLowerCase()} lane and create an urgent follow-up.`
+        : nextTask
+          ? `Shift board assigned ${nextTask.title.toLowerCase()} to ${roleLabel.toLowerCase()}.`
+          : `Create the next ${roleLabel.toLowerCase()} action for today's shift board.`,
     );
   };
 
@@ -312,7 +320,7 @@ export default function TodayCommandCenter({
 
         <div className="mt-5 grid gap-4 xl:grid-cols-5">
           {roleOrder.map((role) => {
-            const { roleTasks, urgentCount, dueSoonCount } = getRoleSummary(role);
+            const { roleTasks, urgentCount, overdueCount, dueSoonCount } = getRoleSummary(role);
             const nextTask = roleTasks[0];
 
             return (
@@ -331,6 +339,10 @@ export default function TodayCommandCenter({
                   <div className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card/80 px-3 py-2">
                     <span className="text-foreground/60">Due within 2h</span>
                     <span className="font-semibold text-foreground">{dueSoonCount}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card/80 px-3 py-2">
+                    <span className="text-foreground/60">Over SLA</span>
+                    <span className="font-semibold text-foreground">{overdueCount}</span>
                   </div>
 
                   {nextTask ? (
@@ -353,6 +365,15 @@ export default function TodayCommandCenter({
                   >
                     Create next action
                   </button>
+                  {overdueCount > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => handleRoleAction(role, "escalate")}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-400/40 hover:bg-rose-500/15"
+                    >
+                      Escalate
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     onClick={() => handleRoleAction(role, "open")}
