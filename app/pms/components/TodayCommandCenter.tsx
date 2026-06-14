@@ -254,6 +254,8 @@ export default function TodayCommandCenter({
     [rankedTodayTasks, now],
   );
 
+  const incidentMode = criticalTasks.length >= 2 || overdueTodayTasks.length >= 3;
+
   const visibleRoles = roleOrder.filter((role) => {
     if (selectedRole !== 'all' && selectedRole !== role) {
       return false;
@@ -317,6 +319,83 @@ export default function TodayCommandCenter({
 
   return (
     <div className="space-y-6">
+      {incidentMode ? (
+        <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300">Incident mode</p>
+              <h3 className="mt-2 text-lg font-semibold text-foreground">The day needs fast coordination.</h3>
+              <p className="mt-2 text-sm leading-6 text-foreground/65">
+                We detected a higher-than-normal backlog. The board highlights the urgent lanes and keeps the team focused on recovery.
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-background/80 px-3 py-2 text-xs font-semibold text-rose-200">
+              <AlertCircle className="h-3.5 w-3.5" />
+              {criticalTasks.length} critical · {overdueTodayTasks.length} overdue
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm md:hidden">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Compact console</p>
+            <h3 className="mt-2 text-lg font-semibold text-foreground">Today at a glance.</h3>
+          </div>
+          <div className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            {todayTasks.length} tasks
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-border bg-background/70 p-3">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/45">Critical</p>
+            <p className="mt-1 text-xl font-semibold text-foreground">{criticalTasks.length}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-background/70 p-3">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/45">Overdue</p>
+            <p className="mt-1 text-xl font-semibold text-foreground">{overdueTodayTasks.length}</p>
+          </div>
+        </div>
+
+        <div className="mt-4 space-y-3">
+          {topTasks.map((task) => (
+            <div key={task.id} className="rounded-2xl border border-border bg-background/70 p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{task.title}</p>
+                  <p className="mt-1 text-xs text-foreground/55">{task.type.replace('_', ' ')} · {formatSla(task)}</p>
+                </div>
+                <span className="rounded-full border border-border bg-card px-2 py-1 text-[11px] text-foreground/60">
+                  {String(task.priority).toUpperCase()}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setSelectedRisk('risk')}
+            className="rounded-full border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-200"
+          >
+            Show at risk
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedRole('all');
+              setSelectedRisk('all');
+            }}
+            className="rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground/65"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -390,7 +469,7 @@ export default function TodayCommandCenter({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="hidden rounded-2xl border border-border bg-card p-5 shadow-sm md:block">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Shift board</p>
@@ -529,7 +608,7 @@ export default function TodayCommandCenter({
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="hidden rounded-2xl border border-border bg-card p-5 shadow-sm md:block">
         <div className="flex items-end justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Decision trail</p>
