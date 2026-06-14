@@ -345,6 +345,36 @@ export default function TodayCommandCenter({
     return true;
   });
 
+  const focusRole = visibleRoles[0] ?? 'manager';
+  const focusSummary = getRoleSummary(focusRole);
+  const focusTask = focusSummary.roleTasks[0];
+  const focusTarget = roleTargets[focusRole] ?? 'reservations';
+  const focusLabel = roleLabels[focusRole] ?? focusRole;
+  const focusCopy =
+    activeMode === 'incident'
+      ? {
+          title: `Stabilize ${focusLabel}`,
+          body: focusTask
+            ? `${focusTask.title} is the next recovery point. Escalate it now and keep the lane moving.`
+            : `This lane is under pressure. Create an urgent follow-up and keep the team in motion.`,
+          button: 'Escalate now',
+        }
+      : activeMode === 'risk'
+        ? {
+            title: `Triage ${focusLabel}`,
+            body: focusTask
+              ? `${focusTask.title} is the best next step to reduce risk and keep SLA intact.`
+              : `This lane has visible pressure. Open it and assign the next action fast.`,
+            button: 'Handle risk',
+          }
+        : {
+            title: 'Execute the best next move',
+            body: topTasks[0]
+              ? `${topTasks[0].title} is the cleanest action to start with right now.`
+              : 'The board is calm enough to keep working in the most useful lane.',
+            button: 'Open next action',
+          };
+
   const handleRoleAction = (role: string, action: "execute" | "open" | "escalate") => {
     const target = roleTargets[role] ?? 'reservations';
     const summary = getRoleSummary(role);
@@ -406,6 +436,32 @@ export default function TodayCommandCenter({
               ? 'Filtered to the lanes and decisions that need attention.'
               : 'Focused on the busiest and most urgent recovery path.'}
         </p>
+      </div>
+
+      <div className="rounded-2xl border border-primary/20 bg-primary/8 p-5 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Focus action</p>
+            <h3 className="mt-2 text-xl font-semibold text-foreground">{focusCopy.title}</h3>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/65">{focusCopy.body}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => onExecute?.(focusTarget, focusCopy.title, focusCopy.body)}
+              className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+            >
+              {focusCopy.button}
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate?.(focusTarget)}
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
+            >
+              Open lane
+            </button>
+          </div>
+        </div>
       </div>
 
       {incidentMode ? (
