@@ -318,6 +318,48 @@ export default function TodayCommandCenter({
     }
   }, [activeMode, selectedRisk, selectedRole, storageKey]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+
+      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.tagName === 'SELECT' || target?.isContentEditable) {
+        return;
+      }
+
+      if (event.key === '1') {
+        event.preventDefault();
+        setMode('today');
+        return;
+      }
+
+      if (event.key === '2') {
+        event.preventDefault();
+        setMode('risk');
+        return;
+      }
+
+      if (event.key === '3') {
+        event.preventDefault();
+        setMode('incident');
+        return;
+      }
+
+      if (event.key.toLowerCase() === 'e') {
+        event.preventDefault();
+        executeFocusAction();
+        return;
+      }
+
+      if (event.key.toLowerCase() === 'o') {
+        event.preventDefault();
+        openFocusLane();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const setMode = (mode: 'today' | 'risk' | 'incident') => {
     setActiveMode(mode);
 
@@ -428,6 +470,8 @@ export default function TodayCommandCenter({
             : 'The board is calm enough to keep working in the most useful lane.',
           button: 'Open next action',
         };
+  const executeFocusAction = () => onExecute?.(focusTarget, focusCopy.title, focusCopy.body);
+  const openFocusLane = () => onNavigate?.(focusTarget);
 
   const modeMetricCards =
     activeMode === 'incident'
@@ -498,6 +542,9 @@ export default function TodayCommandCenter({
                 ].join(' ')}
               >
                 {mode.label}
+                <span className="ml-1.5 rounded-full border border-border/70 bg-background px-1.5 py-0.5 text-[10px] font-medium text-foreground/50">
+                  {mode.id === 'today' ? '1' : mode.id === 'risk' ? '2' : '3'}
+                </span>
               </button>
             ))}
           </div>
@@ -508,6 +555,9 @@ export default function TodayCommandCenter({
             : activeMode === 'risk'
               ? 'Filtered to the lanes and decisions that need attention.'
               : 'Focused on the busiest and most urgent recovery path.'}
+        </p>
+        <p className="mt-2 text-xs text-foreground/45">
+          Shortcuts: `1` today · `2` risk · `3` incident · `E` execute focus · `O` open lane
         </p>
       </div>
 
@@ -521,14 +571,14 @@ export default function TodayCommandCenter({
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => onExecute?.(focusTarget, focusCopy.title, focusCopy.body)}
+              onClick={executeFocusAction}
               className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
             >
               {focusCopy.button}
             </button>
             <button
               type="button"
-              onClick={() => onNavigate?.(focusTarget)}
+              onClick={openFocusLane}
               className="inline-flex items-center gap-2 rounded-2xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
             >
               Open lane
