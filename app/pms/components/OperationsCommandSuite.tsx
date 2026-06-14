@@ -4,6 +4,7 @@ import { Activity, Layers3, Sparkles } from "lucide-react";
 
 import AlertBanner from "./AlertBanner";
 import AgentControlTower from "./AgentControlTower";
+import AIInsights from "./AIInsights";
 import ExecutiveBriefing from "./ExecutiveBriefing";
 import OperationalSignalBoard from "./OperationalSignalBoard";
 import SmartActionBoard from "./SmartActionBoard";
@@ -81,6 +82,8 @@ export default function OperationsCommandSuite({
         onNavigate={onNavigate}
         onExecute={onExecute}
       />
+
+      <AIInsights rooms={rooms} reservations={reservations} />
 
       <div className="space-y-3">
         <SectionLabel number="01" title="Executive Briefing" subtitle={isLoading ? "Reading live PMS data..." : "Risk, cash flow, readiness, and the next best action."} />

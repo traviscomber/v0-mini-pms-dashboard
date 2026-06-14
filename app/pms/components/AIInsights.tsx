@@ -1,158 +1,201 @@
-import React from 'react';
-import { AlertCircle, TrendingUp, Users, DollarSign } from 'lucide-react';
-import { useAIPricing } from '../hooks/useAIPricing';
-import { useAICancellationPrediction } from '../hooks/useAICancellationPrediction';
-import { useAIRevenueForecasting } from '../hooks/useAIRevenueForecasting';
-import { useAIGuestSegmentation } from '../hooks/useAIGuestSegmentation';
+"use client";
+
+import { useMemo } from "react";
+import { BadgeDollarSign, Brain, ShieldAlert, TrendingUp, Users } from "lucide-react";
+
+import { useLanguage as useLanguage } from "../LanguageContext";
+import type { Reservation, Room } from "../types";
 
 interface AIInsightsProps {
-  rooms: any[];
-  reservations: any[];
-  guests: any[];
-  propertyId: string;
+  rooms: Room[];
+  reservations: Reservation[];
 }
 
-export default function AIInsights({ rooms, reservations, guests, propertyId }: AIInsightsProps) {
-  const { predictPrice, loading: pricingLoading } = useAIPricing();
-  const { predict: predictCancellation, loading: cancellationLoading } = useAICancellationPrediction();
-  const { forecast: forecastRevenue, loading: revenueLoading } = useAIRevenueForecasting();
-  const { segment: segmentGuests, loading: segmentLoading } = useAIGuestSegmentation();
+function toDate(value: unknown) {
+  if (!value) return new Date(0);
+  return value instanceof Date ? value : new Date(value as string);
+}
 
-  const [insights, setInsights] = React.useState({
-    pricing: null,
-    cancellation: null,
-    revenue: null,
-    segmentation: null
-  });
+export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
+  const { language } = useLanguage();
 
-  React.useEffect(() => {
-    const loadInsights = async () => {
-      try {
-        // Generate pricing insights for first room
-        if (rooms.length > 0) {
-          const room = rooms[0];
-          const occupancy = (reservations.length / rooms.length) * 100;
-          await predictPrice({
-            roomId: room.id,
-            basePrice: room.basePrice,
-            occupancyRate: occupancy,
-            daysUntilBooking: 7,
-            dayOfWeek: new Date().getDay(),
-            season: occupancy > 70 ? 'peak' : 'medium',
-          });
-        }
+  const insights = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-        // Revenue forecast
-        const lastMonth = reservations.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
-        await forecastRevenue({
-          propertyId,
-          historicalData: {
-            lastMonth,
-            last3Months: [lastMonth, lastMonth * 0.95, lastMonth * 0.98],
-            sameMonthLastYear: lastMonth * 1.1,
-          },
-          upcomingBookings: {
-            confirmedRevenue: reservations
-              .filter(r => r.reservationStatus === 'confirmed')
-              .reduce((sum, r) => sum + (r.totalAmount || 0), 0),
-            pendingReservations: reservations.filter(r => r.reservationStatus === 'pending').length,
-          },
-          externalFactors: {
-            localEvents: [],
-            seasonType: 'high',
-            competitorActivity: 'moderate',
-          },
-        });
-      } catch (error) {
-        console.error('Error loading AI insights:', error);
-      }
+    const activeReservations = reservations.filter((reservation) => {
+      const status = String(reservation.reservationStatus ?? reservation.status ?? "").toLowerCase();
+      const checkInDate = toDate(reservation.checkInDate ?? reservation.checkIn ?? reservation.check_in_date);
+      const checkOutDate = toDate(reservation.checkOutDate ?? reservation.checkOut ?? reservation.check_out_date);
+      return status !== "cancelled" && checkInDate <= today && checkOutDate > today;
+    });
+
+    const arrivingToday = reservations.filter((reservation) => {
+      const checkInDate = toDate(reservation.checkInDate ?? reservation.checkIn ?? reservation.check_in_date);
+      return checkInDate.toDateString() === today.toDateString();
+    });
+
+    const pendingPayments = reservations.filter((reservation) => {
+      const balanceDue = Number(reservation.balanceDue ?? 0);
+      const status = String(reservation.paymentStatus ?? "").toLowerCase();
+      return balanceDue > 0 && status !== "paid";
+    });
+
+    const highValueReservations = reservations.filter((reservation) => Number(reservation.totalAmount ?? 0) >= 250);
+    const roomCoverage = rooms.length > 0 ? Math.round((activeReservations.length / rooms.length) * 100) : 0;
+    const paymentRisk = reservations.length > 0 ? Math.round((pendingPayments.length / reservations.length) * 100) : 0;
+    const guestDiversity = new Set(reservations.map((reservation) => reservation.guestName)).size;
+    const forecastValue = reservations.reduce((sum, reservation) => sum + Number(reservation.totalAmount ?? 0), 0);
+
+    const pricingSignal =
+      roomCoverage < 70
+        ? {
+            label: language === "es" ? "Pricing" : "Pricing",
+            title: language === "es" ? "Protege la tarifa" : "Protect the rate",
+            value: `${roomCoverage}%`,
+            detail:
+              language === "es"
+                ? "La ocupación aún tiene espacio: prioriza ADR sobre descuento."
+                : "Occupancy still has room: protect ADR before discounting.",
+            tone: "emerald",
+            icon: BadgeDollarSign,
+          }
+        : {
+            label: language === "es" ? "Pricing" : "Pricing",
+            title: language === "es" ? "Defiende la demanda" : "Defend demand",
+            value: `${roomCoverage}%`,
+            detail:
+              language === "es"
+                ? "La casa ya está apretada; evita recortar precio demasiado pronto."
+                : "The house is tightening; avoid cutting price too early.",
+            tone: "cyan",
+            icon: BadgeDollarSign,
+          };
+
+    const cancellationSignal =
+      paymentRisk > 35
+        ? {
+            label: language === "es" ? "Riesgo" : "Risk",
+            title: language === "es" ? "Atención con cobros" : "Watch collections",
+            value: `${paymentRisk}%`,
+            detail:
+              language === "es"
+                ? `${pendingPayments.length} reserva${pendingPayments.length === 1 ? "" : "s"} con saldo pendiente.`
+                : `${pendingPayments.length} reservation${pendingPayments.length === 1 ? "" : "s"} have an open balance.`,
+            tone: "rose",
+            icon: ShieldAlert,
+          }
+        : {
+            label: language === "es" ? "Riesgo" : "Risk",
+            title: language === "es" ? "Cobros controlados" : "Collections stable",
+            value: `${paymentRisk}%`,
+            detail:
+              language === "es"
+                ? "No se ve fricción importante en el cierre financiero inmediato."
+                : "No major friction appears in the near-term financial close.",
+            tone: "slate",
+            icon: ShieldAlert,
+          };
+
+    const forecastSignal = {
+      label: language === "es" ? "Forecast" : "Forecast",
+      title: language === "es" ? "Pulso de ingresos" : "Revenue pulse",
+      value: `$${Math.round(forecastValue).toLocaleString()}`,
+      detail:
+        language === "es"
+          ? `${arrivingToday.length} llegada${arrivingToday.length === 1 ? "" : "s"} hoy y ${highValueReservations.length} reserva${highValueReservations.length === 1 ? "" : "s"} de alto valor.`
+          : `${arrivingToday.length} arrival${arrivingToday.length === 1 ? "" : "s"} today and ${highValueReservations.length} high-value booking${highValueReservations.length === 1 ? "" : "s"}.`,
+      tone: "violet",
+      icon: TrendingUp,
     };
 
-    loadInsights();
-  }, [rooms, reservations, propertyId]);
+    const guestSignal = {
+      label: language === "es" ? "Guest mix" : "Guest mix",
+      title: language === "es" ? "Base activa" : "Active base",
+      value: `${guestDiversity}`,
+      detail:
+        language === "es"
+          ? "Úsalo para personalizar mensajes, upsell y recuperación de servicio."
+          : "Use it to personalize messages, upsells, and service recovery.",
+      tone: "amber",
+      icon: Users,
+    };
 
-  const isLoading = pricingLoading || cancellationLoading || revenueLoading || segmentLoading;
+    return {
+      pricingSignal,
+      cancellationSignal,
+      forecastSignal,
+      guestSignal,
+    };
+  }, [language, reservations, rooms]);
+
+  const cards = [
+    insights.pricingSignal,
+    insights.cancellationSignal,
+    insights.forecastSignal,
+    insights.guestSignal,
+  ];
 
   return (
-    <div className="space-y-6 mt-6">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-2xl">🤖</span>
-        <h2 className="text-2xl font-bold text-foreground">AI-Powered Insights</h2>
-      </div>
-
-      {isLoading && (
-        <div className="text-center py-8 text-foreground/60">
-          Analyzing data with AI... This may take a moment.
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Dynamic Pricing Card */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <DollarSign className="w-5 h-5 text-chart-2" />
-            <h3 className="font-semibold text-foreground">Dynamic Pricing</h3>
-          </div>
-          <p className="text-sm text-foreground/60 mb-4">
-            AI-optimized room prices based on demand and market conditions
+    <section className="rounded-3xl border border-border bg-card/80 p-6 shadow-sm">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+            {language === "es" ? "Capa de IA" : "AI layer"}
           </p>
-          <div className="space-y-2">
-            <div className="text-2xl font-bold text-chart-2">+15-30%</div>
-            <p className="text-xs text-foreground/50">Potential revenue increase</p>
-          </div>
-        </div>
-
-        {/* Cancellation Risk Card */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle className="w-5 h-5 text-destructive500" />
-            <h3 className="font-semibold text-foreground">Cancellation Risk</h3>
-          </div>
-          <p className="text-sm text-foreground/60 mb-4">
-            AI predicts high-risk cancellations for overbooking strategy
+          <h3 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+            {language === "es" ? "Qué está viendo el sistema ahora." : "What the system sees right now."}
+          </h3>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/65">
+            {language === "es"
+              ? "Una lectura breve y accionable para que el equipo no tenga que interpretar tablas."
+              : "A short, actionable read so the team does not need to interpret tables."}
           </p>
-          <div className="space-y-2">
-            <div className="text-2xl font-bold text-destructive500">-20%</div>
-            <p className="text-xs text-foreground/50">Expected cancellation reduction</p>
-          </div>
         </div>
-
-        {/* Revenue Forecast Card */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-foreground">Revenue Forecast</h3>
-          </div>
-          <p className="text-sm text-foreground/60 mb-4">
-            Next month revenue prediction with confidence intervals
-          </p>
-          <div className="space-y-2">
-            <div className="text-2xl font-bold text-primary">+12%</div>
-            <p className="text-xs text-foreground/50">Projected month-over-month growth</p>
-          </div>
-        </div>
-
-        {/* Guest Segmentation Card */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5 text-accent500" />
-            <h3 className="font-semibold text-foreground">Guest Segments</h3>
-          </div>
-          <p className="text-sm text-foreground/60 mb-4">
-            VIP, Premium, Regular, At-Risk, and Churned guest analysis
-          </p>
-          <div className="space-y-2">
-            <div className="text-2xl font-bold text-accent500">{guests.length}</div>
-            <p className="text-xs text-foreground/50">Guests analyzed and segmented</p>
-          </div>
+        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/70">
+          <Brain className="h-3.5 w-3.5 text-primary" />
+          {language === "es" ? "Resumen automático" : "Automatic summary"}
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-4">
-        <p className="text-sm text-foreground">
-          💡 <strong>Pro Tip:</strong> AI insights are refreshed hourly. Check back for updated recommendations based on new booking data and market conditions.
-        </p>
+      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {cards.map((card) => {
+          const Icon = card.icon;
+          const toneClasses: Record<string, string> = {
+            emerald: "border-emerald-500/20 bg-emerald-500/5 text-emerald-300",
+            cyan: "border-cyan-500/20 bg-cyan-500/5 text-cyan-300",
+            rose: "border-rose-500/20 bg-rose-500/5 text-rose-300",
+            violet: "border-violet-500/20 bg-violet-500/5 text-violet-300",
+            amber: "border-amber-500/20 bg-amber-500/5 text-amber-300",
+            slate: "border-slate-500/20 bg-slate-500/5 text-slate-300",
+          };
+
+          return (
+            <article key={card.title} className={`rounded-3xl border p-5 ${toneClasses[card.tone] ?? toneClasses.slate}`}>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-background/80 text-primary">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] opacity-70">{card.label}</p>
+                    <h4 className="text-base font-semibold text-foreground">{card.title}</h4>
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-4 text-2xl font-semibold tracking-tight text-foreground">{card.value}</p>
+              <p className="mt-2 text-sm leading-6 text-foreground/65">{card.detail}</p>
+            </article>
+          );
+        })}
       </div>
-    </div>
+
+      <div className="mt-5 rounded-2xl border border-border/60 bg-background/60 px-4 py-3 text-sm text-foreground/60">
+        {language === "es"
+          ? "La siguiente mejora ideal es conectar estas señales con acciones automáticas por rol."
+          : "The next ideal step is connecting these signals to role-based automated actions."}
+      </div>
+    </section>
   );
 }
