@@ -2,9 +2,10 @@
 
 Next.js hospitality platform foundation for short-term rentals. The app started as a `v0` front-end demo and now includes:
 
+- Yagán-branded landing page with interactive animations
 - API-backed PMS flows
 - Postgres-ready persistence
-- optional Supabase Auth with protected routes
+- optional Supabase Auth with protected routes & login modal
 - Sprint 1 multi-tenant schema, roles, and onboarding scaffolding
 - Sprint 2 tenant-aware PMS data mapping with legacy fallback
 
@@ -115,6 +116,22 @@ pnpm dev
 pnpm lint
 pnpm typecheck
 pnpm build
+```
+
+### Working with `main` Branch
+
+All development happens on the **`main`** branch:
+
+```bash
+# Make changes
+git checkout main
+# ... edit files ...
+
+# Commit and push
+git commit -m "type: description"
+git push origin main
+
+# Vercel automatically deploys on push to main
 ```
 
 ## Deployment
