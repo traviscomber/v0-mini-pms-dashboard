@@ -204,6 +204,48 @@ export default function TodayCommandCenter({
     return { roleTasks, urgentCount, overdueCount, dueSoonCount };
   };
 
+  const getTaskOwnerRole = (task: Task) => {
+    const explicitRole = String(task.assignedTo ?? '').trim().toLowerCase();
+
+    if (explicitRole && roleLabels[explicitRole]) {
+      return explicitRole;
+    }
+
+    if (task.type === 'payment') return 'finance';
+    if (task.type === 'cleaning' || task.type === 'inspection') return 'housekeeping';
+    if (task.type === 'communication' || task.type === 'check_in') return 'reception';
+    if (task.type === 'check_out') return 'operations';
+    return 'manager';
+  };
+
+  const historyEntries = useMemo(
+    () =>
+      rankedTodayTasks.slice(0, 6).map((task) => {
+        const ownerRole = getTaskOwnerRole(task);
+        const ownerLabel = roleLabels[ownerRole] ?? ownerRole;
+        const dueTime = new Date(task.dueDate).getTime();
+        const diffMinutes = Math.round((dueTime - now.getTime()) / 60000);
+        const statusLabel =
+          task.status === 'completed'
+            ? 'completed'
+            : diffMinutes < 0
+              ? 'overdue'
+              : diffMinutes <= 120
+                ? 'due soon'
+                : 'scheduled';
+
+        return {
+          id: task.id,
+          ownerLabel,
+          title: task.title,
+          statusLabel,
+          dueLabel: formatSla(task),
+          priority: task.priority,
+        };
+      }),
+    [rankedTodayTasks, now],
+  );
+
   const handleRoleAction = (role: string, action: "execute" | "open" | "escalate") => {
     const target = roleTargets[role] ?? 'reservations';
     const summary = getRoleSummary(role);
@@ -395,6 +437,47 @@ export default function TodayCommandCenter({
             </p>
           </div>
         ) : null}
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Decision trail</p>
+            <h3 className="mt-2 text-xl font-semibold text-foreground">Recent ownership and SLA context.</h3>
+            <p className="mt-2 text-sm leading-6 text-foreground/60">
+              This gives the team a quick memory of what was assigned, who owns it, and how close it is to falling behind.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            <Clock className="h-3.5 w-3.5 text-primary" />
+            {historyEntries.length} recent decisions
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {historyEntries.map((entry) => (
+            <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.ownerLabel}</p>
+                  <h4 className="mt-1 text-sm font-semibold text-foreground">{entry.title}</h4>
+                </div>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-foreground/60">
+                  {String(entry.priority).toUpperCase()}
+                </span>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2 text-xs text-foreground/60">
+                <span className="rounded-full border border-border bg-card px-2.5 py-1">
+                  {entry.statusLabel}
+                </span>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1">
+                  {entry.dueLabel}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       {criticalTasks.length > 0 && (
