@@ -283,24 +283,49 @@ export default function TodayCommandCenter({
     setSelectedRisk('risk');
   };
 
-  const visibleRoles = roleOrder.filter((role) => {
-    if (selectedRole !== 'all' && selectedRole !== role) {
-      return false;
+  const visibleRoles = useMemo(() => {
+    const candidateRoles = roleOrder.filter((role) => {
+      if (selectedRole !== 'all' && selectedRole !== role) {
+        return false;
+      }
+
+      const summary = getRoleSummary(role);
+      const roleRisk = summary.overdueCount > 0 || summary.urgentCount > 1;
+
+      if (selectedRisk === 'risk') {
+        return roleRisk;
+      }
+
+      if (selectedRisk === 'stable') {
+        return !roleRisk;
+      }
+
+      return true;
+    });
+
+    const rolePressureScore = (role: string) => {
+      const summary = getRoleSummary(role);
+
+      return summary.overdueCount * 100 + summary.urgentCount * 10 + summary.dueSoonCount;
+    };
+
+    if (activeMode === 'today') {
+      return candidateRoles;
     }
 
-    const summary = getRoleSummary(role);
-    const roleRisk = summary.overdueCount > 0 || summary.urgentCount > 1;
+    return [...candidateRoles].sort((leftRole, rightRole) => {
+      const leftScore = rolePressureScore(leftRole);
+      const rightScore = rolePressureScore(rightRole);
 
-    if (selectedRisk === 'risk') {
-      return roleRisk;
-    }
+      if (leftScore !== rightScore) {
+        return rightScore - leftScore;
+      }
 
-    if (selectedRisk === 'stable') {
-      return !roleRisk;
-    }
+      return roleOrder.indexOf(leftRole) - roleOrder.indexOf(rightRole);
+    });
+  }, [activeMode, selectedRisk, selectedRole, todayTasks]);
 
-    return true;
-  });
+  const highlightedRole = visibleRoles[0] ?? 'finance';
 
   const unassignedVisible = selectedRole === 'all' || selectedRole === 'unassigned';
 
@@ -599,14 +624,22 @@ export default function TodayCommandCenter({
             const nextTask = roleTasks[0];
 
             return (
-              <article key={role} className="rounded-2xl border border-border bg-background/70 p-4">
+              <article
+                key={role}
+                className={[
+                  'rounded-2xl border p-4 transition',
+                  role === highlightedRole
+                    ? 'border-primary/30 bg-primary/8 ring-1 ring-primary/20'
+                    : 'border-border bg-background/70',
+                ].join(' ')}
+              >
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{roleLabels[role]}</p>
                     <p className="mt-1 text-lg font-semibold text-foreground">{roleTasks.length}</p>
                   </div>
                   <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-foreground/60">
-                    {urgentCount} urgent
+                    {role === highlightedRole ? 'priority' : `${urgentCount} urgent`}
                   </span>
                 </div>
 
