@@ -385,16 +385,21 @@ function HeroCanvas({ lang }: { lang: Lang }) {
 
         if (g > 0.08) {
           const base = stroke.substring(0, stroke.lastIndexOf("/"));
-          const pg   = ctx.createRadialGradient(
-            x + rw / 2, y + rh / 2, 0,
-            x + rw / 2, y + rh / 2, Math.max(rw, rh) * 0.72
-          );
-          pg.addColorStop(0, `${base}/ ${Math.min(g * 0.50, 0.5)})`);
-          pg.addColorStop(1, `${base}/ 0)`);
-          ctx.fillStyle = pg;
-          ctx.beginPath();
-          ctx.roundRect(x, y, rw, rh, rad);
-          ctx.fill();
+          const maxRadius = Math.max(Math.abs(rw), Math.abs(rh)) * 0.72;
+          
+          // Ensure radius is valid (> 0)
+          if (maxRadius > 0) {
+            const pg = ctx.createRadialGradient(
+              x + rw / 2, y + rh / 2, 0,
+              x + rw / 2, y + rh / 2, maxRadius
+            );
+            pg.addColorStop(0, `${base}/ ${Math.min(g * 0.50, 0.5)})`);
+            pg.addColorStop(1, `${base}/ 0)`);
+            ctx.fillStyle = pg;
+            ctx.beginPath();
+            ctx.roundRect(x, y, rw, rh, rad);
+            ctx.fill();
+          }
         }
 
         ctx.fillStyle = `oklch(0.88 0 0 / ${0.22 + g * 0.48})`;
