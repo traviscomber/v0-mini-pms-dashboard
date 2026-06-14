@@ -27,6 +27,7 @@ export default function TodayCommandCenter({
   const [selectedRole, setSelectedRole] = useState<string>('all');
   const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
   const [activeMode, setActiveMode] = useState<'today' | 'risk' | 'incident'>('today');
+  const [selectedLane, setSelectedLane] = useState<string | null>(null);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
@@ -300,6 +301,16 @@ export default function TodayCommandCenter({
   }, [activeMode, incidentMode]);
 
   useEffect(() => {
+    if (visibleRoles.length === 0) {
+      return;
+    }
+
+    if (!selectedLane || !visibleRoles.includes(selectedLane)) {
+      setSelectedLane(visibleRoles[0]);
+    }
+  }, [selectedLane, visibleRoles]);
+
+  useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }
@@ -353,12 +364,36 @@ export default function TodayCommandCenter({
       if (event.key.toLowerCase() === 'o') {
         event.preventDefault();
         openFocusLane();
+        return;
+      }
+
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        setSelectedLane(nextLane);
+        return;
+      }
+
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        setSelectedLane(previousLane);
+        return;
+      }
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        if (event.shiftKey) {
+          openFocusLane();
+          return;
+        }
+
+        executeFocusAction();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [executeFocusAction, nextLane, openFocusLane, previousLane]);
 
   const setMode = (mode: 'today' | 'risk' | 'incident') => {
     setActiveMode(mode);
@@ -421,8 +456,6 @@ export default function TodayCommandCenter({
     });
   }, [activeMode, selectedRisk, selectedRole, todayTasks]);
 
-  const highlightedRole = visibleRoles[0] ?? 'finance';
-
   const unassignedVisible = selectedRole === 'all' || selectedRole === 'unassigned';
 
   const visibleHistory = historyEntries.filter((entry) => {
@@ -442,10 +475,15 @@ export default function TodayCommandCenter({
   });
 
   const focusRole = visibleRoles[0] ?? 'manager';
-  const focusSummary = getRoleSummary(focusRole);
+  const activeLane = selectedLane && visibleRoles.includes(selectedLane) ? selectedLane : focusRole;
+  const activeLaneIndex = Math.max(0, visibleRoles.indexOf(activeLane));
+  const nextLane = visibleRoles[(activeLaneIndex + 1) % Math.max(visibleRoles.length, 1)] ?? activeLane;
+  const previousLane = visibleRoles[(activeLaneIndex - 1 + Math.max(visibleRoles.length, 1)) % Math.max(visibleRoles.length, 1)] ?? activeLane;
+  const focusSummary = getRoleSummary(activeLane);
   const focusTask = focusSummary.roleTasks[0];
-  const focusTarget = roleTargets[focusRole] ?? 'reservations';
-  const focusLabel = roleLabels[focusRole] ?? focusRole;
+  const focusTarget = roleTargets[activeLane] ?? 'reservations';
+  const focusLabel = roleLabels[activeLane] ?? activeLane;
+  const highlightedRole = activeLane;
   const focusCopy =
     activeMode === 'incident'
       ? {
@@ -567,6 +605,9 @@ export default function TodayCommandCenter({
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Focus action</p>
             <h3 className="mt-2 text-xl font-semibold text-foreground">{focusCopy.title}</h3>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/65">{focusCopy.body}</p>
+            <p className="mt-2 text-xs text-foreground/45">
+              Active lane: {roleLabels[activeLane] ?? activeLane} · use ← → to switch lanes · `Enter` to execute · `Shift+Enter` to open
+            </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -794,16 +835,17 @@ export default function TodayCommandCenter({
             const { roleTasks, urgentCount, overdueCount, dueSoonCount } = getRoleSummary(role);
             const nextTask = roleTasks[0];
 
-            return (
-              <article
-                key={role}
-                className={[
-                  'rounded-2xl border p-4 transition',
-                  role === highlightedRole
-                    ? 'border-primary/30 bg-primary/8 ring-1 ring-primary/20'
-                    : 'border-border bg-background/70',
-                ].join(' ')}
-              >
+              return (
+                <article
+                  key={role}
+                  onClick={() => setSelectedLane(role)}
+                  className={[
+                    'rounded-2xl border p-4 transition',
+                    role === highlightedRole
+                      ? 'border-primary/30 bg-primary/8 ring-1 ring-primary/20'
+                      : 'border-border bg-background/70',
+                  ].join(' ')}
+                >
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{roleLabels[role]}</p>
