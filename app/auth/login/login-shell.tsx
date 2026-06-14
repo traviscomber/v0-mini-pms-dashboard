@@ -533,6 +533,7 @@ export function LoginShell({
   signUpAction,
 }: LoginShellProps) {
   const [lang, setLang] = useState<Lang>("es");
+  const [showLogin, setShowLogin] = useState(false);
   const c = copy[lang];
 
   useEffect(() => {
@@ -581,10 +582,11 @@ export function LoginShell({
               <Globe className="h-3 w-3" />
               {lang === "es" ? "EN" : "ES"}
             </button>
-            <a href="/auth/login?next=/pms"
+            <button
+              onClick={() => setShowLogin(true)}
               className="hidden rounded-lg border border-border/60 bg-card/60 px-3.5 py-1.5 text-sm font-medium text-foreground/70 transition hover:border-primary/30 hover:bg-primary/10 hover:text-primary sm:block">
               {c.nav.signin}
-            </a>
+            </button>
           </div>
         </div>
       </header>
@@ -903,6 +905,78 @@ export function LoginShell({
         </div>
 
       </footer>
+
+      {/* ── Login Modal ── */}
+      {showLogin && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={(e) => { if (e.target === e.currentTarget) setShowLogin(false); }}
+        >
+          <div className="relative w-full max-w-sm rounded-2xl border border-border bg-background p-8 shadow-2xl">
+            <button
+              onClick={() => setShowLogin(false)}
+              className="absolute right-4 top-4 text-foreground/40 transition hover:text-foreground"
+              aria-label="Close"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M12.854 3.146a.5.5 0 0 1 0 .708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 .708-.708L8 7.293l4.146-4.147a.5.5 0 0 1 .708 0z"/>
+              </svg>
+            </button>
+
+            <div className="mb-6 flex flex-col items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-black">
+                <img src="/yagan-logo-corporate.png" alt="Yagán" className="h-10 w-10 object-contain" />
+              </div>
+              <h2 className="text-lg font-semibold text-foreground">
+                {lang === "es" ? "Iniciar sesion" : "Sign in"}
+              </h2>
+            </div>
+
+            {message && (
+              <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {message}
+              </div>
+            )}
+
+            <form action={signInAction} className="space-y-4">
+              <input type="hidden" name="next" value={next} />
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground/60">
+                  {lang === "es" ? "Correo electronico" : "Email address"}
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder={lang === "es" ? "tu@empresa.com" : "you@company.com"}
+                  autoComplete="email"
+                  required
+                  className="h-11 w-full rounded-xl border border-border/60 bg-background/60 px-3.5 text-sm text-foreground outline-none transition placeholder:text-foreground/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground/60">
+                  {lang === "es" ? "Contrasena" : "Password"}
+                </label>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  minLength={6}
+                  required
+                  className="h-11 w-full rounded-xl border border-border/60 bg-background/60 px-3.5 text-sm text-foreground outline-none transition placeholder:text-foreground/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                />
+              </div>
+              <button
+                type="submit"
+                className="h-11 w-full rounded-xl bg-primary text-sm font-semibold text-white transition hover:bg-primary/90 active:scale-[0.98]"
+              >
+                {lang === "es" ? "Iniciar sesion" : "Sign in"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes lp-rise {
