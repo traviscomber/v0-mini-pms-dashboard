@@ -27,14 +27,24 @@ export default function SignInPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.message || "Sign in failed");
+        try {
+          const data = await res.json();
+          setError(data.message || "Sign in failed");
+        } catch {
+          setError("Sign in failed. Please try again.");
+        }
         setLoading(false);
         return;
       }
 
       // Redirect to dashboard on success
-      router.push("/dashboard");
+      const data = await res.json();
+      if (data.user) {
+        router.push("/dashboard");
+      } else {
+        setError("Unexpected response from server");
+        setLoading(false);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       setLoading(false);
