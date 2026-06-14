@@ -102,6 +102,8 @@ export default function OperationsCommandSuite({
             reservations={reservations}
             rooms={rooms}
             tasks={tasks}
+            onExecute={onExecute}
+            onNavigate={onNavigate}
             onSelectReservation={onSelectReservation}
           />
         </div>

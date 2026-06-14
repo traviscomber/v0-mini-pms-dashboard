@@ -10,6 +10,8 @@ interface TodayCommandCenterProps {
   reservations: Reservation[];
   rooms: Room[];
   tasks: Task[];
+  onExecute?: (target: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => void;
+  onNavigate?: (section: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar") => void;
   onSelectReservation?: (reservation: Reservation) => void;
 }
 
@@ -17,6 +19,8 @@ export default function TodayCommandCenter({
   reservations,
   rooms,
   tasks,
+  onExecute,
+  onNavigate,
   onSelectReservation,
 }: TodayCommandCenterProps) {
   const { t } = useLanguage();
@@ -106,6 +110,14 @@ export default function TodayCommandCenter({
   };
 
   const roleOrder = ['finance', 'housekeeping', 'reception', 'operations', 'manager'];
+  const roleTargets: Record<string, "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar"> = {
+    finance: 'ledger',
+    housekeeping: 'housekeeping',
+    reception: 'messaging',
+    operations: 'calendar',
+    manager: 'reservations',
+    unassigned: 'reservations',
+  };
 
   const roleBuckets = useMemo(() => {
     const bucket: Record<string, Task[]> = {
@@ -186,6 +198,26 @@ export default function TodayCommandCenter({
     }).length;
 
     return { roleTasks, urgentCount, dueSoonCount };
+  };
+
+  const handleRoleAction = (role: string, action: "execute" | "open") => {
+    const target = roleTargets[role] ?? 'reservations';
+    const summary = getRoleSummary(role);
+    const nextTask = summary.roleTasks[0];
+    const roleLabel = roleLabels[role] ?? role;
+
+    if (action === "open") {
+      onNavigate?.(target);
+      return;
+    }
+
+    onExecute?.(
+      target,
+      `${roleLabel} follow-up`,
+      nextTask
+        ? `Shift board assigned ${nextTask.title.toLowerCase()} to ${roleLabel.toLowerCase()}.`
+        : `Create the next ${roleLabel.toLowerCase()} action for today's shift board.`,
+    );
   };
 
   return (
@@ -311,6 +343,23 @@ export default function TodayCommandCenter({
                       No current tasks in this lane.
                     </div>
                   )}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleRoleAction(role, "execute")}
+                    className="inline-flex items-center gap-2 rounded-2xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition hover:brightness-110"
+                  >
+                    Create next action
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleRoleAction(role, "open")}
+                    className="inline-flex items-center gap-2 rounded-2xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
+                  >
+                    Open lane
+                  </button>
                 </div>
               </article>
             );
