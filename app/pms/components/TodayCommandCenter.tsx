@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AlertCircle, Clock, DollarSign, MapPin, Sparkles, Users } from 'lucide-react';
 import { Reservation, Task, Room } from '../types';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
@@ -26,6 +26,7 @@ export default function TodayCommandCenter({
   const { t } = useLanguage();
   const [selectedRole, setSelectedRole] = useState<string>('all');
   const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
+  const [activeMode, setActiveMode] = useState<'today' | 'risk' | 'incident'>('today');
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
@@ -256,6 +257,32 @@ export default function TodayCommandCenter({
 
   const incidentMode = criticalTasks.length >= 2 || overdueTodayTasks.length >= 3;
 
+  useEffect(() => {
+    if (incidentMode && activeMode === 'incident') {
+      setSelectedRole('all');
+      setSelectedRisk('risk');
+    }
+  }, [activeMode, incidentMode]);
+
+  const setMode = (mode: 'today' | 'risk' | 'incident') => {
+    setActiveMode(mode);
+
+    if (mode === 'today') {
+      setSelectedRole('all');
+      setSelectedRisk('all');
+      return;
+    }
+
+    if (mode === 'risk') {
+      setSelectedRole('all');
+      setSelectedRisk('risk');
+      return;
+    }
+
+    setSelectedRole('all');
+    setSelectedRisk('risk');
+  };
+
   const visibleRoles = roleOrder.filter((role) => {
     if (selectedRole !== 'all' && selectedRole !== role) {
       return false;
@@ -319,6 +346,43 @@ export default function TodayCommandCenter({
 
   return (
     <div className="space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Mode switcher</p>
+            <h3 className="mt-2 text-lg font-semibold text-foreground">Jump to the right operating context.</h3>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: 'today', label: 'Today' },
+              { id: 'risk', label: 'At risk' },
+              { id: 'incident', label: 'Incident' },
+            ].map((mode) => (
+              <button
+                key={mode.id}
+                type="button"
+                onClick={() => setMode(mode.id as 'today' | 'risk' | 'incident')}
+                className={[
+                  'rounded-full px-3 py-2 text-xs font-semibold transition',
+                  activeMode === mode.id
+                    ? 'border border-primary/30 bg-primary/10 text-primary'
+                    : 'border border-border bg-background text-foreground/65 hover:border-primary/25 hover:text-foreground',
+                ].join(' ')}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="mt-3 text-sm text-foreground/60">
+          {activeMode === 'today'
+            ? 'Standard operational view with the full shift board.'
+            : activeMode === 'risk'
+              ? 'Filtered to the lanes and decisions that need attention.'
+              : 'Focused on the busiest and most urgent recovery path.'}
+        </p>
+      </div>
+
       {incidentMode ? (
         <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
