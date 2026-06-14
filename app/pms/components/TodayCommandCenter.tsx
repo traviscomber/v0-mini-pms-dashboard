@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { AlertCircle, Clock, DollarSign, MapPin, Sparkles, Users } from 'lucide-react';
 import { Reservation, Task, Room } from '../types';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
@@ -24,6 +24,8 @@ export default function TodayCommandCenter({
   onSelectReservation,
 }: TodayCommandCenterProps) {
   const { t } = useLanguage();
+  const [selectedRole, setSelectedRole] = useState<string>('all');
+  const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
@@ -170,6 +172,12 @@ export default function TodayCommandCenter({
     return bucket;
   }, [todayTasks]);
 
+  const roleOptions = [
+    { id: 'all', label: 'All roles' },
+    ...roleOrder.map((role) => ({ id: role, label: roleLabels[role] })),
+    { id: 'unassigned', label: roleLabels.unassigned },
+  ];
+
   const formatSla = (task: Task) => {
     const dueTime = new Date(task.dueDate).getTime();
     const diffMinutes = Math.round((dueTime - now.getTime()) / 60000);
@@ -245,6 +253,43 @@ export default function TodayCommandCenter({
       }),
     [rankedTodayTasks, now],
   );
+
+  const visibleRoles = roleOrder.filter((role) => {
+    if (selectedRole !== 'all' && selectedRole !== role) {
+      return false;
+    }
+
+    const summary = getRoleSummary(role);
+    const roleRisk = summary.overdueCount > 0 || summary.urgentCount > 1;
+
+    if (selectedRisk === 'risk') {
+      return roleRisk;
+    }
+
+    if (selectedRisk === 'stable') {
+      return !roleRisk;
+    }
+
+    return true;
+  });
+
+  const unassignedVisible = selectedRole === 'all' || selectedRole === 'unassigned';
+
+  const visibleHistory = historyEntries.filter((entry) => {
+    if (selectedRole !== 'all' && entry.ownerLabel.toLowerCase() !== roleLabels[selectedRole]?.toLowerCase()) {
+      return false;
+    }
+
+    if (selectedRisk === 'risk') {
+      return entry.statusLabel === 'overdue' || entry.statusLabel === 'due soon';
+    }
+
+    if (selectedRisk === 'stable') {
+      return entry.statusLabel === 'completed' || entry.statusLabel === 'scheduled';
+    }
+
+    return true;
+  });
 
   const handleRoleAction = (role: string, action: "execute" | "open" | "escalate") => {
     const target = roleTargets[role] ?? 'reservations';
@@ -360,8 +405,53 @@ export default function TodayCommandCenter({
           </div>
         </div>
 
+        <div className="mt-4 flex flex-wrap gap-2">
+          {roleOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => setSelectedRole(option.id)}
+              className={[
+                'rounded-full px-3 py-2 text-xs font-semibold transition',
+                selectedRole === option.id
+                  ? 'border border-primary/30 bg-primary/10 text-primary'
+                  : 'border border-border bg-background text-foreground/65 hover:border-primary/25 hover:text-foreground',
+              ].join(' ')}
+            >
+              {option.label}
+            </button>
+          ))}
+          {(['all', 'risk', 'stable'] as const).map((risk) => (
+            <button
+              key={risk}
+              type="button"
+              onClick={() => setSelectedRisk(risk)}
+              className={[
+                'rounded-full px-3 py-2 text-xs font-semibold transition',
+                selectedRisk === risk
+                  ? 'border border-primary/30 bg-primary/10 text-primary'
+                  : 'border border-border bg-background text-foreground/65 hover:border-primary/25 hover:text-foreground',
+              ].join(' ')}
+            >
+              {risk === 'all' ? 'All risk' : risk === 'risk' ? 'At risk' : 'Stable'}
+            </button>
+          ))}
+          {(selectedRole !== 'all' || selectedRisk !== 'all') ? (
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedRole('all');
+                setSelectedRisk('all');
+              }}
+              className="rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground/65 transition hover:border-primary/25 hover:text-foreground"
+            >
+              Clear filters
+            </button>
+          ) : null}
+        </div>
+
         <div className="mt-5 grid gap-4 xl:grid-cols-5">
-          {roleOrder.map((role) => {
+          {visibleRoles.map((role) => {
             const { roleTasks, urgentCount, overdueCount, dueSoonCount } = getRoleSummary(role);
             const nextTask = roleTasks[0];
 
@@ -429,7 +519,7 @@ export default function TodayCommandCenter({
           })}
         </div>
 
-        {roleBuckets.unassigned.length > 0 ? (
+        {unassignedVisible && roleBuckets.unassigned.length > 0 ? (
           <div className="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
             <p className="text-sm font-semibold text-amber-300">Unassigned tasks</p>
             <p className="mt-1 text-sm text-foreground/60">
@@ -455,7 +545,7 @@ export default function TodayCommandCenter({
         </div>
 
         <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {historyEntries.map((entry) => (
+          {visibleHistory.length > 0 ? visibleHistory.map((entry) => (
             <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -476,7 +566,11 @@ export default function TodayCommandCenter({
                 </span>
               </div>
             </article>
-          ))}
+          )) : (
+            <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-sm text-foreground/60 md:col-span-2 xl:col-span-3">
+              No decisions match the current filters.
+            </div>
+          )}
         </div>
       </div>
 
