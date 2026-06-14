@@ -628,6 +628,28 @@ export default function TodayCommandCenter({
         </div>
       </div>
 
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Focus status</p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">
+              {roleLabels[activeLane] ?? activeLane} lane is active.
+            </h4>
+            <p className="mt-1 text-sm text-foreground/60">
+              Use arrow keys to move between lanes or click one directly.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+              Lane: {roleLabels[activeLane] ?? activeLane}
+            </span>
+            <span className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+              Mode: {activeMode}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {incidentMode ? (
         <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
