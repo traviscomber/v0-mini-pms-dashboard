@@ -18,7 +18,8 @@ const copy = {
       platform: "Plataforma",
       agents: "Agentes",
       security: "Seguridad",
-      signin: "Iniciar sesion",
+      cases: "Casos",
+      signin: "Iniciar sesión",
     },
     badge: "Operaciones hoteleras de siguiente nivel",
     headline: "Una torre de control\npara tu hotel.",
@@ -115,6 +116,7 @@ const copy = {
       platform: "Platform",
       agents: "Agents",
       security: "Security",
+      cases: "Cases",
       signin: "Sign in",
     },
     badge: "Next-generation hotel operations",
@@ -572,6 +574,7 @@ export function LoginShell({
               { href: "#plataforma", label: c.nav.platform },
               { href: "#agentes", label: c.nav.agents },
               { href: "#seguridad", label: c.nav.security },
+              { href: "/case-studies", label: c.nav.cases },
             ].map(({ href, label }) => (
               <a key={href} href={href}
                 className="rounded-lg px-3.5 py-2 text-sm text-foreground/60 transition-colors hover:bg-card hover:text-foreground">
@@ -636,9 +639,21 @@ export function LoginShell({
             </a>
           </div>
 
+          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.9s ease 0.24s both" }}>
+            <a href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
+              Blackswan case study
+            </a>
+            <a href="/walkthrough" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
+              Book a walkthrough
+            </a>
+            <a href="/demo" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
+              Open internal demo
+            </a>
+          </div>
+
           <div
             className="grid grid-cols-2 gap-3 sm:grid-cols-4"
-            style={{ animation: "lp-rise 0.9s ease 0.24s both" }}
+            style={{ animation: "lp-rise 0.95s ease 0.28s both" }}
           >
             {c.stats.map((stat) => (
               <div key={stat.label} className="rounded-2xl border border-border/60 bg-card/60 px-4 py-3.5 backdrop-blur">
@@ -823,19 +838,19 @@ export function LoginShell({
               </p>
               <ul className="space-y-2.5 text-sm text-foreground/55">
                 {(lang === "es" ? [
-                  { label: "Acerca de Yagán",   href: "#" },
-                  { label: "Blog y recursos",      href: "#" },
-                  { label: "Solicitar demo",        href: "#" },
-                  { label: "Precios",              href: "#" },
-                  { label: "Terminos de servicio", href: "#" },
-                  { label: "Politica de privacidad", href: "#" },
+                  { label: "Acerca de Yagán",   href: "/trust" },
+                  { label: "Blog y recursos",      href: "/case-studies" },
+                  { label: "Solicitar demo",        href: "/walkthrough" },
+                  { label: "Precios",              href: "/walkthrough" },
+                  { label: "Términos de servicio", href: "/trust" },
+                  { label: "Política de privacidad", href: "/trust" },
                 ] : [
-                  { label: "About Yagán",    href: "#" },
-                  { label: "Blog & resources",  href: "#" },
-                  { label: "Request a demo",    href: "#" },
-                  { label: "Pricing",           href: "#" },
-                  { label: "Terms of service",  href: "#" },
-                  { label: "Privacy policy",    href: "#" },
+                  { label: "About Yagán",    href: "/trust" },
+                  { label: "Blog & resources",  href: "/case-studies" },
+                  { label: "Request a demo",    href: "/walkthrough" },
+                  { label: "Pricing",           href: "/walkthrough" },
+                  { label: "Terms of service",  href: "/trust" },
+                  { label: "Privacy policy",    href: "/trust" },
                 ]).map(l => (
                   <li key={l.label}>
                     <a href={l.href} className="transition hover:text-foreground/90">{l.label}</a>
@@ -845,7 +860,7 @@ export function LoginShell({
 
               {/* Mini CTA */}
               <div className="pt-2">
-                <a href="#auth"
+                <a href="/auth/login"
                   className="inline-flex items-center gap-2 rounded-xl bg-primary/10 border border-primary/20 px-4 py-2.5 text-xs font-semibold text-primary transition hover:bg-primary/15">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60"/>
@@ -893,9 +908,9 @@ export function LoginShell({
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-foreground/35">
               <span>{lang === "es" ? "© 2026 Yagán. Todos los derechos reservados." : "© 2026 Yagán. All rights reserved."}</span>
-              <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Terminos" : "Terms"}</a>
-              <a href="#" className="transition hover:text-foreground/60">{lang === "es" ? "Privacidad" : "Privacy"}</a>
-              <a href="#" className="transition hover:text-foreground/60">Sitemap</a>
+              <a href="/trust" className="transition hover:text-foreground/60">{lang === "es" ? "Términos" : "Terms"}</a>
+              <a href="/trust" className="transition hover:text-foreground/60">{lang === "es" ? "Privacidad" : "Privacy"}</a>
+              <a href="/case-studies" className="transition hover:text-foreground/60">{lang === "es" ? "Casos" : "Cases"}</a>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-[10px] text-foreground/25">
@@ -903,7 +918,7 @@ export function LoginShell({
               </span>
               <button onClick={toggleLang}
                 className="rounded-lg border border-border/50 px-3 py-1.5 text-xs text-foreground/40 transition hover:border-border hover:text-foreground/70">
-                {lang === "es" ? "English" : "Espanol"}
+                {lang === "es" ? "English" : "Español"}
               </button>
             </div>
           </div>
