@@ -56,6 +56,47 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
     return checkInDate.toDateString() === today.toDateString();
   });
   const pendingMessages = Math.max(0, todayCheckIns.length + overduePayments.length - housekeepingBacklog.length);
+  const sequence = [
+    overduePayments.length > 0
+      ? {
+          label: "Now",
+          title: "Collect revenue at risk",
+          detail: `${overduePayments.length} folio${overduePayments.length === 1 ? "" : "s"} need attention before the day drifts.`,
+          target: "ledger" as const,
+        }
+      : {
+          label: "Now",
+          title: "Protect pricing discipline",
+          detail: `${Math.round(occupancy * 100)}% occupancy is holding. Keep ADR protected while the house fills.`,
+          target: "reservations" as const,
+        },
+    housekeepingBacklog.length > 0
+      ? {
+          label: "Next",
+          title: "Clear room readiness",
+          detail: `${housekeepingBacklog.length} cleaning task${housekeepingBacklog.length === 1 ? "" : "s"} are still open.`,
+          target: "housekeeping" as const,
+        }
+      : {
+          label: "Next",
+          title: "Prepare guest communication",
+          detail: `${todayCheckIns.length} arrival${todayCheckIns.length === 1 ? "" : "s"} can be briefed with a pre-arrival note.`,
+          target: "messaging" as const,
+        },
+    pendingMessages > 0
+      ? {
+          label: "Later",
+          title: "Send arrival follow-ups",
+          detail: `${pendingMessages} message${pendingMessages === 1 ? "" : "s"} can still be drafted for today.`,
+          target: "messaging" as const,
+        }
+      : {
+          label: "Later",
+          title: "Review tomorrow's handoff",
+          detail: "Use the remaining slack to prepare the next shift instead of reacting late.",
+          target: "calendar" as const,
+        },
+  ];
 
   const actions: ActionItem[] = [
     occupancy < 0.75
@@ -142,6 +183,41 @@ export default function SmartActionBoard({ reservations, rooms, tasks, onNavigat
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
           <CalendarCheck2 className="h-3.5 w-3.5 text-primary" />
           Live recommendations
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-3xl border border-border bg-background/60 p-4">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Focus sequence</p>
+            <p className="mt-1 text-sm text-foreground/60">A simple order for the team: what to do now, next, and later.</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigate(sequence[0].target)}
+            className="inline-flex items-center gap-2 self-start rounded-2xl border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
+          >
+            Start with now
+            <ArrowRight className="h-4 w-4 text-primary" />
+          </button>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {sequence.map((step, index) => (
+            <div
+              key={step.label}
+              className={[
+                "rounded-2xl border p-4 transition",
+                index === 0
+                  ? "border-primary/25 bg-primary/8"
+                  : "border-border bg-card/40",
+              ].join(" ")}
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/45">{step.label}</p>
+              <p className="mt-2 text-sm font-semibold text-foreground">{step.title}</p>
+              <p className="mt-2 text-sm leading-6 text-foreground/60">{step.detail}</p>
+            </div>
+          ))}
         </div>
       </div>
 
