@@ -36,7 +36,9 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getClaims();
-
+  // Avoid calling getClaims() as it can cause ReadableStream locked errors in Next.js 16
+  // Session validation happens in components via getUser()
+  
   return response;
 }
+
