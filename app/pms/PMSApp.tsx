@@ -206,6 +206,17 @@ export default function PMSApp() {
 
   const handleExecuteAction = (target: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => {
     const now = new Date();
+    const assignedTo =
+      target === "ledger"
+        ? "finance"
+        : target === "housekeeping"
+          ? "housekeeping"
+          : target === "messaging"
+            ? "reception"
+            : target === "calendar"
+              ? "operations"
+              : "manager";
+
     const nextTask = {
       id: `smart-${now.getTime()}`,
       propertyId: rooms[0]?.propertyId ?? "prop-smart",
@@ -216,17 +227,17 @@ export default function PMSApp() {
       description: reason,
       status: "pending",
       priority: target === "ledger" ? "urgent" : target === "housekeeping" ? "high" : "normal",
-      assignedTo: undefined,
+      assignedTo,
       dueDate: now,
       completedAt: undefined,
       completedBy: undefined,
-      notes: `Generated from smart action board: ${title}`,
+      notes: `Generated from smart action board: ${title} · assigned to ${assignedTo}`,
       createdAt: now,
       updatedAt: now,
     };
 
     setTasks((currentTasks) => [nextTask, ...currentTasks]);
-    setActionBanner(`${title} added to the work queue.`);
+    setActionBanner(`${title} assigned to ${assignedTo} and added to the work queue.`);
     setActiveSection(target);
     window.setTimeout(() => setActionBanner(null), 3500);
   };

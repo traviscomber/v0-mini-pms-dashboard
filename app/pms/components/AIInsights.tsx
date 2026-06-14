@@ -9,6 +9,7 @@ import type { Reservation, Room } from "../types";
 interface AIInsightsProps {
   rooms: Room[];
   reservations: Reservation[];
+  onExecute: (target: "reservations" | "housekeeping" | "ledger" | "messaging" | "calendar", title: string, reason: string) => void;
 }
 
 function toDate(value: unknown) {
@@ -16,7 +17,7 @@ function toDate(value: unknown) {
   return value instanceof Date ? value : new Date(value as string);
 }
 
-export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
+export default function AIInsights({ rooms, reservations, onExecute }: AIInsightsProps) {
   const { language } = useLanguage();
 
   const insights = useMemo(() => {
@@ -59,6 +60,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
                 : "Occupancy still has room: protect ADR before discounting.",
             tone: "emerald",
             icon: BadgeDollarSign,
+            target: "reservations" as const,
+            actionLabel: language === "es" ? "Asignar a manager" : "Assign to manager",
           }
         : {
             label: language === "es" ? "Pricing" : "Pricing",
@@ -70,6 +73,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
                 : "The house is tightening; avoid cutting price too early.",
             tone: "cyan",
             icon: BadgeDollarSign,
+            target: "reservations" as const,
+            actionLabel: language === "es" ? "Revisar con manager" : "Review with manager",
           };
 
     const cancellationSignal =
@@ -84,6 +89,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
                 : `${pendingPayments.length} reservation${pendingPayments.length === 1 ? "" : "s"} have an open balance.`,
             tone: "rose",
             icon: ShieldAlert,
+            target: "ledger" as const,
+            actionLabel: language === "es" ? "Asignar a finance" : "Assign to finance",
           }
         : {
             label: language === "es" ? "Riesgo" : "Risk",
@@ -95,6 +102,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
                 : "No major friction appears in the near-term financial close.",
             tone: "slate",
             icon: ShieldAlert,
+            target: "ledger" as const,
+            actionLabel: language === "es" ? "Mantener en control" : "Keep under control",
           };
 
     const forecastSignal = {
@@ -107,6 +116,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
           : `${arrivingToday.length} arrival${arrivingToday.length === 1 ? "" : "s"} today and ${highValueReservations.length} high-value booking${highValueReservations.length === 1 ? "" : "s"}.`,
       tone: "violet",
       icon: TrendingUp,
+      target: "reservations" as const,
+      actionLabel: language === "es" ? "Alinear pricing" : "Align pricing",
     };
 
     const guestSignal = {
@@ -119,6 +130,8 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
           : "Use it to personalize messages, upsells, and service recovery.",
       tone: "amber",
       icon: Users,
+      target: "messaging" as const,
+      actionLabel: language === "es" ? "Asignar a reception" : "Assign to reception",
     };
 
     return {
@@ -186,6 +199,16 @@ export default function AIInsights({ rooms, reservations }: AIInsightsProps) {
 
               <p className="mt-4 text-2xl font-semibold tracking-tight text-foreground">{card.value}</p>
               <p className="mt-2 text-sm leading-6 text-foreground/65">{card.detail}</p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => onExecute(card.target, card.title, card.detail)}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/80 px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-primary/25 hover:text-primary"
+                >
+                  {card.actionLabel}
+                </button>
+              </div>
             </article>
           );
         })}

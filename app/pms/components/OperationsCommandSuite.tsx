@@ -83,7 +83,7 @@ export default function OperationsCommandSuite({
         onExecute={onExecute}
       />
 
-      <AIInsights rooms={rooms} reservations={reservations} />
+      <AIInsights rooms={rooms} reservations={reservations} onExecute={onExecute} />
 
       <div className="space-y-3">
         <SectionLabel number="01" title="Executive Briefing" subtitle={isLoading ? "Reading live PMS data..." : "Risk, cash flow, readiness, and the next best action."} />
