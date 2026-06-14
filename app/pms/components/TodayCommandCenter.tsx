@@ -368,12 +368,31 @@ export default function TodayCommandCenter({
             button: 'Handle risk',
           }
         : {
-            title: 'Execute the best next move',
-            body: topTasks[0]
-              ? `${topTasks[0].title} is the cleanest action to start with right now.`
-              : 'The board is calm enough to keep working in the most useful lane.',
-            button: 'Open next action',
-          };
+          title: 'Execute the best next move',
+          body: topTasks[0]
+            ? `${topTasks[0].title} is the cleanest action to start with right now.`
+            : 'The board is calm enough to keep working in the most useful lane.',
+          button: 'Open next action',
+        };
+
+  const modeMetricCards =
+    activeMode === 'incident'
+      ? [
+          { label: 'Critical', value: criticalTasks.length, helper: 'Needs immediate recovery' },
+          { label: 'Overdue', value: overdueTodayTasks.length, helper: 'Already behind SLA' },
+          { label: 'Unassigned', value: roleBuckets.unassigned.length, helper: 'Needs a clear owner' },
+        ]
+      : activeMode === 'risk'
+        ? [
+            { label: 'Overdue', value: overdueTodayTasks.length, helper: 'Tasks already late' },
+            { label: 'Pending pay', value: pendingPayments.length, helper: 'Open balances to close' },
+            { label: 'Critical', value: criticalTasks.length, helper: 'Immediate attention' },
+          ]
+        : [
+            { label: 'Check-ins', value: checkIns.length, helper: 'Arrivals today' },
+            { label: 'Check-outs', value: checkOuts.length, helper: 'Departures today' },
+            { label: 'Tasks', value: todayTasks.length, helper: 'Work items scheduled' },
+          ];
 
   const handleRoleAction = (role: string, action: "execute" | "open" | "escalate") => {
     const target = roleTargets[role] ?? 'reservations';
@@ -558,21 +577,13 @@ export default function TodayCommandCenter({
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Urgent now</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{criticalTasks.length}</p>
-              <p className="mt-1 text-sm text-foreground/60">Requires immediate attention.</p>
-            </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Overdue</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{overdueTodayTasks.length}</p>
-              <p className="mt-1 text-sm text-foreground/60">Already behind the clock.</p>
-            </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Queue load</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{todayTasks.length}</p>
-              <p className="mt-1 text-sm text-foreground/60">Tasks scheduled for today.</p>
-            </div>
+            {modeMetricCards.map((metric) => (
+              <div key={metric.label} className="rounded-2xl border border-border bg-background/70 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">{metric.label}</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{metric.value}</p>
+                <p className="mt-1 text-sm text-foreground/60">{metric.helper}</p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -761,50 +772,84 @@ export default function TodayCommandCenter({
         ) : null}
       </div>
 
-      <div className="hidden rounded-2xl border border-border bg-card p-5 shadow-sm md:block">
-        <div className="flex items-end justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Decision trail</p>
-            <h3 className="mt-2 text-xl font-semibold text-foreground">Recent ownership and SLA context.</h3>
-            <p className="mt-2 text-sm leading-6 text-foreground/60">
-              This gives the team a quick memory of what was assigned, who owns it, and how close it is to falling behind.
-            </p>
-          </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
-            <Clock className="h-3.5 w-3.5 text-primary" />
-            {historyEntries.length} recent decisions
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {visibleHistory.length > 0 ? visibleHistory.map((entry) => (
-            <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.ownerLabel}</p>
-                  <h4 className="mt-1 text-sm font-semibold text-foreground">{entry.title}</h4>
-                </div>
-                <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-foreground/60">
-                  {String(entry.priority).toUpperCase()}
-                </span>
-              </div>
-
-              <div className="mt-3 flex flex-wrap gap-2 text-xs text-foreground/60">
-                <span className="rounded-full border border-border bg-card px-2.5 py-1">
-                  {entry.statusLabel}
-                </span>
-                <span className="rounded-full border border-border bg-card px-2.5 py-1">
-                  {entry.dueLabel}
-                </span>
-              </div>
-            </article>
-          )) : (
-            <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-sm text-foreground/60 md:col-span-2 xl:col-span-3">
-              No decisions match the current filters.
+      {activeMode === 'incident' ? (
+        <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-5 shadow-sm">
+          <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300">Recovery queue</p>
+              <h3 className="mt-2 text-xl font-semibold text-foreground">Only the next 3 actions stay visible.</h3>
+              <p className="mt-2 text-sm leading-6 text-foreground/65">
+                We trim the rest of the detail so the team can stabilize the day without extra noise.
+              </p>
             </div>
-          )}
+            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-background/80 px-3 py-2 text-xs font-semibold text-rose-200">
+              <AlertCircle className="h-3.5 w-3.5" />
+              High focus
+            </div>
+          </div>
+
+          <div className="mt-4 space-y-3">
+            {topTasks.slice(0, 3).map((task) => (
+              <div key={task.id} className="rounded-2xl border border-rose-500/20 bg-background/70 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{task.title}</p>
+                    <p className="mt-1 text-xs text-foreground/55">{task.type.replace('_', ' ')} · {formatSla(task)}</p>
+                  </div>
+                  <span className="rounded-full border border-rose-500/25 bg-rose-500/10 px-2.5 py-1 text-[11px] font-semibold text-rose-200">
+                    {String(task.priority).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="hidden rounded-2xl border border-border bg-card p-5 shadow-sm md:block">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Decision trail</p>
+              <h3 className="mt-2 text-xl font-semibold text-foreground">Recent ownership and SLA context.</h3>
+              <p className="mt-2 text-sm leading-6 text-foreground/60">
+                This gives the team a quick memory of what was assigned, who owns it, and how close it is to falling behind.
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+              <Clock className="h-3.5 w-3.5 text-primary" />
+              {historyEntries.length} recent decisions
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {visibleHistory.length > 0 ? visibleHistory.map((entry) => (
+              <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.ownerLabel}</p>
+                    <h4 className="mt-1 text-sm font-semibold text-foreground">{entry.title}</h4>
+                  </div>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-foreground/60">
+                    {String(entry.priority).toUpperCase()}
+                  </span>
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-foreground/60">
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1">
+                    {entry.statusLabel}
+                  </span>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1">
+                    {entry.dueLabel}
+                  </span>
+                </div>
+              </article>
+            )) : (
+              <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-sm text-foreground/60 md:col-span-2 xl:col-span-3">
+                No decisions match the current filters.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {criticalTasks.length > 0 && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
