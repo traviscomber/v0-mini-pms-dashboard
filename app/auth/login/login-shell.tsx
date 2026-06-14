@@ -581,7 +581,7 @@ export function LoginShell({
               <Globe className="h-3 w-3" />
               {lang === "es" ? "EN" : "ES"}
             </button>
-            <a href="/auth/signin"
+            <a href="/auth/login?next=/pms"
               className="hidden rounded-lg border border-border/60 bg-card/60 px-3.5 py-1.5 text-sm font-medium text-foreground/70 transition hover:border-primary/30 hover:bg-primary/10 hover:text-primary sm:block">
               {c.nav.signin}
             </a>
