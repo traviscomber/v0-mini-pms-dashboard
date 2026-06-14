@@ -96,6 +96,67 @@ export default function TodayCommandCenter({
     (task) => task.status !== 'completed' && task.status !== 'cancelled' && new Date(task.dueDate).getTime() < now.getTime(),
   );
   const topTasks = rankedTodayTasks.slice(0, 3);
+  const roleLabels: Record<string, string> = {
+    finance: 'Finance',
+    housekeeping: 'Housekeeping',
+    reception: 'Reception',
+    operations: 'Operations',
+    manager: 'Manager',
+    unassigned: 'Unassigned',
+  };
+
+  const roleOrder = ['finance', 'housekeeping', 'reception', 'operations', 'manager'];
+
+  const roleBuckets = useMemo(() => {
+    const bucket: Record<string, Task[]> = {
+      finance: [],
+      housekeeping: [],
+      reception: [],
+      operations: [],
+      manager: [],
+      unassigned: [],
+    };
+
+    todayTasks.forEach((task) => {
+      const explicitRole = String(task.assignedTo ?? '').trim().toLowerCase();
+      const derivedRole =
+        explicitRole ||
+        (task.type === 'payment'
+          ? 'finance'
+          : task.type === 'cleaning' || task.type === 'inspection'
+            ? 'housekeeping'
+            : task.type === 'communication' || task.type === 'check_in'
+              ? 'reception'
+              : task.type === 'check_out'
+                ? 'operations'
+                : 'manager');
+
+      if (!bucket[derivedRole]) {
+        bucket.unassigned.push(task);
+        return;
+      }
+
+      bucket[derivedRole].push(task);
+    });
+
+    Object.values(bucket).forEach((roleTasks) => {
+      roleTasks.sort((leftTask, rightTask) => {
+        const leftDue = new Date(leftTask.dueDate).getTime();
+        const rightDue = new Date(rightTask.dueDate).getTime();
+
+        if (leftDue !== rightDue) {
+          return leftDue - rightDue;
+        }
+
+        const leftPriority = priorityScore[String(leftTask.priority ?? 'normal').toLowerCase()] ?? 2;
+        const rightPriority = priorityScore[String(rightTask.priority ?? 'normal').toLowerCase()] ?? 2;
+
+        return leftPriority - rightPriority;
+      });
+    });
+
+    return bucket;
+  }, [todayTasks]);
 
   const formatSla = (task: Task) => {
     const dueTime = new Date(task.dueDate).getTime();
@@ -114,6 +175,17 @@ export default function TodayCommandCenter({
     }
 
     return `Due in ${Math.round(diffMinutes / 60)}h`;
+  };
+
+  const getRoleSummary = (role: string) => {
+    const roleTasks = roleBuckets[role] ?? [];
+    const urgentCount = roleTasks.filter((task) => task.priority === 'urgent' || task.priority === 'high').length;
+    const dueSoonCount = roleTasks.filter((task) => {
+      const diffMinutes = Math.round((new Date(task.dueDate).getTime() - now.getTime()) / 60000);
+      return diffMinutes <= 120;
+    }).length;
+
+    return { roleTasks, urgentCount, dueSoonCount };
   };
 
   return (
@@ -189,6 +261,70 @@ export default function TodayCommandCenter({
             )}
           </div>
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Shift board</p>
+            <h3 className="mt-2 text-xl font-semibold text-foreground">What each role owns right now.</h3>
+            <p className="mt-2 text-sm leading-6 text-foreground/60">
+              Each lane groups the current work by team so the handoff is obvious and no one has to translate the day.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            <Users className="h-3.5 w-3.5 text-primary" />
+            {roleOrder.reduce((sum, role) => sum + (roleBuckets[role]?.length ?? 0), 0)} assigned tasks
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 xl:grid-cols-5">
+          {roleOrder.map((role) => {
+            const { roleTasks, urgentCount, dueSoonCount } = getRoleSummary(role);
+            const nextTask = roleTasks[0];
+
+            return (
+              <article key={role} className="rounded-2xl border border-border bg-background/70 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{roleLabels[role]}</p>
+                    <p className="mt-1 text-lg font-semibold text-foreground">{roleTasks.length}</p>
+                  </div>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-foreground/60">
+                    {urgentCount} urgent
+                  </span>
+                </div>
+
+                <div className="mt-4 space-y-2 text-sm">
+                  <div className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card/80 px-3 py-2">
+                    <span className="text-foreground/60">Due within 2h</span>
+                    <span className="font-semibold text-foreground">{dueSoonCount}</span>
+                  </div>
+
+                  {nextTask ? (
+                    <div className="rounded-xl border border-border bg-card/80 p-3">
+                      <p className="text-sm font-semibold text-foreground">{nextTask.title}</p>
+                      <p className="mt-1 text-xs text-foreground/55">{formatSla(nextTask)}</p>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-border bg-card/40 p-3 text-sm text-foreground/55">
+                      No current tasks in this lane.
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {roleBuckets.unassigned.length > 0 ? (
+          <div className="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+            <p className="text-sm font-semibold text-amber-300">Unassigned tasks</p>
+            <p className="mt-1 text-sm text-foreground/60">
+              {roleBuckets.unassigned.length} items still need a clear owner.
+            </p>
+          </div>
+        ) : null}
       </div>
 
       {criticalTasks.length > 0 && (
