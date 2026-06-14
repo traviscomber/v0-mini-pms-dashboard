@@ -30,6 +30,7 @@ export default function TodayCommandCenter({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
+  const storageKey = 'pms-command-center-state';
 
   const priorityScore: Record<string, number> = {
     urgent: 0,
@@ -258,11 +259,64 @@ export default function TodayCommandCenter({
   const incidentMode = criticalTasks.length >= 2 || overdueTodayTasks.length >= 3;
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawState = window.localStorage.getItem(storageKey);
+
+      if (!rawState) {
+        return;
+      }
+
+      const parsedState = JSON.parse(rawState) as {
+        activeMode?: 'today' | 'risk' | 'incident';
+        selectedRole?: string;
+        selectedRisk?: 'all' | 'risk' | 'stable';
+      };
+
+      if (parsedState.activeMode) {
+        setActiveMode(parsedState.activeMode);
+      }
+
+      if (parsedState.selectedRole) {
+        setSelectedRole(parsedState.selectedRole);
+      }
+
+      if (parsedState.selectedRisk) {
+        setSelectedRisk(parsedState.selectedRisk);
+      }
+    } catch {
+      // Ignore persistence errors and fall back to defaults.
+    }
+  }, []);
+
+  useEffect(() => {
     if (incidentMode && activeMode === 'incident') {
       setSelectedRole('all');
       setSelectedRisk('risk');
     }
   }, [activeMode, incidentMode]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          activeMode,
+          selectedRole,
+          selectedRisk,
+        }),
+      );
+    } catch {
+      // Ignore persistence failures.
+    }
+  }, [activeMode, selectedRisk, selectedRole, storageKey]);
 
   const setMode = (mode: 'today' | 'risk' | 'incident') => {
     setActiveMode(mode);
