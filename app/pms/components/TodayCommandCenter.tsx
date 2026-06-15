@@ -510,6 +510,24 @@ export default function TodayCommandCenter({
             : 'The board is calm enough to keep working in the most useful lane.',
           button: 'Open next action',
         };
+  const dailyRecap =
+    activeMode === 'incident'
+      ? [
+          `${criticalTasks.length} critical items need immediate attention.`,
+          `${overdueTodayTasks.length} tasks are past SLA and should be escalated.`,
+          `${roleBuckets.unassigned.length} tasks still need a clear owner.`,
+        ]
+      : activeMode === 'risk'
+        ? [
+            `${overdueTodayTasks.length} overdue items are driving most of the risk.`,
+            `${pendingPayments.length} reservations still have open balances.`,
+            `${criticalTasks.length} critical tasks are shaping the recovery plan.`,
+          ]
+        : [
+            `${checkIns.length} check-ins and ${checkOuts.length} check-outs define today's flow.`,
+            `${todayTasks.length} tasks are active in the queue.`,
+            `${topTasks[0] ? topTasks[0].title : 'The board remains calm and ready.'} is the leading move right now.`,
+          ];
   const executeFocusAction = () => onExecute?.(focusTarget, focusCopy.title, focusCopy.body);
   const openFocusLane = () => onNavigate?.(focusTarget);
 
@@ -650,6 +668,26 @@ export default function TodayCommandCenter({
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Daily recap</p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">What matters in this session.</h4>
+          </div>
+          <div className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            {activeMode.toUpperCase()}
+          </div>
+        </div>
+
+        <ul className="mt-4 grid gap-3 md:grid-cols-3">
+          {dailyRecap.map((item, index) => (
+            <li key={`${index}-${item}`} className="rounded-2xl border border-border bg-background/70 p-4 text-sm leading-6 text-foreground/70">
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
