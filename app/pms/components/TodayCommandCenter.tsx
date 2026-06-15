@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AlertCircle, Clock, DollarSign, MapPin, Sparkles, Users } from 'lucide-react';
 import { Reservation, Task, Room } from '../types';
+import { AGENT_SKILL_PROFILES } from '../agents/agent-profiles';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
 import { useLanguage as useLanguage } from '../LanguageContext';
 
@@ -510,6 +511,30 @@ export default function TodayCommandCenter({
             : 'The board is calm enough to keep working in the most useful lane.',
           button: 'Open next action',
         };
+  const agentRecommendations = useMemo(() => {
+    const modeStack =
+      activeMode === 'incident'
+        ? ['trust-auditor', 'operations-commander', 'chief-of-staff']
+        : activeMode === 'risk'
+          ? ['chief-of-staff', 'revenue-strategist', 'trust-auditor']
+          : ['chief-of-staff', 'operations-commander', 'guest-concierge'];
+
+    const targetStack =
+      focusTarget === 'ledger'
+        ? ['revenue-strategist', 'trust-auditor', 'chief-of-staff']
+        : focusTarget === 'housekeeping'
+          ? ['operations-commander', 'trust-auditor', 'chief-of-staff']
+          : focusTarget === 'messaging'
+            ? ['guest-concierge', 'operations-commander', 'chief-of-staff']
+            : focusTarget === 'calendar'
+              ? ['operations-commander', 'chief-of-staff', 'trust-auditor']
+              : ['revenue-strategist', 'chief-of-staff', 'operations-commander'];
+
+    return [...new Set([...modeStack, ...targetStack])]
+      .map((agentId) => AGENT_SKILL_PROFILES.find((agent) => agent.id === agentId))
+      .filter((agent): agent is (typeof AGENT_SKILL_PROFILES)[number] => Boolean(agent))
+      .slice(0, 3);
+  }, [activeMode, focusTarget]);
   const dailyRecap =
     activeMode === 'incident'
       ? [
@@ -712,6 +737,41 @@ export default function TodayCommandCenter({
           <span className="text-xs text-foreground/45">
             Ready for Slack, WhatsApp, or email.
           </span>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Agent stack</p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">Who should work this lane.</h4>
+            <p className="mt-1 text-sm text-foreground/60">
+              The board routes the right specialist stack for the current mode and focus lane.
+            </p>
+          </div>
+          <span className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            {agentRecommendations.length} agents suggested
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          {agentRecommendations.map((agent) => (
+            <article key={agent.id} className="rounded-2xl border border-border bg-background/70 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{agent.focus.replace('-', ' ')}</p>
+                  <h5 className="mt-1 text-sm font-semibold text-foreground">{agent.name}</h5>
+                </div>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
+                  {agent.recommendedModel}
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-foreground/65">{agent.mission}</p>
+              <p className="mt-2 text-xs uppercase tracking-[0.18em] text-foreground/45">
+                Hand-off: {agent.handoffTargets.slice(0, 2).join(' · ')}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 
