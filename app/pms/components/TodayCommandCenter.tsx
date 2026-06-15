@@ -7,6 +7,15 @@ import { AGENT_SKILL_PROFILES } from '../agents/agent-profiles';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
 import { useLanguage as useLanguage } from '../LanguageContext';
 
+interface ActionAuditEntry {
+  id: string;
+  timestamp: string;
+  source: string;
+  action: string;
+  target: string;
+  detail: string;
+}
+
 interface TodayCommandCenterProps {
   reservations: Reservation[];
   rooms: Room[];
@@ -29,10 +38,13 @@ export default function TodayCommandCenter({
   const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
   const [activeMode, setActiveMode] = useState<'today' | 'risk' | 'incident'>('today');
   const [selectedLane, setSelectedLane] = useState<string | null>(null);
+  const [auditTrail, setAuditTrail] = useState<ActionAuditEntry[]>([]);
+  const [auditHydrated, setAuditHydrated] = useState(false);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
   const storageKey = 'pms-command-center-state';
+  const auditStorageKey = 'pms-command-center-audit';
 
   const priorityScore: Record<string, number> = {
     urgent: 0,
@@ -331,6 +343,43 @@ export default function TodayCommandCenter({
   }, [activeMode, selectedRisk, selectedRole, storageKey]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawAuditTrail = window.localStorage.getItem(auditStorageKey);
+
+      if (!rawAuditTrail) {
+        return;
+      }
+
+      const parsedAuditTrail = JSON.parse(rawAuditTrail) as ActionAuditEntry[];
+      setAuditTrail(Array.isArray(parsedAuditTrail) ? parsedAuditTrail.slice(0, 8) : []);
+    } catch {
+      // Ignore audit persistence errors.
+    } finally {
+      setAuditHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!auditHydrated) {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(auditStorageKey, JSON.stringify(auditTrail.slice(0, 8)));
+    } catch {
+      // Ignore persistence failures.
+    }
+  }, [auditTrail, auditHydrated, auditStorageKey]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
 
@@ -511,6 +560,23 @@ export default function TodayCommandCenter({
             : 'The board is calm enough to keep working in the most useful lane.',
           button: 'Open next action',
         };
+
+  const formatAuditTime = (timestamp: string) =>
+    new Intl.DateTimeFormat('es-CL', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(timestamp));
+
+  const recordAudit = (entry: Omit<ActionAuditEntry, 'id' | 'timestamp'>) => {
+    setAuditTrail((currentTrail) => [
+      {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        timestamp: new Date().toISOString(),
+        ...entry,
+      },
+      ...currentTrail,
+    ].slice(0, 8));
+  };
   const agentRecommendations = useMemo(() => {
     const modeStack =
       activeMode === 'incident'
@@ -557,6 +623,12 @@ export default function TodayCommandCenter({
     const target = getAgentTarget(agentId);
     const agent = AGENT_SKILL_PROFILES.find((currentAgent) => currentAgent.id === agentId);
     const mission = agent?.mission ?? agentName;
+    recordAudit({
+      source: agentName,
+      action: 'Executed',
+      target,
+      detail: mission,
+    });
     onExecute?.(target, agentName, mission);
   };
   const dailyRecap =
@@ -585,12 +657,34 @@ export default function TodayCommandCenter({
 
     try {
       await navigator.clipboard.writeText(briefingText);
+      recordAudit({
+        source: 'Command center',
+        action: 'Copied briefing',
+        target: activeMode,
+        detail: focusCopy.title,
+      });
     } catch {
       // Ignore clipboard errors.
     }
   };
-  const executeFocusAction = () => onExecute?.(focusTarget, focusCopy.title, focusCopy.body);
-  const openFocusLane = () => onNavigate?.(focusTarget);
+  const executeFocusAction = () => {
+    recordAudit({
+      source: 'Focus action',
+      action: 'Executed',
+      target: focusTarget,
+      detail: focusCopy.title,
+    });
+    onExecute?.(focusTarget, focusCopy.title, focusCopy.body);
+  };
+  const openFocusLane = () => {
+    recordAudit({
+      source: 'Focus action',
+      action: 'Opened lane',
+      target: focusTarget,
+      detail: roleLabels[activeLane] ?? activeLane,
+    });
+    onNavigate?.(focusTarget);
+  };
 
   const modeMetricCards =
     activeMode === 'incident'
@@ -812,6 +906,43 @@ export default function TodayCommandCenter({
               </div>
             </article>
           ))}
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Action audit</p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">A visible trail of the session&apos;s latest moves.</h4>
+            <p className="mt-1 text-sm text-foreground/60">
+              Every execution, open, and copy remains visible so the team can review the last moves quickly.
+            </p>
+          </div>
+          <span className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            {auditTrail.length} events
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {auditTrail.length > 0 ? auditTrail.map((entry) => (
+            <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.source}</p>
+                  <h5 className="mt-1 text-sm font-semibold text-foreground">{entry.action}</h5>
+                </div>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
+                  {entry.target}
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-foreground/65">{entry.detail}</p>
+              <p className="mt-3 text-xs text-foreground/45">{formatAuditTime(entry.timestamp)}</p>
+            </article>
+          )) : (
+            <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-sm text-foreground/60 md:col-span-2 xl:col-span-4">
+              No actions recorded yet. The first execution will appear here.
+            </div>
+          )}
         </div>
       </div>
 
