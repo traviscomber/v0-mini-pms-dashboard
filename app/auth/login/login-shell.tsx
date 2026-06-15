@@ -22,9 +22,10 @@ const copy = {
       signin: "Iniciar sesión",
     },
     badge: "Operaciones hoteleras de siguiente nivel",
-    headline: "Una torre de control\npara tu hotel.",
+    headline: "Una torre de control\npara operar mejor.",
     subheadline:
-      "Yagán une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
+      "Yagán une reservas, ingresos, operaciones y comunicación con huéspedes en un solo espacio. Menos fricción, más control.",
+    heroPlatformCta: "Ver plataforma",
     regionalLabel: "Pensado para Chile",
     regionalTitle: "Operaciones claras para Santiago, Valparaíso y Patagonia.",
     regionalDesc:
@@ -157,9 +158,10 @@ const copy = {
       signin: "Sign in",
     },
     badge: "Next-generation hotel operations",
-    headline: "One control tower\nfor your hotel.",
+    headline: "One control tower\nto run better.",
     subheadline:
-      "Yagán brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
+      "Yagán brings reservations, revenue, operations, and guest communication into one workspace. Less friction, more control.",
+    heroPlatformCta: "View platform",
     regionalLabel: "Built for Chile",
     regionalTitle: "Clear operations for Santiago, Valparaíso, and Patagonia.",
     regionalDesc:
@@ -709,19 +711,16 @@ export function LoginShell({
             </a>
             <a href="#plataforma"
               className="inline-flex h-11 items-center gap-2 rounded-xl border border-border/60 px-5 text-sm font-medium text-foreground/65 transition hover:border-primary/30 hover:text-foreground">
-              {c.nav.platform}
+              {c.heroPlatformCta}
             </a>
           </div>
 
           <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.9s ease 0.24s both" }}>
             <a href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
-              Blackswan case study
+              {c.proofCaseCta}
             </a>
             <a href="/walkthrough" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
-              Book a walkthrough
-            </a>
-            <a href="/demo" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
-              Open internal demo
+              {lang === "es" ? "Pedir demo" : "Request a demo"}
             </a>
           </div>
 
