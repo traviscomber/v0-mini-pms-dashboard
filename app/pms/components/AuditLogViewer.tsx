@@ -114,6 +114,44 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
     };
   }, [filteredSessionTrail]);
 
+  const policyChecks = useMemo(() => {
+    const hasHighSeverity = sessionSummary.severityCounts.high > 0;
+    const hasManyEvents = sessionSummary.events >= 5;
+    const hasLedgerActivity = filteredSessionTrail.some((entry) => entry.target === 'ledger');
+    const hasEscalations = filteredSessionTrail.some((entry) => entry.action.toLowerCase().includes('escalat'));
+
+    return [
+      {
+        label: 'High-severity actions',
+        status: hasHighSeverity ? 'review' : 'pass',
+        detail: hasHighSeverity
+          ? `${sessionSummary.severityCounts.high} event(s) need a human review before close.`
+          : 'No high-severity actions detected in the active filters.',
+      },
+      {
+        label: 'Ledger exposure',
+        status: hasLedgerActivity ? 'review' : 'pass',
+        detail: hasLedgerActivity
+          ? 'Ledger-touching actions are visible and should be checked for financial impact.'
+          : 'No ledger activity is present in the current trail.',
+      },
+      {
+        label: 'Escalation signal',
+        status: hasEscalations ? 'watch' : 'pass',
+        detail: hasEscalations
+          ? 'The trail includes explicit escalations and should stay visible to the duty lead.'
+          : 'No escalations were recorded in the current session.',
+      },
+      {
+        label: 'Operating volume',
+        status: hasManyEvents ? 'watch' : 'pass',
+        detail: hasManyEvents
+          ? `${sessionSummary.events} event(s) are enough to justify a short end-of-shift review.`
+          : 'Activity volume remains light.',
+      },
+    ] as const;
+  }, [filteredSessionTrail, sessionSummary.events, sessionSummary.severityCounts.high]);
+
   const exportSessionTrail = () => {
     if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
       return;
@@ -222,22 +260,61 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
           </div>
 
           {complianceMode ? (
-            <div className="grid gap-3 md:grid-cols-4">
+            <div className="space-y-3">
+                <div className="grid gap-3 md:grid-cols-4">
+                  <div className="rounded-2xl border border-border bg-background/70 p-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Visible events</p>
+                    <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.events}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/70 p-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">High severity</p>
+                    <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.high}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/70 p-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Medium severity</p>
+                    <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.medium}</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background/70 p-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Top agent</p>
+                    <p className="mt-2 text-lg font-semibold text-foreground">{sessionSummary.topAgent}</p>
+                  </div>
+                </div>
+
               <div className="rounded-2xl border border-border bg-background/70 p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Visible events</p>
-                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.events}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-background/70 p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">High severity</p>
-                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.high}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-background/70 p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Medium severity</p>
-                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.medium}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-background/70 p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Top agent</p>
-                <p className="mt-2 text-lg font-semibold text-foreground">{sessionSummary.topAgent}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Policy check</p>
+                    <p className="mt-1 text-sm text-foreground/60">
+                      Fast signals that tell a lead what needs review before closing the session.
+                    </p>
+                  </div>
+                  <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground/60">
+                    {policyChecks.filter((check) => check.status !== 'pass').length} flags
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  {policyChecks.map((check) => (
+                    <article key={check.label} className="rounded-2xl border border-border bg-card/70 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm font-semibold text-foreground">{check.label}</p>
+                        <span
+                          className={[
+                            'rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em]',
+                            check.status === 'review'
+                              ? 'border-rose-500/30 bg-rose-500/10 text-rose-200'
+                              : check.status === 'watch'
+                                ? 'border-amber-500/30 bg-amber-500/10 text-amber-200'
+                                : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+                          ].join(' ')}
+                        >
+                          {check.status}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-foreground/65">{check.detail}</p>
+                    </article>
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
