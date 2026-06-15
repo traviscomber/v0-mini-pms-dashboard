@@ -484,6 +484,7 @@ export default function TodayCommandCenter({
   const focusTarget = roleTargets[activeLane] ?? 'reservations';
   const focusLabel = roleLabels[activeLane] ?? activeLane;
   const highlightedRole = activeLane;
+  const lastDecision = historyEntries[0];
   const focusCopy =
     activeMode === 'incident'
       ? {
@@ -647,6 +648,26 @@ export default function TodayCommandCenter({
               Mode: {activeMode}
             </span>
           </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Last action</p>
+          <h4 className="mt-2 text-base font-semibold text-foreground">
+            {lastDecision ? lastDecision.title : 'No recent action yet.'}
+          </h4>
+          <p className="mt-1 text-sm text-foreground/60">
+            {lastDecision
+              ? `${lastDecision.ownerLabel} · ${lastDecision.statusLabel} · ${lastDecision.dueLabel}`
+              : 'The team has not recorded a recent move in this session.'}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-primary/20 bg-primary/8 p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Next action</p>
+          <h4 className="mt-2 text-base font-semibold text-foreground">{focusCopy.title}</h4>
+          <p className="mt-1 text-sm text-foreground/60">{focusCopy.body}</p>
         </div>
       </div>
 
