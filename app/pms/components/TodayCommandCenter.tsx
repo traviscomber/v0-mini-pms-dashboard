@@ -535,6 +535,30 @@ export default function TodayCommandCenter({
       .filter((agent): agent is (typeof AGENT_SKILL_PROFILES)[number] => Boolean(agent))
       .slice(0, 3);
   }, [activeMode, focusTarget]);
+  const getAgentTarget = (agentId: string) => {
+    if (agentId === 'guest-concierge') return 'messaging';
+    if (agentId === 'operations-commander') return 'housekeeping';
+    if (agentId === 'revenue-strategist') return 'ledger';
+    if (agentId === 'trust-auditor') return 'ledger';
+    if (agentId === 'integrations-engineer') return 'calendar';
+    return 'calendar';
+  };
+
+  const getAgentActionLabel = (agentId: string) => {
+    if (agentId === 'guest-concierge') return 'Draft guest flow';
+    if (agentId === 'operations-commander') return 'Open ops lane';
+    if (agentId === 'revenue-strategist') return 'Review revenue';
+    if (agentId === 'trust-auditor') return 'Audit decision';
+    if (agentId === 'integrations-engineer') return 'Check sync';
+    return 'Route work';
+  };
+
+  const runAgent = (agentId: string, agentName: string) => {
+    const target = getAgentTarget(agentId);
+    const agent = AGENT_SKILL_PROFILES.find((currentAgent) => currentAgent.id === agentId);
+    const mission = agent?.mission ?? agentName;
+    onExecute?.(target, agentName, mission);
+  };
   const dailyRecap =
     activeMode === 'incident'
       ? [
@@ -770,6 +794,22 @@ export default function TodayCommandCenter({
               <p className="mt-2 text-xs uppercase tracking-[0.18em] text-foreground/45">
                 Hand-off: {agent.handoffTargets.slice(0, 2).join(' · ')}
               </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => runAgent(agent.id, agent.name)}
+                  className="inline-flex items-center gap-2 rounded-2xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition hover:brightness-110"
+                >
+                  {getAgentActionLabel(agent.id)}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate?.(getAgentTarget(agent.id))}
+                  className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground transition hover:border-primary/25 hover:bg-primary/5"
+                >
+                  Open target
+                </button>
+              </div>
             </article>
           ))}
         </div>
