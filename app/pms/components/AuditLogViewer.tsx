@@ -3,9 +3,11 @@
 import { useState, useMemo } from 'react';
 import { AuditLog, AuditEntity, AuditAction } from '../types';
 import { Search, Filter, Eye } from 'lucide-react';
+import type { CommandCenterAuditEntry } from '../lib/command-center-audit';
 
 interface AuditLogViewerProps {
   auditLogs: AuditLog[];
+  sessionAuditTrail?: CommandCenterAuditEntry[];
 }
 
 const actionColors: Record<AuditAction, string> = {
@@ -17,7 +19,7 @@ const actionColors: Record<AuditAction, string> = {
   cancel: 'bg-destructive500/10 text-destructive700',
 };
 
-export default function AuditLogViewer({ auditLogs }: AuditLogViewerProps) {
+export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: AuditLogViewerProps) {
   const [searchText, setSearchText] = useState('');
   const [filterEntity, setFilterEntity] = useState('all');
   const [filterAction, setFilterAction] = useState('all');
@@ -35,6 +37,14 @@ export default function AuditLogViewer({ auditLogs }: AuditLogViewerProps) {
       .sort((a, b) => b.performedAt.getTime() - a.performedAt.getTime());
   }, [auditLogs, searchText, filterEntity, filterAction]);
 
+  const formatSessionTime = (timestamp: string) =>
+    new Intl.DateTimeFormat('es-CL', {
+      hour: '2-digit',
+      minute: '2-digit',
+      month: 'short',
+      day: 'numeric',
+    }).format(new Date(timestamp));
+
   return (
     <div className="space-y-6">
       <div className="bg-card border border-border rounded-lg p-4">
@@ -42,6 +52,40 @@ export default function AuditLogViewer({ auditLogs }: AuditLogViewerProps) {
           Complete audit trail of all system actions for accountability and compliance.
         </p>
       </div>
+
+      {sessionAuditTrail.length > 0 ? (
+        <div className="bg-card border border-border rounded-lg p-4 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Live session trail</p>
+              <p className="mt-1 text-sm text-foreground/60">
+                Actions recorded from the command center in the current session.
+              </p>
+            </div>
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground/60">
+              {sessionAuditTrail.length} events
+            </span>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {sessionAuditTrail.map((entry) => (
+              <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.source}</p>
+                    <h4 className="mt-1 text-sm font-semibold text-foreground">{entry.action}</h4>
+                  </div>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
+                    {entry.target}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-foreground/65">{entry.detail}</p>
+                <p className="mt-3 text-xs text-foreground/45">{formatSessionTime(entry.timestamp)}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <div className="flex gap-3 flex-wrap">
         <div className="flex items-center gap-2 px-3 py-2 bg-background border border-border rounded-lg flex-1 min-w-xs">

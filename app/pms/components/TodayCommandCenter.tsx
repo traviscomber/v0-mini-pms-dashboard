@@ -4,17 +4,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { AlertCircle, Clock, DollarSign, MapPin, Sparkles, Users } from 'lucide-react';
 import { Reservation, Task, Room } from '../types';
 import { AGENT_SKILL_PROFILES } from '../agents/agent-profiles';
+import { COMMAND_CENTER_AUDIT_EVENT, COMMAND_CENTER_AUDIT_STORAGE_KEY, type CommandCenterAuditEntry } from '../lib/command-center-audit';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
 import { useLanguage as useLanguage } from '../LanguageContext';
-
-interface ActionAuditEntry {
-  id: string;
-  timestamp: string;
-  source: string;
-  action: string;
-  target: string;
-  detail: string;
-}
 
 interface TodayCommandCenterProps {
   reservations: Reservation[];
@@ -38,13 +30,12 @@ export default function TodayCommandCenter({
   const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
   const [activeMode, setActiveMode] = useState<'today' | 'risk' | 'incident'>('today');
   const [selectedLane, setSelectedLane] = useState<string | null>(null);
-  const [auditTrail, setAuditTrail] = useState<ActionAuditEntry[]>([]);
+  const [auditTrail, setAuditTrail] = useState<CommandCenterAuditEntry[]>([]);
   const [auditHydrated, setAuditHydrated] = useState(false);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const now = new Date();
   const storageKey = 'pms-command-center-state';
-  const auditStorageKey = 'pms-command-center-audit';
 
   const priorityScore: Record<string, number> = {
     urgent: 0,
@@ -348,14 +339,12 @@ export default function TodayCommandCenter({
     }
 
     try {
-      const rawAuditTrail = window.localStorage.getItem(auditStorageKey);
+      const rawAuditTrail = window.localStorage.getItem(COMMAND_CENTER_AUDIT_STORAGE_KEY);
 
-      if (!rawAuditTrail) {
-        return;
+      if (rawAuditTrail) {
+        const parsedAuditTrail = JSON.parse(rawAuditTrail) as CommandCenterAuditEntry[];
+        setAuditTrail(Array.isArray(parsedAuditTrail) ? parsedAuditTrail.slice(0, 8) : []);
       }
-
-      const parsedAuditTrail = JSON.parse(rawAuditTrail) as ActionAuditEntry[];
-      setAuditTrail(Array.isArray(parsedAuditTrail) ? parsedAuditTrail.slice(0, 8) : []);
     } catch {
       // Ignore audit persistence errors.
     } finally {
@@ -373,11 +362,12 @@ export default function TodayCommandCenter({
     }
 
     try {
-      window.localStorage.setItem(auditStorageKey, JSON.stringify(auditTrail.slice(0, 8)));
+      window.localStorage.setItem(COMMAND_CENTER_AUDIT_STORAGE_KEY, JSON.stringify(auditTrail.slice(0, 8)));
+      window.dispatchEvent(new Event(COMMAND_CENTER_AUDIT_EVENT));
     } catch {
       // Ignore persistence failures.
     }
-  }, [auditTrail, auditHydrated, auditStorageKey]);
+  }, [auditTrail, auditHydrated]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -567,7 +557,7 @@ export default function TodayCommandCenter({
       minute: '2-digit',
     }).format(new Date(timestamp));
 
-  const recordAudit = (entry: Omit<ActionAuditEntry, 'id' | 'timestamp'>) => {
+  const recordAudit = (entry: Omit<CommandCenterAuditEntry, 'id' | 'timestamp'>) => {
     setAuditTrail((currentTrail) => [
       {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,

@@ -25,6 +25,7 @@ import OperationsCommandSuite from "./components/OperationsCommandSuite";
 import Sidebar from "./components/Sidebar";
 import UserManagement from "./components/UserManagement";
 import { useAlerts } from "./hooks/use-alerts";
+import { COMMAND_CENTER_AUDIT_EVENT, readCommandCenterAuditTrail, type CommandCenterAuditEntry } from "./lib/command-center-audit";
 import { createOperationalTasks, createPaymentEntries, useLivePms } from "./hooks/use-live-pms";
 import { applyFilters, defaultFilters, loadFiltersFromLocalStorage, saveFiltersToLocalStorage, type FilterOptions } from "./lib/filter-utils";
 import type { Reservation } from "./types";
@@ -68,6 +69,7 @@ export default function PMSApp() {
   const [isMobile, setIsMobile] = useState(false);
   const [propertyName, setPropertyName] = useState("");
   const [actionBanner, setActionBanner] = useState<string | null>(null);
+  const [commandCenterAuditTrail, setCommandCenterAuditTrail] = useState<CommandCenterAuditEntry[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -87,6 +89,25 @@ export default function PMSApp() {
         if (data?.activeProperty?.name) setPropertyName(data.activeProperty.name);
       })
       .catch(() => {/* ignore */});
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const syncAuditTrail = () => {
+      setCommandCenterAuditTrail(readCommandCenterAuditTrail());
+    };
+
+    syncAuditTrail();
+    window.addEventListener(COMMAND_CENTER_AUDIT_EVENT, syncAuditTrail);
+    window.addEventListener("storage", syncAuditTrail);
+
+    return () => {
+      window.removeEventListener(COMMAND_CENTER_AUDIT_EVENT, syncAuditTrail);
+      window.removeEventListener("storage", syncAuditTrail);
+    };
   }, []);
 
   const alerts = useAlerts(reservations, rooms);
@@ -373,7 +394,7 @@ export default function PMSApp() {
 
             {activeSection === "users" ? <UserManagement users={[]} /> : null}
 
-            {activeSection === "audit" ? <AuditLogViewer auditLogs={[]} /> : null}
+            {activeSection === "audit" ? <AuditLogViewer auditLogs={[]} sessionAuditTrail={commandCenterAuditTrail} /> : null}
 
             {activeSection === "conflicts" ? (
               <ConflictDetectionUI rooms={rooms} reservations={reservations} />
