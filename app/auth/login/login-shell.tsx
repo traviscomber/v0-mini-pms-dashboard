@@ -101,6 +101,25 @@ const copy = {
       { title: "Aprobaciones humanas", text: "Las acciones de alto impacto requieren confirmacion explicita." },
       { title: "Trazabilidad completa", text: "Un camino visible desde la senal hasta la accion y el resultado." },
     ],
+    proofLabel: "Por qué Yagán",
+    proofTitle: "Más claridad operativa, más confianza comercial.",
+    proofDesc:
+      "La propuesta combina visibilidad ejecutiva, agentes especializados y una ruta clara desde la señal hasta la acción. Eso ayuda a equipos pequeños a operar como si fueran mucho más grandes.",
+    proofMetrics: [
+      { value: "1 vista", label: "para operación, ingresos y confianza" },
+      { value: "3 pasos", label: "para pasar de señal a decisión" },
+      { value: "0 ruido", label: "cuando el equipo necesita foco" },
+    ],
+    proofCaseLabel: "Caso real",
+    proofCaseTitle: "Blackswan como primera referencia.",
+    proofCaseDesc:
+      "Lo usamos como caso de estudio para mostrar una operación premium, seria y fácil de explicar. Ideal para demostrar el valor sin perder el tono ejecutivo.",
+    proofCaseBullets: [
+      "Mensajería más clara y consistente",
+      "Operación visible para todo el equipo",
+      "Decisiones trazables y auditables",
+    ],
+    proofCaseCta: "Ver caso Blackswan",
     auth: {
       label: "Acceso al workspace",
       title: "Inicia sesion y ponte a trabajar.",
@@ -217,6 +236,25 @@ const copy = {
       { title: "Human approvals", text: "High-impact actions require explicit confirmation." },
       { title: "Full traceability", text: "A visible path from signal to action to outcome." },
     ],
+    proofLabel: "Why Yagán",
+    proofTitle: "More operational clarity, more commercial confidence.",
+    proofDesc:
+      "The product combines executive visibility, specialist agents, and a clean path from signal to action. That helps small teams operate like much larger ones.",
+    proofMetrics: [
+      { value: "1 view", label: "for operations, revenue, and trust" },
+      { value: "3 steps", label: "from signal to decision" },
+      { value: "0 noise", label: "when the team needs focus" },
+    ],
+    proofCaseLabel: "Real case",
+    proofCaseTitle: "Blackswan as the first reference.",
+    proofCaseDesc:
+      "We use it as a case study to show a premium, serious, and easy-to-explain operation. Ideal for proving value without losing the executive tone.",
+    proofCaseBullets: [
+      "Clearer, more consistent messaging",
+      "Operational visibility across the team",
+      "Traceable and auditable decisions",
+    ],
+    proofCaseCta: "View Blackswan case",
     auth: {
       label: "Workspace access",
       title: "Sign in and go straight to work.",
@@ -827,6 +865,66 @@ export function LoginShell({
             <AgentMessagesDemo lang={lang} />
           </div>
 
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10">
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-3xl border border-border/60 bg-card/50 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.proofLabel}</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {c.proofTitle}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-foreground/60">{c.proofDesc}</p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {c.proofMetrics.map((metric) => (
+                <div key={metric.value} className="rounded-2xl border border-border/60 bg-background/70 p-4">
+                  <p className="text-2xl font-semibold tracking-tight text-foreground">{metric.value}</p>
+                  <p className="mt-1 text-sm leading-6 text-foreground/55">{metric.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+                {c.proofCaseCta}
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a href="/walkthrough" className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground/70 transition hover:border-primary/30 hover:bg-primary/5 hover:text-foreground">
+                {lang === "es" ? "Pedir demo" : "Request a demo"}
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.proofCaseLabel}</p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{c.proofCaseTitle}</h3>
+            <p className="mt-3 text-sm leading-6 text-foreground/60">{c.proofCaseDesc}</p>
+
+            <div className="mt-6 space-y-3">
+              {c.proofCaseBullets.map((item) => (
+                <div key={item} className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background/70 p-4">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <CheckCircle2 className="h-4 w-4" />
+                  </div>
+                  <p className="text-sm leading-6 text-foreground/70">{item}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-border/60 bg-background/80 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                {lang === "es" ? "Valor comercial" : "Commercial value"}
+              </div>
+              <p className="mt-2 text-sm leading-6 text-foreground/60">
+                {lang === "es"
+                  ? "Este bloque ayuda a explicar el producto en una sola mirada: operación clara, confianza visible y un caso real para venderlo internamente."
+                  : "This block helps explain the product at a glance: clear operations, visible trust, and one real case to sell it internally."}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
