@@ -90,6 +90,29 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
     });
   }, [searchText, sessionAgentFilter, sessionAuditTrail, sessionSeverityFilter]);
 
+  const sessionSummary = useMemo(() => {
+    const severityCounts = filteredSessionTrail.reduce(
+      (counts, entry) => {
+        counts[getSessionSeverity(entry)] += 1;
+        return counts;
+      },
+      { high: 0, medium: 0, low: 0 },
+    );
+
+    const agentCounts = filteredSessionTrail.reduce<Record<string, number>>((counts, entry) => {
+      counts[entry.source] = (counts[entry.source] ?? 0) + 1;
+      return counts;
+    }, {});
+
+    const topAgent = Object.entries(agentCounts).sort((left, right) => right[1] - left[1])[0]?.[0] ?? '—';
+
+    return {
+      events: filteredSessionTrail.length,
+      severityCounts,
+      topAgent,
+    };
+  }, [filteredSessionTrail]);
+
   const exportSessionTrail = () => {
     if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
       return;
@@ -106,6 +129,33 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = `command-center-audit-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportSessionTrailCsv = () => {
+    if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
+      return;
+    }
+
+    const header = ['timestamp', 'source', 'action', 'target', 'severity', 'detail'];
+    const rows = filteredSessionTrail.map((entry) => [
+      new Date(entry.timestamp).toISOString(),
+      entry.source,
+      entry.action,
+      entry.target,
+      getSessionSeverity(entry),
+      entry.detail,
+    ]);
+    const csv = [header, ...rows]
+      .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `command-center-audit-${new Date().toISOString().slice(0, 10)}.csv`;
     anchor.click();
     URL.revokeObjectURL(url);
   };
@@ -130,6 +180,25 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
             <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground/60">
               {sessionAuditTrail.length} events
             </span>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-4">
+            <div className="rounded-2xl border border-border bg-background/70 p-4">
+              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Visible events</p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.events}</p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background/70 p-4">
+              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">High severity</p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.high}</p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background/70 p-4">
+              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Medium severity</p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.medium}</p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background/70 p-4">
+              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Top agent</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">{sessionSummary.topAgent}</p>
+            </div>
           </div>
 
           <div className="flex flex-wrap gap-3">
@@ -164,6 +233,15 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
             >
               <Download className="h-4 w-4" />
               Export JSON
+            </button>
+            <button
+              type="button"
+              onClick={exportSessionTrailCsv}
+              disabled={filteredSessionTrail.length === 0}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground/80 transition hover:border-primary/25 hover:text-foreground"
+            >
+              <Download className="h-4 w-4" />
+              Export CSV
             </button>
           </div>
 
