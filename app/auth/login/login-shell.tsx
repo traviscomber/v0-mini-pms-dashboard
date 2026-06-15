@@ -25,6 +25,24 @@ const copy = {
     headline: "Una torre de control\npara tu hotel.",
     subheadline:
       "Yagán une reservas, ingresos, operaciones y comunicacion con huespedes en un solo espacio ejecutivo. Menos ruido, mas accion.",
+    regionalLabel: "Pensado para Chile",
+    regionalTitle: "Operaciones claras para Santiago, Valparaíso y Patagonia.",
+    regionalDesc:
+      "Cubre ciudades con ritmos distintos: check-ins de ciudad, rotación costera y operación estacional de alto movimiento.",
+    regionalCards: [
+      { title: "Santiago", text: "Velocidad, precios dinámicos y flujo corporativo.", tag: "urbano" },
+      { title: "Valparaíso", text: "Ocupación cambiante, coordinación y respuesta ágil.", tag: "costero" },
+      { title: "Patagonia", text: "Estacionalidad, clima y una operación muy visible.", tag: "estacional" },
+    ],
+    dayLabel: "Día en la operación",
+    dayTitle: "Cinco momentos que muestran cómo trabaja el hotel.",
+    daySteps: [
+      "07:00 — Revenue Strategist revisa demanda y ajusta tarifa.",
+      "10:00 — Operations Commander prioriza housekeeping y llegadas.",
+      "13:00 — Guest Concierge prepara mensajes y accesos.",
+      "17:00 — Trust Auditor marca riesgos y acciones pendientes.",
+      "20:00 — Chief of Staff cierra el día con una recomendación clara.",
+    ],
     cta: "Solicitar acceso",
     stats: [
       { label: "Ocupacion promedio", value: "94%", delta: "+12%" },
@@ -123,6 +141,24 @@ const copy = {
     headline: "One control tower\nfor your hotel.",
     subheadline:
       "Yagán brings reservations, revenue, operations, and guest communication into one executive workspace. Less noise, more action.",
+    regionalLabel: "Built for Chile",
+    regionalTitle: "Clear operations for Santiago, Valparaíso, and Patagonia.",
+    regionalDesc:
+      "Designed for cities with different rhythms: urban check-ins, coastal rotation, and highly visible seasonal operation.",
+    regionalCards: [
+      { title: "Santiago", text: "Speed, dynamic pricing, and corporate flow.", tag: "urban" },
+      { title: "Valparaíso", text: "Variable occupancy, coordination, and quick response.", tag: "coastal" },
+      { title: "Patagonia", text: "Seasonality, weather, and highly visible operations.", tag: "seasonal" },
+    ],
+    dayLabel: "Day in the operation",
+    dayTitle: "Five moments that show how the hotel works.",
+    daySteps: [
+      "07:00 — Revenue Strategist reviews demand and updates pricing.",
+      "10:00 — Operations Commander prioritises housekeeping and arrivals.",
+      "13:00 — Guest Concierge prepares messages and access details.",
+      "17:00 — Trust Auditor flags risks and pending actions.",
+      "20:00 — Chief of Staff closes the day with one clear recommendation.",
+    ],
     cta: "Request access",
     stats: [
       { label: "Average occupancy", value: "94%", delta: "+12%" },
@@ -673,6 +709,57 @@ export function LoginShell({
           style={{ animation: "lp-card 1s ease 0.1s both" }}
         >
           <HeroCanvas lang={lang} />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-8 lg:px-10">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-3xl border border-border/60 bg-card/50 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.regionalLabel}</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {c.regionalTitle}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-foreground/60">{c.regionalDesc}</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {c.regionalCards.map((card, index) => (
+                <article
+                  key={card.title}
+                  className="rounded-2xl border border-border/60 bg-background/70 p-4"
+                  style={{ animation: `lp-rise 0.55s ease ${index * 0.08}s both` }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/40">{card.tag}</p>
+                      <h3 className="mt-1 text-base font-semibold text-foreground">{card.title}</h3>
+                    </div>
+                    <span className="h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_20px_rgba(168,85,247,0.35)]" />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-foreground/60">{card.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-border/60 bg-card/50 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">{c.dayLabel}</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {c.dayTitle}
+            </h2>
+            <div className="mt-5 space-y-3">
+              {c.daySteps.map((step, index) => (
+                <div
+                  key={step}
+                  className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background/70 p-4"
+                  style={{ animation: `lp-rise 0.55s ease ${index * 0.08}s both` }}
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-xs font-semibold text-primary">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <p className="text-sm leading-6 text-foreground/65">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
