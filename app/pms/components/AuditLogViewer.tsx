@@ -25,6 +25,7 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
   const [filterAction, setFilterAction] = useState('all');
   const [sessionAgentFilter, setSessionAgentFilter] = useState('all');
   const [sessionSeverityFilter, setSessionSeverityFilter] = useState('all');
+  const [complianceMode, setComplianceMode] = useState(true);
 
   const filteredLogs = useMemo(() => {
     return auditLogs
@@ -104,7 +105,7 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
       return counts;
     }, {});
 
-    const topAgent = Object.entries(agentCounts).sort((left, right) => right[1] - left[1])[0]?.[0] ?? '—';
+    const topAgent = Object.entries(agentCounts).sort((left, right) => right[1] - left[1])[0]?.[0] ?? 'None';
 
     return {
       events: filteredSessionTrail.length,
@@ -160,6 +161,35 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
     URL.revokeObjectURL(url);
   };
 
+  const exportComplianceBundle = () => {
+    if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
+      return;
+    }
+
+    const bundle = {
+      exportedAt: new Date().toISOString(),
+      complianceMode,
+      summary: sessionSummary,
+      filters: {
+        agent: sessionAgentFilter,
+        severity: sessionSeverityFilter,
+        search: searchText,
+      },
+      sessionAuditTrail: filteredSessionTrail.map((entry) => ({
+        ...entry,
+        severity: getSessionSeverity(entry),
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `audit-bundle-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-card border border-border rounded-lg p-4">
@@ -177,29 +207,44 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
                 Actions recorded from the command center in the current session.
               </p>
             </div>
-            <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground/60">
-              {sessionAuditTrail.length} events
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground/60">
+                {sessionAuditTrail.length} events
+              </span>
+              <button
+                type="button"
+                onClick={() => setComplianceMode((currentMode) => !currentMode)}
+                className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-foreground/70 transition hover:border-primary/25 hover:text-foreground"
+              >
+                {complianceMode ? 'Compliance mode' : 'Operational mode'}
+              </button>
+            </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-4">
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Visible events</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.events}</p>
+          {complianceMode ? (
+            <div className="grid gap-3 md:grid-cols-4">
+              <div className="rounded-2xl border border-border bg-background/70 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Visible events</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.events}</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-background/70 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">High severity</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.high}</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-background/70 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Medium severity</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.medium}</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-background/70 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Top agent</p>
+                <p className="mt-2 text-lg font-semibold text-foreground">{sessionSummary.topAgent}</p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">High severity</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.high}</p>
+          ) : (
+            <div className="rounded-2xl border border-border bg-background/70 p-4 text-sm text-foreground/65">
+              Operational view stays focused on action volume. Switch to compliance mode for a formal posture summary.
             </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Medium severity</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{sessionSummary.severityCounts.medium}</p>
-            </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-foreground/45">Top agent</p>
-              <p className="mt-2 text-lg font-semibold text-foreground">{sessionSummary.topAgent}</p>
-            </div>
-          </div>
+          )}
 
           <div className="flex flex-wrap gap-3">
             <select
@@ -242,6 +287,15 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
             >
               <Download className="h-4 w-4" />
               Export CSV
+            </button>
+            <button
+              type="button"
+              onClick={exportComplianceBundle}
+              disabled={filteredSessionTrail.length === 0}
+              className="inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition hover:border-primary/35 hover:bg-primary/15"
+            >
+              <Download className="h-4 w-4" />
+              Export bundle
             </button>
           </div>
 
