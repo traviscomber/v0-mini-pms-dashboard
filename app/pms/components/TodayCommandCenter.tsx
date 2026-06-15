@@ -528,6 +528,18 @@ export default function TodayCommandCenter({
             `${todayTasks.length} tasks are active in the queue.`,
             `${topTasks[0] ? topTasks[0].title : 'The board remains calm and ready.'} is the leading move right now.`,
           ];
+  const briefingText = `Daily briefing (${activeMode}): ${dailyRecap.map((item) => item.replace(/\.$/, '')).join(' | ')}. Focus lane: ${roleLabels[activeLane] ?? activeLane}.`;
+  const copyBriefing = async () => {
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(briefingText);
+    } catch {
+      // Ignore clipboard errors.
+    }
+  };
   const executeFocusAction = () => onExecute?.(focusTarget, focusCopy.title, focusCopy.body);
   const openFocusLane = () => onNavigate?.(focusTarget);
 
@@ -688,6 +700,19 @@ export default function TodayCommandCenter({
             </li>
           ))}
         </ul>
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={copyBriefing}
+            className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+          >
+            Copy briefing
+          </button>
+          <span className="text-xs text-foreground/45">
+            Ready for Slack, WhatsApp, or email.
+          </span>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
