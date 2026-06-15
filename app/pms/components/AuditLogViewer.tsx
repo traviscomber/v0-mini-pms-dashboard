@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { AuditLog, AuditEntity, AuditAction } from '../types';
-import { Download, Search, Filter, Eye } from 'lucide-react';
+import { CheckCircle2, Download, Search, Filter, Eye, ShieldAlert, TriangleAlert } from 'lucide-react';
 import type { CommandCenterAuditEntry } from '../lib/command-center-audit';
 
 interface AuditLogViewerProps {
@@ -17,6 +17,8 @@ const actionColors: Record<AuditAction, string> = {
   assign: 'bg-accent500/10 text-accent700',
   complete: 'bg-accent500/10 text-accent700',
   cancel: 'bg-destructive500/10 text-destructive700',
+  approve: 'bg-emerald-500/10 text-emerald-200',
+  reject: 'bg-rose-500/10 text-rose-200',
 };
 
 export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: AuditLogViewerProps) {
@@ -151,6 +153,43 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
       },
     ] as const;
   }, [filteredSessionTrail, sessionSummary.events, sessionSummary.severityCounts.high]);
+
+  const goNoGoRecommendation = useMemo(() => {
+    const flags = policyChecks.filter((check) => check.status !== 'pass').length;
+    const shouldBlock = policyChecks.some((check) => check.status === 'review');
+    const shouldWatch = !shouldBlock && policyChecks.some((check) => check.status === 'watch');
+
+    if (shouldBlock) {
+      return {
+        label: 'No-go',
+        icon: ShieldAlert,
+        tone: 'border-rose-500/30 bg-rose-500/10 text-rose-200',
+        detail: 'A human should review the session before closing because one or more policy checks need attention.',
+        nextStep: 'Review the flags, especially ledger and high-severity items.',
+        flags,
+      } as const;
+    }
+
+    if (shouldWatch) {
+      return {
+        label: 'Go with watch',
+        icon: TriangleAlert,
+        tone: 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+        detail: 'The trail is mostly healthy, but there is enough activity to keep an eye on the close.',
+        nextStep: 'Proceed with a short end-of-shift review.',
+        flags,
+      } as const;
+    }
+
+    return {
+      label: 'Go',
+      icon: CheckCircle2,
+      tone: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+      detail: 'No blocking signals detected in the active trail.',
+      nextStep: 'Safe to close the session and export the bundle if needed.',
+      flags,
+    } as const;
+  }, [policyChecks]);
 
   const exportSessionTrail = () => {
     if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
@@ -316,6 +355,21 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
                   ))}
                 </div>
               </div>
+
+              <div className={`rounded-2xl border p-4 ${goNoGoRecommendation.tone}`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em]">Go / no-go</p>
+                    <h4 className="mt-1 text-lg font-semibold text-foreground">{goNoGoRecommendation.label}</h4>
+                  </div>
+                  <goNoGoRecommendation.icon className="h-5 w-5" />
+                </div>
+                <p className="mt-2 text-sm leading-6 text-foreground/75">{goNoGoRecommendation.detail}</p>
+                <p className="mt-3 text-sm font-medium text-foreground">{goNoGoRecommendation.nextStep}</p>
+                <p className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/50">
+                  {goNoGoRecommendation.flags} flag(s) in current view
+                </p>
+              </div>
             </div>
           ) : (
             <div className="rounded-2xl border border-border bg-background/70 p-4 text-sm text-foreground/65">
@@ -477,7 +531,7 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
                   </td>
                   <td className="px-4 py-3 font-medium">{log.performedBy}</td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-1 rounded capitalize ${actionColors[log.action]}`}>
+                    <span className={`text-xs px-2 py-1 rounded capitalize ${actionColors[log.action as AuditAction]}`}>
                       {log.action}
                     </span>
                   </td>
@@ -490,7 +544,7 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
                   <td className="px-4 py-3 text-xs">
                     <details className="cursor-pointer">
                       <summary className="text-foreground/60 hover:text-foreground transition">
-                        View ({Object.keys(log.changes).length})
+                        View ({Object.keys(log.changes ?? {}).length})
                       </summary>
                       <div className="mt-2 p-2 bg-background rounded text-xs font-mono text-foreground/70">
                         {JSON.stringify(log.changes, null, 2)}
