@@ -1,0 +1,20 @@
+# v0 Configuration
+# This file tells v0 to always work on main branch
+
+# v0 should:
+# 1. Create all changes on branch: main
+# 2. Commit all changes to main
+# 3. Push all changes to origin/main
+# 4. Never create feature branches
+# 5. Never create pull requests
+
+# Development flow:
+# - v0 makes changes on main
+# - v0 commits with descriptive messages
+# - v0 pushes to main
+# - Vercel automatically deploys from main
+
+BRANCH=main
+AUTO_PUSH=true
+CREATE_PR=false
+ALWAYS_MAIN=true
