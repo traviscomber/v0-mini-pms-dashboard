@@ -485,6 +485,7 @@ export default function TodayCommandCenter({
   const focusLabel = roleLabels[activeLane] ?? activeLane;
   const highlightedRole = activeLane;
   const lastDecision = historyEntries[0];
+  const recentTimeline = historyEntries.slice(0, 3);
   const focusCopy =
     activeMode === 'incident'
       ? {
@@ -668,6 +669,49 @@ export default function TodayCommandCenter({
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Next action</p>
           <h4 className="mt-2 text-base font-semibold text-foreground">{focusCopy.title}</h4>
           <p className="mt-1 text-sm text-foreground/60">{focusCopy.body}</p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Mini timeline</p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">The last 3 decisions in order.</h4>
+          </div>
+          <div className="rounded-full border border-border bg-background px-3 py-2 text-xs font-medium text-foreground/65">
+            {recentTimeline.length} steps
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          {recentTimeline.map((entry, index) => (
+            <article
+              key={entry.id}
+              className="rounded-2xl border border-border bg-background/70 p-4 transition hover:border-primary/25"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-xs font-semibold text-primary">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">
+                      {entry.ownerLabel}
+                    </p>
+                    <h5 className="mt-1 text-sm font-semibold text-foreground">{entry.title}</h5>
+                  </div>
+                </div>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
+                  {String(entry.priority).toUpperCase()}
+                </span>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2 text-xs text-foreground/60">
+                <span className="rounded-full border border-border bg-card px-2.5 py-1">{entry.statusLabel}</span>
+                <span className="rounded-full border border-border bg-card px-2.5 py-1">{entry.dueLabel}</span>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
 
