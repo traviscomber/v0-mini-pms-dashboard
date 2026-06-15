@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AlertCircle, Clock, DollarSign, MapPin, Sparkles, Users } from 'lucide-react';
 import { Reservation, Task, Room } from '../types';
-import { AGENT_SKILL_PROFILES } from '../agents/agent-profiles';
+import { AGENT_SKILL_PROFILES, getAgentDisplayName, getAgentDisplayNamesByIds } from '../agents/agent-profiles';
 import { COMMAND_CENTER_AUDIT_EVENT, COMMAND_CENTER_AUDIT_STORAGE_KEY, type CommandCenterAuditEntry } from '../lib/command-center-audit';
 import { getTasksForDate, getCriticalTasks, groupTasksByStatus } from '../lib/task-utils';
 import { useLanguage as useLanguage } from '../LanguageContext';
@@ -25,7 +25,7 @@ export default function TodayCommandCenter({
   onNavigate,
   onSelectReservation,
 }: TodayCommandCenterProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [selectedRole, setSelectedRole] = useState<string>('all');
   const [selectedRisk, setSelectedRisk] = useState<'all' | 'risk' | 'stable'>('all');
   const [activeMode, setActiveMode] = useState<'today' | 'risk' | 'incident'>('today');
@@ -868,7 +868,7 @@ export default function TodayCommandCenter({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{agent.focus.replace('-', ' ')}</p>
-                  <h5 className="mt-1 text-sm font-semibold text-foreground">{agent.name}</h5>
+                  <h5 className="mt-1 text-sm font-semibold text-foreground">{getAgentDisplayName(agent, language)}</h5>
                 </div>
                 <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
                   {agent.recommendedModel}
@@ -876,12 +876,12 @@ export default function TodayCommandCenter({
               </div>
               <p className="mt-3 text-sm leading-6 text-foreground/65">{agent.mission}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.18em] text-foreground/45">
-                Hand-off: {agent.handoffTargets.slice(0, 2).join(' · ')}
+                Hand-off: {getAgentDisplayNamesByIds(agent.handoffTargetIds.slice(0, 2), language).join(' · ')}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <button
                   type="button"
-                  onClick={() => runAgent(agent.id, agent.name)}
+                  onClick={() => runAgent(agent.id, getAgentDisplayName(agent, language))}
                   className="inline-flex items-center gap-2 rounded-2xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition hover:brightness-110"
                 >
                   {getAgentActionLabel(agent.id)}

@@ -125,12 +125,12 @@ const jsonLd = {
         'Specialist AI agent stack',
         'Audit trail and full traceability',
         'Upsell automation',
-        'Chief of Staff orchestrator agent',
-        'Revenue Strategist agent',
-        'Operations Commander agent',
-        'Guest Concierge agent',
-        'Integrations Engineer agent',
-        'Trust Auditor agent',
+        'Executive Coordination agent',
+        'Revenue Strategy agent',
+        'Operations Lead agent',
+        'Guest Experience agent',
+        'Integrations & Data agent',
+        'Trust & Quality agent',
       ],
       audience: {
         '@type': 'Audience',
@@ -191,7 +191,7 @@ const jsonLd = {
           name: 'Does N3uralia integrate with Booking.com and Expedia?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. The Integrations Engineer agent handles channel connectivity including Booking.com, Expedia, and other OTAs, keeping inventory and rates in sync automatically.',
+            text: 'Yes. The Integrations & Data agent handles channel connectivity including Booking.com, Expedia, and other OTAs, keeping inventory and rates in sync automatically.',
           },
         },
         {
@@ -199,7 +199,7 @@ const jsonLd = {
           name: 'How does N3uralia improve hotel revenue?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The Revenue Strategist agent monitors demand signals, projects occupancy, and surfaces pricing recommendations and upsell opportunities in real time, helping hotels increase their average daily rate (ADR).',
+            text: 'The Revenue Strategy agent monitors demand signals, projects occupancy, and surfaces pricing recommendations and upsell opportunities in real time, helping hotels increase their average daily rate (ADR).',
           },
         },
         {

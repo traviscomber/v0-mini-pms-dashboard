@@ -4,9 +4,12 @@ import type { ReactNode } from "react";
 
 import { ShieldCheck, Sparkles, Target, Workflow } from "lucide-react";
 
-import { AGENT_SKILL_PROFILES } from "../agents/agent-profiles";
+import { AGENT_SKILL_PROFILES, getAgentDisplayName } from "../agents/agent-profiles";
+import { useLanguage } from "../LanguageContext";
 
 export default function AgentControlTower() {
+  const { language } = useLanguage();
+
   return (
     <section className="rounded-3xl border border-border bg-card/80 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.12)] backdrop-blur">
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
@@ -35,7 +38,7 @@ export default function AgentControlTower() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{agent.focus.replace("-", " ")}</p>
-                <h3 className="mt-1 text-lg font-semibold text-foreground">{agent.name}</h3>
+                <h3 className="mt-1 text-lg font-semibold text-foreground">{getAgentDisplayName(agent, language)}</h3>
               </div>
               <div className="rounded-full border border-border bg-card px-3 py-1 text-xs text-foreground/70">
                 {agent.recommendedModel}
@@ -59,11 +62,11 @@ export default function AgentControlTower() {
         <h3 className="text-lg font-semibold text-foreground">Build sequence</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-5">
           {[
-            "1. Chief of Staff",
-            "2. Revenue Strategist",
-            "3. Operations Commander",
-            "4. Guest Concierge",
-            "5. Trust + Integrations",
+            "1. Coordinación Ejecutiva",
+            "2. Estrategia de Ingresos",
+            "3. Jefatura de Operaciones",
+            "4. Experiencia del Huésped",
+            "5. Integraciones y Confianza",
           ].map((step) => (
             <div key={step} className="rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground/75">
               {step}

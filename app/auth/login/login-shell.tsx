@@ -37,11 +37,11 @@ const copy = {
     dayLabel: "Día en la operación",
     dayTitle: "Cinco momentos que muestran cómo trabaja el hotel.",
     daySteps: [
-      "07:00 — Revenue Strategist revisa demanda y ajusta tarifa.",
-      "10:00 — Operations Commander prioriza housekeeping y llegadas.",
-      "13:00 — Guest Concierge prepara mensajes y accesos.",
-      "17:00 — Trust Auditor marca riesgos y acciones pendientes.",
-      "20:00 — Chief of Staff cierra el día con una recomendación clara.",
+      "07:00 — Estrategia de Ingresos revisa demanda y ajusta tarifas.",
+      "10:00 — Jefatura de Operaciones prioriza housekeeping y llegadas.",
+      "13:00 — Experiencia del Huésped prepara mensajes y accesos.",
+      "17:00 — Auditoría y Calidad marca riesgos y acciones pendientes.",
+      "20:00 — Coordinación Ejecutiva cierra el día con una recomendación clara.",
     ],
     cta: "Solicitar acceso",
     stats: [
@@ -82,12 +82,12 @@ const copy = {
     agentDesc:
       "Un orquestador mas especialistas en ingresos, operaciones, experiencia del huesped, integraciones y confianza.",
     agents: [
-      "Chief of Staff",
-      "Revenue Strategist",
-      "Operations Commander",
-      "Guest Concierge",
-      "Integrations Engineer",
-      "Trust Auditor",
+      "Coordinación Ejecutiva",
+      "Estrategia de Ingresos",
+      "Jefatura de Operaciones",
+      "Experiencia del Huésped",
+      "Integraciones y Datos",
+      "Auditoría y Calidad",
     ],
     why: [
       { title: "Menos errores", text: "Reduce limpiezas tardias, handoffs perdidos y fugas de ingreso.", icon: "check" },
@@ -153,11 +153,11 @@ const copy = {
     dayLabel: "Day in the operation",
     dayTitle: "Five moments that show how the hotel works.",
     daySteps: [
-      "07:00 — Revenue Strategist reviews demand and updates pricing.",
-      "10:00 — Operations Commander prioritises housekeeping and arrivals.",
-      "13:00 — Guest Concierge prepares messages and access details.",
-      "17:00 — Trust Auditor flags risks and pending actions.",
-      "20:00 — Chief of Staff closes the day with one clear recommendation.",
+      "07:00 — Revenue Strategy reviews demand and updates pricing.",
+      "10:00 — Operations Lead prioritises housekeeping and arrivals.",
+      "13:00 — Guest Experience prepares messages and access details.",
+      "17:00 — Trust & Quality flags risks and pending actions.",
+      "20:00 — Executive Coordination closes the day with one clear recommendation.",
     ],
     cta: "Request access",
     stats: [
@@ -198,12 +198,12 @@ const copy = {
     agentDesc:
       "One orchestrator plus specialists for revenue, operations, guest experience, integrations, and trust.",
     agents: [
-      "Chief of Staff",
-      "Revenue Strategist",
-      "Operations Commander",
-      "Guest Concierge",
-      "Integrations Engineer",
-      "Trust Auditor",
+      "Executive Coordination",
+      "Revenue Strategy",
+      "Operations Lead",
+      "Guest Experience",
+      "Integrations & Data",
+      "Trust & Quality",
     ],
     why: [
       { title: "Fewer mistakes", text: "Reduce late cleans, missed handoffs, and hidden revenue leaks.", icon: "check" },
@@ -1111,8 +1111,8 @@ export function LoginShell({
    AGENT MESSAGES DEMO
 ───────────────────────────────────────── */
 type AgentMsg = {
-  agent: string;
-  role: string;
+  agent: { es: string; en: string };
+  role: { es: string; en: string };
   color: string;
   border: string;
   bg: string;
@@ -1123,42 +1123,42 @@ type AgentMsg = {
 
 const AGENT_MESSAGES: AgentMsg[] = [
   {
-    agent: "Revenue Strategist", role: "Ingresos",
+    agent: { es: "Estrategia de Ingresos", en: "Revenue Strategy" }, role: { es: "Ingresos", en: "Revenue" },
     color: "text-primary", border: "border-primary/25", bg: "bg-primary/8",
     message: { es: "Demanda alta detectada para el viernes 20 jun. 8 habitaciones disponibles.", en: "High demand detected for Friday Jun 20. 8 rooms still available." },
     detail:  { es: "Recomiendo subir tarifa de $187 a $215 (+15%). Ocupacion proyectada: 97%.", en: "Recommend raising rate from $187 to $215 (+15%). Projected occupancy: 97%." },
     tag: { es: "Accion sugerida", en: "Suggested action", tone: "green" },
   },
   {
-    agent: "Operations Commander", role: "Operaciones",
+    agent: { es: "Jefatura de Operaciones", en: "Operations Lead" }, role: { es: "Operaciones", en: "Operations" },
     color: "text-accent", border: "border-accent/25", bg: "bg-accent/8",
     message: { es: "3 habitaciones de check-out pendientes de limpieza: 204, 311, 408.", en: "3 checkout rooms pending housekeeping: 204, 311, 408." },
     detail:  { es: "Equipo A asignado. ETA 45 min. Hab. 311 llega a las 14:00 — prioridad alta.", en: "Team A assigned. ETA 45 min. Rm. 311 arrives at 14:00 — high priority." },
     tag: { es: "En progreso", en: "In progress", tone: "yellow" },
   },
   {
-    agent: "Guest Concierge", role: "Huespedes",
+    agent: { es: "Experiencia del Huésped", en: "Guest Experience" }, role: { es: "Huéspedes", en: "Guests" },
     color: "text-secondary", border: "border-secondary/25", bg: "bg-secondary/8",
     message: { es: "Huesped VIP Martinez (hab. 501) solicita late check-out y traslado al aeropuerto.", en: "VIP guest Martinez (rm. 501) requests late check-out and airport transfer." },
     detail:  { es: "Late check-out hasta las 15:00 confirmado. Traslado reservado para las 16:30.", en: "Late check-out until 15:00 confirmed. Transfer booked for 16:30." },
     tag: { es: "Resuelto", en: "Resolved", tone: "green" },
   },
   {
-    agent: "Trust Auditor", role: "Auditoria",
+    agent: { es: "Auditoría y Calidad", en: "Trust & Quality" }, role: { es: "Auditoría", en: "Audit" },
     color: "text-destructive", border: "border-destructive/25", bg: "bg-destructive/8",
     message: { es: "Anomalia detectada: 4 cargos de minibar sin registro de huesped activo.", en: "Anomaly detected: 4 minibar charges with no active guest record." },
     detail:  { es: "Cargos del 12-jun aislados. Requiere revision manual antes del cierre de turno.", en: "Charges from Jun-12 isolated. Requires manual review before shift close." },
     tag: { es: "Requiere revision", en: "Needs review", tone: "red" },
   },
   {
-    agent: "Chief of Staff", role: "Orquestador",
+    agent: { es: "Coordinación Ejecutiva", en: "Executive Coordination" }, role: { es: "Orquestación", en: "Orchestration" },
     color: "text-primary", border: "border-primary/25", bg: "bg-primary/8",
     message: { es: "Resumen ejecutivo listo. RevPAR hoy: $271 (+9% vs ayer). Sin alertas criticas.", en: "Executive briefing ready. RevPAR today: $271 (+9% vs yesterday). No critical alerts." },
-    detail:  { es: "Proxima accion: revisar propuesta de Revenue Strategist antes de las 13:00.", en: "Next action: review Revenue Strategist proposal before 13:00." },
+    detail:  { es: "Proxima accion: revisar propuesta de Estrategia de Ingresos antes de las 13:00.", en: "Next action: review Revenue Strategy proposal before 13:00." },
     tag: { es: "Resumen diario", en: "Daily briefing", tone: "blue" },
   },
   {
-    agent: "Integrations Engineer", role: "Integraciones",
+    agent: { es: "Integraciones y Datos", en: "Integrations & Data" }, role: { es: "Integraciones", en: "Integrations" },
     color: "text-accent", border: "border-accent/25", bg: "bg-accent/8",
     message: { es: "Sync con OTA completado: 12 reservas nuevas desde Booking.com y Expedia.", en: "OTA sync complete: 12 new reservations from Booking.com and Expedia." },
     detail:  { es: "Inventario actualizado en todos los canales. Sin conflictos de disponibilidad.", en: "Inventory updated across all channels. No availability conflicts." },
@@ -1254,11 +1254,11 @@ function AgentMessagesDemo({ lang }: { lang: Lang }) {
                   <div className="flex items-start justify-between gap-3 px-3.5 py-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className={["flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-black", m.border, m.bg].join(" ")}>
-                        <span className={m.color}>{m.agent[0]}</span>
+                        <span className={m.color}>{(lang === "es" ? m.agent.es : m.agent.en)[0]}</span>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className={["text-xs font-bold leading-tight truncate", m.color].join(" ")}>{m.agent}</p>
-                        <p className="text-[11px] text-foreground/35 leading-tight">{m.role}</p>
+                        <p className={["text-xs font-bold leading-tight truncate", m.color].join(" ")}>{lang === "es" ? m.agent.es : m.agent.en}</p>
+                        <p className="text-[11px] text-foreground/35 leading-tight">{lang === "es" ? m.role.es : m.role.en}</p>
                       </div>
                     </div>
                     {m.tag && (

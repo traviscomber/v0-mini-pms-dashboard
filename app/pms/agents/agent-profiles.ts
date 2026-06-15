@@ -6,9 +6,12 @@ export type AgentFocus =
   | "integrations"
   | "quality";
 
+export type AgentLanguage = "es" | "en";
+
 export interface AgentSkillProfile {
   id: string;
   name: string;
+  nameEn: string;
   focus: AgentFocus;
   mission: string;
   whyItMatters: string;
@@ -19,13 +22,14 @@ export interface AgentSkillProfile {
   outputs: string[];
   guardrails: string[];
   successMetrics: string[];
-  handoffTargets: string[];
+  handoffTargetIds: string[];
 }
 
 export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
   {
     id: "chief-of-staff",
-    name: "Chief of Staff",
+    name: "Coordinación Ejecutiva",
+    nameEn: "Executive Coordination",
     focus: "orchestration",
     mission: "Route the right work to the right specialist and produce the final executive answer.",
     whyItMatters: "Keeps the experience coherent, prevents tool sprawl, and turns many specialist outputs into one clear decision.",
@@ -51,11 +55,12 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Cleaner handoff traces",
       "Fewer duplicate actions",
     ],
-    handoffTargets: ["Revenue Strategist", "Operations Commander", "Guest Concierge", "Trust Auditor"],
+    handoffTargetIds: ["revenue-strategist", "operations-commander", "guest-concierge", "trust-auditor"],
   },
   {
     id: "revenue-strategist",
-    name: "Revenue Strategist",
+    name: "Estrategia de Ingresos",
+    nameEn: "Revenue Strategy",
     focus: "revenue",
     mission: "Maximize ADR, occupancy, and RevPAR while protecting pricing integrity.",
     whyItMatters: "This is the money brain: it should convert data into pricing moves, upsells, and risk reduction.",
@@ -81,11 +86,12 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Improved conversion on upsells",
       "Better forecast accuracy",
     ],
-    handoffTargets: ["Chief of Staff", "Trust Auditor"],
+    handoffTargetIds: ["chief-of-staff", "trust-auditor"],
   },
   {
     id: "operations-commander",
-    name: "Operations Commander",
+    name: "Jefatura de Operaciones",
+    nameEn: "Operations Lead",
     focus: "operations",
     mission: "Keep rooms, tasks, arrivals, and departures moving with minimal friction.",
     whyItMatters: "Ops is where small delays become expensive; this agent should keep the hotel running cleanly and on time.",
@@ -111,11 +117,12 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Fewer operational misses",
       "Improved task completion rate",
     ],
-    handoffTargets: ["Chief of Staff", "Guest Concierge", "Trust Auditor"],
+    handoffTargetIds: ["chief-of-staff", "guest-concierge", "trust-auditor"],
   },
   {
     id: "guest-concierge",
-    name: "Guest Concierge",
+    name: "Experiencia del Huésped",
+    nameEn: "Guest Experience",
     focus: "guest-experience",
     mission: "Personalize guest communication from pre-arrival to post-stay.",
     whyItMatters: "Great guest communication drives loyalty, upsell, and fewer support escalations.",
@@ -141,11 +148,12 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Higher upsell conversion",
       "Better guest satisfaction",
     ],
-    handoffTargets: ["Chief of Staff", "Operations Commander", "Trust Auditor"],
+    handoffTargetIds: ["chief-of-staff", "operations-commander", "trust-auditor"],
   },
   {
     id: "integrations-engineer",
-    name: "Integrations Engineer",
+    name: "Integraciones y Datos",
+    nameEn: "Integrations & Data",
     focus: "integrations",
     mission: "Keep the data layer trustworthy across PMS, channels, payments, and downstream tools.",
     whyItMatters: "If data is broken, every other agent gets weaker; this agent protects the foundation.",
@@ -171,11 +179,12 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Higher data completeness",
       "Lower support burden",
     ],
-    handoffTargets: ["Chief of Staff", "Trust Auditor"],
+    handoffTargetIds: ["chief-of-staff", "trust-auditor"],
   },
   {
     id: "trust-auditor",
-    name: "Trust Auditor",
+    name: "Auditoría y Calidad",
+    nameEn: "Trust & Quality",
     focus: "quality",
     mission: "Verify correctness, policy compliance, and business safety before anything goes live.",
     whyItMatters: "This is the layer that makes the whole system feel serious, reliable, and production-grade.",
@@ -201,7 +210,25 @@ export const AGENT_SKILL_PROFILES: AgentSkillProfile[] = [
       "Better traceability",
       "Lower incident rate",
     ],
-    handoffTargets: ["Chief of Staff"],
+    handoffTargetIds: ["chief-of-staff"],
   },
 ];
 
+const AGENT_PROFILE_BY_ID = new Map(AGENT_SKILL_PROFILES.map((profile) => [profile.id, profile]));
+
+export function getAgentDisplayName(profile: AgentSkillProfile, language: AgentLanguage) {
+  return language === "en" ? profile.nameEn : profile.name;
+}
+
+export function getAgentDisplayNameById(agentId: string, language: AgentLanguage) {
+  const profile = AGENT_PROFILE_BY_ID.get(agentId);
+  if (!profile) {
+    return agentId;
+  }
+
+  return getAgentDisplayName(profile, language);
+}
+
+export function getAgentDisplayNamesByIds(agentIds: string[], language: AgentLanguage) {
+  return agentIds.map((agentId) => getAgentDisplayNameById(agentId, language));
+}
