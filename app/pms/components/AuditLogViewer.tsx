@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { AuditLog, AuditEntity, AuditAction } from '../types';
-import { Search, Filter, Eye } from 'lucide-react';
+import { Download, Search, Filter, Eye } from 'lucide-react';
 import type { CommandCenterAuditEntry } from '../lib/command-center-audit';
 
 interface AuditLogViewerProps {
@@ -23,6 +23,8 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
   const [searchText, setSearchText] = useState('');
   const [filterEntity, setFilterEntity] = useState('all');
   const [filterAction, setFilterAction] = useState('all');
+  const [sessionAgentFilter, setSessionAgentFilter] = useState('all');
+  const [sessionSeverityFilter, setSessionSeverityFilter] = useState('all');
 
   const filteredLogs = useMemo(() => {
     return auditLogs
@@ -44,6 +46,69 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
       month: 'short',
       day: 'numeric',
     }).format(new Date(timestamp));
+
+  const getSessionSeverity = (entry: CommandCenterAuditEntry) => {
+    const action = entry.action.toLowerCase();
+    const target = entry.target.toLowerCase();
+
+    if (action.includes('escalat') || target === 'ledger') {
+      return 'high';
+    }
+
+    if (action.includes('execut') || action.includes('copy')) {
+      return 'medium';
+    }
+
+    return 'low';
+  };
+
+  const sessionAgentOptions = useMemo(
+    () => ['all', ...new Set(sessionAuditTrail.map((entry) => entry.source))],
+    [sessionAuditTrail],
+  );
+
+  const filteredSessionTrail = useMemo(() => {
+    return sessionAuditTrail.filter((entry) => {
+      if (sessionAgentFilter !== 'all' && entry.source !== sessionAgentFilter) {
+        return false;
+      }
+
+      if (sessionSeverityFilter !== 'all' && getSessionSeverity(entry) !== sessionSeverityFilter) {
+        return false;
+      }
+
+      if (searchText) {
+        const query = searchText.toLowerCase();
+        const haystack = `${entry.source} ${entry.action} ${entry.target} ${entry.detail}`.toLowerCase();
+
+        if (!haystack.includes(query)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [searchText, sessionAgentFilter, sessionAuditTrail, sessionSeverityFilter]);
+
+  const exportSessionTrail = () => {
+    if (typeof window === 'undefined' || filteredSessionTrail.length === 0) {
+      return;
+    }
+
+    const payload = filteredSessionTrail.map((entry) => ({
+      ...entry,
+      severity: getSessionSeverity(entry),
+      timestamp: new Date(entry.timestamp).toISOString(),
+    }));
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `command-center-audit-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-6">
@@ -67,22 +132,75 @@ export default function AuditLogViewer({ auditLogs, sessionAuditTrail = [] }: Au
             </span>
           </div>
 
+          <div className="flex flex-wrap gap-3">
+            <select
+              value={sessionAgentFilter}
+              onChange={(e) => setSessionAgentFilter(e.target.value)}
+              className="px-3 py-2 bg-background border border-border rounded-lg text-sm outline-none"
+            >
+              {sessionAgentOptions.map((agent) => (
+                <option key={agent} value={agent}>
+                  {agent === 'all' ? 'All agents' : agent}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={sessionSeverityFilter}
+              onChange={(e) => setSessionSeverityFilter(e.target.value)}
+              className="px-3 py-2 bg-background border border-border rounded-lg text-sm outline-none"
+            >
+              <option value="all">All severity</option>
+              <option value="high">High severity</option>
+              <option value="medium">Medium severity</option>
+              <option value="low">Low severity</option>
+            </select>
+
+            <button
+              type="button"
+              onClick={exportSessionTrail}
+              disabled={filteredSessionTrail.length === 0}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground/80 transition hover:border-primary/25 hover:text-foreground"
+            >
+              <Download className="h-4 w-4" />
+              Export JSON
+            </button>
+          </div>
+
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {sessionAuditTrail.map((entry) => (
+            {filteredSessionTrail.length > 0 ? filteredSessionTrail.map((entry) => (
               <article key={entry.id} className="rounded-2xl border border-border bg-background/70 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">{entry.source}</p>
                     <h4 className="mt-1 text-sm font-semibold text-foreground">{entry.action}</h4>
                   </div>
-                  <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
-                    {entry.target}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-foreground/60">
+                      {entry.target}
+                    </span>
+                    <span
+                      className={[
+                        'rounded-full border px-2.5 py-1 text-[11px] font-medium capitalize',
+                        getSessionSeverity(entry) === 'high'
+                          ? 'border-rose-500/30 bg-rose-500/10 text-rose-200'
+                          : getSessionSeverity(entry) === 'medium'
+                            ? 'border-amber-500/30 bg-amber-500/10 text-amber-200'
+                            : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+                      ].join(' ')}
+                    >
+                      {getSessionSeverity(entry)}
+                    </span>
+                  </div>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-foreground/65">{entry.detail}</p>
                 <p className="mt-3 text-xs text-foreground/45">{formatSessionTime(entry.timestamp)}</p>
               </article>
-            ))}
+            )) : (
+              <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-sm text-foreground/60 md:col-span-2 xl:col-span-4">
+                No session actions match the current filters.
+              </div>
+            )}
           </div>
         </div>
       ) : null}
