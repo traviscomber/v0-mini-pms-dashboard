@@ -6,6 +6,7 @@ import {
   Globe, Lock, Shield, Sparkles, TrendingUp, Wand2, Zap,
 } from "lucide-react";
 import { CarouselIcons } from "@/components/carousel-icons";
+import { LogosCarousel } from "@/components/logos-carousel";
 
 /* ─────────────────────────────────────────
    TYPES & TRANSLATIONS
@@ -65,6 +66,12 @@ const copy = {
       { icon: "💰", label: "Optimización de tarifa diaria", color: "oklch(0.60 0.28 60)" },
       { icon: "📊", label: "Análisis de ingresos predictivos", color: "oklch(0.60 0.28 200)" },
       { icon: "✅", label: "Automatización de tareas operacionales", color: "oklch(0.60 0.28 150)" },
+    ],
+    partnerLogos: [
+      { name: "Webpay", path: "/logos/webpay-logo.png", color: "oklch(0.60 0.28 320)" },
+      { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
+      { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
+      { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
     ],
     featuresLabel: "La plataforma",
     features: [
@@ -220,6 +227,12 @@ const copy = {
       { icon: "💰", label: "Daily rate optimization", color: "oklch(0.60 0.28 60)" },
       { icon: "📊", label: "Predictive revenue analytics", color: "oklch(0.60 0.28 200)" },
       { icon: "✅", label: "Operational task automation", color: "oklch(0.60 0.28 150)" },
+    ],
+    partnerLogos: [
+      { name: "Webpay", path: "/logos/webpay-logo.png", color: "oklch(0.60 0.28 320)" },
+      { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
+      { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
+      { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
     ],
     featuresLabel: "The platform",
     features: [
@@ -796,6 +809,14 @@ export function LoginShell({
 
           {/* Carousel Icons */}
           <CarouselIcons icons={c.carouselIcons} autoplay interval={4000} />
+
+          {/* Logos Carousel */}
+          <div className="mt-12">
+            <p className="text-center text-sm font-medium text-muted-foreground mb-8">
+              {lang === "es" ? "Integraciones de confianza" : "Trusted integrations"}
+            </p>
+            <LogosCarousel logos={c.partnerLogos} />
+          </div>
         </div>
 
         {/* Right — animated hotel floor plan canvas */}
