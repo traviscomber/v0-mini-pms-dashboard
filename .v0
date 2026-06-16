@@ -1,13 +1,26 @@
 version: 1
 
 # v0 Development Configuration
-# All changes should be committed and pushed to main branch only
+# CRITICAL: v0 MUST ONLY work on main branch
+# NO FEATURE BRANCHES - All changes go directly to main
 
 branch: main
 strategy: direct-to-main
 no-feature-branches: true
+enforce-main-only: true
+reject-feature-branches: true
 
-# Settings
-auto-push: true
+# Critical Settings
+auto-push: false
 push-to-main: true
 delete-old-branches: true
+
+# Authentication Note
+# v0 uses vercel[bot] which has limited push permissions
+# If push fails, changes will be automatically committed to main
+# Do not attempt to create feature branches
+
+# After each v0 edit session:
+# 1. All changes should be in main branch only
+# 2. git push origin main to deploy
+# 3. Never push to feature branches
