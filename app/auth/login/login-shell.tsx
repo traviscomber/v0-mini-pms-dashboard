@@ -122,6 +122,11 @@ const copy = {
       "Operación visible para todo el equipo",
       "Decisiones trazables y auditables",
     ],
+    proofCaseStats: [
+      { label: "Menos fricción", value: "check-in, mensajes y seguimiento" },
+      { label: "Más control", value: "operaciones, ingresos y auditoría" },
+      { label: "Más confianza", value: "caso serio para vender internamente" },
+    ],
     proofCaseCta: "Ver caso Blackswan",
     auth: {
       label: "Acceso al workspace",
@@ -259,6 +264,11 @@ const copy = {
       "Clearer, more consistent messaging",
       "Operational visibility across the team",
       "Traceable and auditable decisions",
+    ],
+    proofCaseStats: [
+      { label: "Less friction", value: "check-in, messaging, and follow-up" },
+      { label: "More control", value: "operations, revenue, and audit" },
+      { label: "More confidence", value: "a serious case to sell internally" },
     ],
     proofCaseCta: "View Blackswan case",
     auth: {
@@ -928,6 +938,15 @@ export function LoginShell({
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <p className="text-sm leading-6 text-foreground/70">{item}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {c.proofCaseStats.map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-border/60 bg-background/70 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{stat.label}</p>
+                  <p className="mt-2 text-sm leading-6 text-foreground/65">{stat.value}</p>
                 </div>
               ))}
             </div>
