@@ -20,30 +20,33 @@ export function LogosCarousel({ logos }: { logos: LogoItem[] }) {
   const duplicatedLogos = [...logos, ...logos, ...logos];
 
   return (
-    <div className="w-full overflow-hidden py-12 md:py-16">
-      <div className="relative">
-        {/* Gradient overlays */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-background to-transparent" />
+    <div className="w-full py-12 md:py-16 bg-gradient-to-r from-background via-primary/5 to-background rounded-xl border border-primary/10">
+      <div className="relative px-6 md:px-12">
+        {/* Gradient overlays for seamless scroll */}
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-background to-transparent" />
 
         {/* Carousel container */}
         <div
-          className={`flex gap-8 md:gap-12 transition-transform duration-1000 ease-linear ${
+          className={`flex gap-6 md:gap-10 transition-transform duration-1000 ease-linear ${
             isVisible ? "animate-scroll" : ""
           }`}
         >
           {duplicatedLogos.map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="flex-shrink-0 h-16 w-32 flex items-center justify-center rounded-lg border border-primary/10 bg-primary/5 backdrop-blur-sm hover:bg-primary/10 transition-colors duration-300"
-              style={{ borderColor: `${logo.color}20` }}
+              className="flex-shrink-0 h-20 w-36 flex items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-md hover:border-primary/40 hover:bg-primary/15 transition-all duration-300 shadow-lg hover:shadow-primary/20"
+              style={{ 
+                borderColor: `${logo.color}30`,
+                backgroundColor: `${logo.color}08`
+              }}
             >
-              <div className="relative w-24 h-12">
+              <div className="relative w-28 h-14">
                 <Image
                   src={logo.path}
                   alt={logo.name}
                   fill
-                  className="object-contain"
+                  className="object-contain drop-shadow-md"
                   priority={index < logos.length}
                 />
               </div>
@@ -58,7 +61,7 @@ export function LogosCarousel({ logos }: { logos: LogoItem[] }) {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-${logos.length * 260}px);
+            transform: translateX(-${logos.length * 300}px);
           }
         }
 
