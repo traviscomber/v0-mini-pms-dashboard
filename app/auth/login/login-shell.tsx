@@ -26,6 +26,7 @@ const copy = {
     subheadline:
       "Yagán une reservas, ingresos, operaciones y comunicación con huéspedes en un solo espacio. Menos fricción, más control.",
     heroPlatformCta: "Ver plataforma",
+    heroSignals: ["Webpay", "WhatsApp", "QR check-in", "OTAs"],
     regionalLabel: "Pensado para Chile",
     regionalTitle: "Operaciones claras para Santiago, Valparaíso y Patagonia.",
     regionalDesc:
@@ -162,6 +163,7 @@ const copy = {
     subheadline:
       "Yagán brings reservations, revenue, operations, and guest communication into one workspace. Less friction, more control.",
     heroPlatformCta: "View platform",
+    heroSignals: ["Webpay", "WhatsApp", "QR check-in", "OTAs"],
     regionalLabel: "Built for Chile",
     regionalTitle: "Clear operations for Santiago, Valparaíso, and Patagonia.",
     regionalDesc:
@@ -713,6 +715,14 @@ export function LoginShell({
               className="inline-flex h-11 items-center gap-2 rounded-xl border border-border/60 px-5 text-sm font-medium text-foreground/65 transition hover:border-primary/30 hover:text-foreground">
               {c.heroPlatformCta}
             </a>
+          </div>
+
+          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.88s ease 0.21s both" }}>
+            {c.heroSignals.map((signal) => (
+              <span key={signal} className="rounded-full border border-border/60 bg-card/50 px-3 py-1 text-[11px] font-medium text-foreground/60">
+                {signal}
+              </span>
+            ))}
           </div>
 
           <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.9s ease 0.24s both" }}>
