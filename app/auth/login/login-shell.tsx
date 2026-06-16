@@ -5,6 +5,7 @@ import {
   ArrowRight, BarChart3, Brain, CalendarDays, CheckCircle2,
   Globe, Lock, Shield, Sparkles, TrendingUp, Wand2, Zap,
 } from "lucide-react";
+import { CarouselIcons } from "@/components/carousel-icons";
 
 /* ─────────────────────────────────────────
    TYPES & TRANSLATIONS
@@ -58,6 +59,12 @@ const copy = {
       { label: "Tarifa diaria", value: "$287", delta: "+8%" },
       { label: "Ingresos / mes", value: "$41k", delta: "+23%" },
       { label: "Tareas completadas", value: "98%", delta: "+4%" },
+    ],
+    carouselIcons: [
+      { icon: "🛏️", label: "Gestión de ocupación en tiempo real", color: "oklch(0.60 0.28 320)" },
+      { icon: "💰", label: "Optimización de tarifa diaria", color: "oklch(0.60 0.28 60)" },
+      { icon: "📊", label: "Análisis de ingresos predictivos", color: "oklch(0.60 0.28 200)" },
+      { icon: "✅", label: "Automatización de tareas operacionales", color: "oklch(0.60 0.28 150)" },
     ],
     featuresLabel: "La plataforma",
     features: [
@@ -207,6 +214,12 @@ const copy = {
       { label: "Daily rate", value: "$287", delta: "+8%" },
       { label: "Revenue / month", value: "$41k", delta: "+23%" },
       { label: "Tasks completed", value: "98%", delta: "+4%" },
+    ],
+    carouselIcons: [
+      { icon: "🛏️", label: "Real-time occupancy management", color: "oklch(0.60 0.28 320)" },
+      { icon: "💰", label: "Daily rate optimization", color: "oklch(0.60 0.28 60)" },
+      { icon: "📊", label: "Predictive revenue analytics", color: "oklch(0.60 0.28 200)" },
+      { icon: "✅", label: "Operational task automation", color: "oklch(0.60 0.28 150)" },
     ],
     featuresLabel: "The platform",
     features: [
@@ -780,6 +793,9 @@ export function LoginShell({
               </div>
             ))}
           </div>
+
+          {/* Carousel Icons */}
+          <CarouselIcons icons={c.carouselIcons} autoplay interval={4000} />
         </div>
 
         {/* Right — animated hotel floor plan canvas */}
