@@ -3,6 +3,7 @@
 Next.js hospitality platform foundation for short-term rentals. The app started as a `v0` front-end demo and now includes:
 
 - Yagán-branded landing page with interactive animations
+- Interactive logos carousel with partner integrations
 - API-backed PMS flows
 - Postgres-ready persistence
 - optional Supabase Auth with protected routes & login modal
