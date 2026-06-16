@@ -37,6 +37,12 @@ const copy = {
       { title: "Valparaíso", text: "Ocupación cambiante, coordinación y respuesta ágil.", tag: "costero" },
       { title: "Patagonia", text: "Estacionalidad, clima y una operación muy visible.", tag: "estacional" },
     ],
+    regionalAudienceLabel: "También sirve para",
+    regionalAudience: [
+      "Hoteles boutique",
+      "Apart-hoteles",
+      "Cadenas regionales",
+    ],
     dayLabel: "Día en la operación",
     dayTitle: "Cinco momentos que muestran cómo trabaja el hotel.",
     daySteps: [
@@ -179,6 +185,12 @@ const copy = {
       { title: "Santiago", text: "Speed, dynamic pricing, and corporate flow.", tag: "urban" },
       { title: "Valparaíso", text: "Variable occupancy, coordination, and quick response.", tag: "coastal" },
       { title: "Patagonia", text: "Seasonality, weather, and highly visible operations.", tag: "seasonal" },
+    ],
+    regionalAudienceLabel: "Also works for",
+    regionalAudience: [
+      "Boutique hotels",
+      "Apart-hotels",
+      "Regional chains",
     ],
     dayLabel: "Day in the operation",
     dayTitle: "Five moments that show how the hotel works.",
@@ -803,6 +815,17 @@ export function LoginShell({
                   </div>
                   <p className="mt-3 text-sm leading-6 text-foreground/60">{card.text}</p>
                 </article>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">
+                {c.regionalAudienceLabel}
+              </span>
+              {c.regionalAudience.map((item) => (
+                <span key={item} className="rounded-full border border-border/60 bg-card/60 px-3 py-1 text-xs font-medium text-foreground/60">
+                  {item}
+                </span>
               ))}
             </div>
           </div>
