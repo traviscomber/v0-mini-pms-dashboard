@@ -7,6 +7,9 @@ import {
 } from "lucide-react";
 import { CarouselIcons } from "@/components/carousel-icons";
 import { LogosCarousel } from "@/components/logos-carousel";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { FAQAccordion } from "@/components/faq-accordion";
+import { CTASection } from "@/components/enhanced-cta";
 
 /* ─────────────────────────────────────────
    TYPES & TRANSLATIONS
@@ -72,6 +75,61 @@ const copy = {
       { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
       { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
       { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
+    ],
+    testimonialsTitle: "Lo que dicen nuestros clientes",
+    testimonialsSub: "Hoteles de 4-5 estrellas en Latinoamérica confían en Yagán para optimizar sus operaciones",
+    testimonials: [
+      {
+        name: "María González",
+        role: "Gerente General",
+        company: "Hotel Boutique Santiago",
+        quote: "Yagán transformó completamente nuestras operaciones. La ocupación pasó de 78% a 94% en 6 meses gracias a la optimización de tarifa.",
+        result: "↑ 94% ocupación | +32% ingresos",
+        image: "/avatars/testimonial-1.png",
+        rating: 5,
+      },
+      {
+        name: "Carlos Mendoza",
+        role: "Revenue Manager",
+        company: "Resort Andino",
+        quote: "La inteligencia ejecutiva de Yagán nos ahorra 10 horas semanales de análisis. Las recomendaciones son precisas y siempre acertadas.",
+        result: "↓ 10h/semana | +$15k/mes",
+        image: "/avatars/testimonial-2.png",
+        rating: 5,
+      },
+      {
+        name: "Alejandra Ruiz",
+        role: "Directora de Operaciones",
+        company: "Cadena de Hoteles Caribe",
+        quote: "La automatización de Yagán eliminó las tareas repetitivas. Nuestro equipo ahora se enfoca en estrategia, no en tareas administrativas.",
+        result: "↑ 45% eficiencia | 98% tareas automatizadas",
+        image: "/avatars/testimonial-3.png",
+        rating: 5,
+      },
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqSub: "Todo lo que necesitas saber sobre Yagán",
+    faq: [
+      {
+        question: "¿Cuánto tiempo toma implementar Yagán?",
+        answer: "La implementación típica toma 2-3 semanas. Incluye migración de datos, capacitación del equipo e integración con tus sistemas actuales. Nuestro equipo te acompaña en cada paso.",
+      },
+      {
+        question: "¿Es compatible con mi PMS actual?",
+        answer: "Sí. Yagán se integra con los PMS más populares (Opera, Cloudbeds, Reservamos, etc). Si tu PMS no está listado, contacta a nuestro equipo para explorar opciones.",
+      },
+      {
+        question: "¿Qué sucede con mis datos?",
+        answer: "Tus datos están 100% protegidos. Usamos encriptación de nivel bancario, backups automáticos diarios y cumplimos con GDPR y regulaciones locales.",
+      },
+      {
+        question: "¿Puedo cancelar en cualquier momento?",
+        answer: "Sí. No hay contratos a largo plazo. Puedes cancelar tu suscripción en cualquier momento, aunque esperamos que ames Yagán tanto como nuestros clientes.",
+      },
+      {
+        question: "¿Ofrecen soporte en español?",
+        answer: "Claro. Tenemos soporte 24/7 en español vía chat, email y llamadas. Además, acceso a webinars semanales y documentación en tu idioma.",
+      },
     ],
     featuresLabel: "La plataforma",
     features: [
@@ -233,6 +291,61 @@ const copy = {
       { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
       { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
       { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
+    ],
+    testimonialsTitle: "What our customers say",
+    testimonialsSub: "4-5 star hotels across Latin America trust Yagán to optimize their operations",
+    testimonials: [
+      {
+        name: "Maria González",
+        role: "General Manager",
+        company: "Hotel Boutique Santiago",
+        quote: "Yagán completely transformed our operations. Occupancy increased from 78% to 94% in 6 months thanks to rate optimization.",
+        result: "↑ 94% occupancy | +32% revenue",
+        image: "/avatars/testimonial-1.png",
+        rating: 5,
+      },
+      {
+        name: "Carlos Mendoza",
+        role: "Revenue Manager",
+        company: "Resort Andino",
+        quote: "Yagán's executive intelligence saves us 10 hours per week on analysis. The recommendations are always accurate and actionable.",
+        result: "↓ 10h/week | +$15k/month",
+        image: "/avatars/testimonial-2.png",
+        rating: 5,
+      },
+      {
+        name: "Alejandra Ruiz",
+        role: "Operations Director",
+        company: "Caribbean Hotels Chain",
+        quote: "Yagán's automation eliminated repetitive tasks. Our team now focuses on strategy instead of administrative work.",
+        result: "↑ 45% efficiency | 98% automated tasks",
+        image: "/avatars/testimonial-3.png",
+        rating: 5,
+      },
+    ],
+    faqTitle: "Frequently asked questions",
+    faqSub: "Everything you need to know about Yagán",
+    faq: [
+      {
+        question: "How long does implementation take?",
+        answer: "Typical implementation takes 2-3 weeks. This includes data migration, team training, and integration with your current systems. Our team guides you through every step.",
+      },
+      {
+        question: "Is it compatible with my current PMS?",
+        answer: "Yes. Yagán integrates with popular PMS systems (Opera, Cloudbeds, Reservamos, etc). If your system isn't listed, contact our team to explore options.",
+      },
+      {
+        question: "What happens to my data?",
+        answer: "Your data is 100% protected. We use bank-level encryption, automatic daily backups, and comply with GDPR and local regulations.",
+      },
+      {
+        question: "Can I cancel anytime?",
+        answer: "Yes. No long-term contracts. You can cancel your subscription anytime, though we hope you'll love Yagán as much as our customers do.",
+      },
+      {
+        question: "Do you offer English support?",
+        answer: "Absolutely. We offer 24/7 support in English via chat, email, and calls. Plus access to weekly webinars and English documentation.",
+      },
     ],
     featuresLabel: "The platform",
     features: [
@@ -816,6 +929,36 @@ export function LoginShell({
               {lang === "es" ? "Integraciones de confianza" : "Trusted integrations"}
             </p>
             <LogosCarousel logos={c.partnerLogos} />
+          </div>
+
+          {/* Testimonials Section */}
+          <div className="mt-20 md:mt-28">
+            <TestimonialsSection
+              testimonials={c.testimonials}
+              title={c.testimonialsTitle}
+              subtitle={c.testimonialsSub}
+            />
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-20 md:mt-28">
+            <FAQAccordion
+              items={c.faq}
+              title={c.faqTitle}
+              subtitle={c.faqSub}
+            />
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-20 md:mt-28">
+            <CTASection
+              title={lang === "es" ? "¿Listo para transformar tu hotel?" : "Ready to transform your hotel?"}
+              subtitle={lang === "es" ? "Únete a cientos de hoteles que ya utilizan Yagán para optimizar sus operaciones" : "Join hundreds of hotels already using Yagán to optimize their operations"}
+              primaryText={lang === "es" ? "Solicitar acceso" : "Request access"}
+              secondaryText={lang === "es" ? "Ver demo" : "See demo"}
+              primaryAction={() => window.location.href = "/auth/login"}
+              secondaryAction={() => window.location.href = "#demo"}
+            />
           </div>
         </div>
 
