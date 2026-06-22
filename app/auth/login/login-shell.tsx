@@ -841,8 +841,8 @@ export function LoginShell({
       </header>
 
       {/* HERO */}
-      <section className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:px-10 lg:py-28">
-        <div className="space-y-8">
+      <section className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:px-10 lg:py-24">
+        <div className="space-y-7">
           <div
             className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-xs font-medium tracking-wide text-primary"
             style={{ animation: "lp-rise 0.7s ease both" }}
@@ -852,14 +852,14 @@ export function LoginShell({
           </div>
 
           <h1
-            className="text-5xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground sm:text-6xl xl:text-7xl"
+            className="text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl xl:text-7xl"
             style={{ animation: "lp-rise 0.75s ease 0.06s both", whiteSpace: "pre-line" }}
           >
             {c.headline}
           </h1>
 
           <p
-            className="max-w-xl text-lg leading-relaxed text-foreground/60"
+            className="max-w-md text-pretty text-lg leading-relaxed text-foreground/60"
             style={{ animation: "lp-rise 0.8s ease 0.12s both" }}
           >
             {c.subheadline}
@@ -870,105 +870,64 @@ export function LoginShell({
             style={{ animation: "lp-rise 0.85s ease 0.18s both" }}
           >
             <a href="/auth/login"
-              className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:brightness-110 active:scale-[0.98]">
+              className="group inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-7 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110 hover:shadow-primary/40 active:scale-[0.98]">
               {c.cta}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a href="#plataforma"
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-border/60 px-5 text-sm font-medium text-foreground/65 transition hover:border-primary/30 hover:text-foreground">
+              className="inline-flex h-12 items-center gap-2 rounded-xl border border-border/60 px-5 text-sm font-medium text-foreground/65 transition hover:border-primary/30 hover:text-foreground">
               {c.heroPlatformCta}
             </a>
           </div>
 
-          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.88s ease 0.21s both" }}>
+          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.9s ease 0.24s both" }}>
             {c.heroSignals.map((signal) => (
               <span key={signal} className="rounded-full border border-border/60 bg-card/50 px-3 py-1 text-[11px] font-medium text-foreground/60">
                 {signal}
               </span>
             ))}
           </div>
-
-          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.89s ease 0.225s both" }}>
-            {c.heroBenefits.map((benefit) => (
-              <span key={benefit} className="rounded-full border border-primary/20 bg-primary/8 px-3 py-1 text-[11px] font-semibold text-primary">
-                {benefit}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap gap-2" style={{ animation: "lp-rise 0.9s ease 0.24s both" }}>
-            <a href="/case-studies/blackswan" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
-              {c.proofCaseCta}
-            </a>
-            <a href="/walkthrough" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-medium text-foreground/65 transition hover:border-primary/30 hover:text-primary">
-              {lang === "es" ? "Pedir demo" : "Request a demo"}
-            </a>
-          </div>
-
-          <div
-            className="grid grid-cols-2 gap-3 sm:grid-cols-4"
-            style={{ animation: "lp-rise 0.95s ease 0.28s both" }}
-          >
-            {c.stats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-border/60 bg-card/60 px-4 py-3.5 backdrop-blur">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-foreground/40">{stat.label}</p>
-                <div className="mt-2 flex items-end gap-2">
-                  <span className="text-xl font-semibold tracking-tight text-foreground">{stat.value}</span>
-                  <span className="mb-0.5 rounded-full bg-primary/12 px-2 py-0.5 text-[10px] font-semibold text-primary">{stat.delta}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Carousel Icons */}
-          <CarouselIcons icons={c.carouselIcons} autoplay interval={4000} />
-
-          {/* Logos Carousel */}
-          <div className="mt-12">
-            <p className="text-center text-sm font-medium text-muted-foreground mb-8">
-              {lang === "es" ? "Integraciones de confianza" : "Trusted integrations"}
-            </p>
-            <LogosCarousel logos={c.partnerLogos} />
-          </div>
-
-          {/* Testimonials Section */}
-          <div className="mt-20 md:mt-28">
-            <TestimonialsSection
-              testimonials={c.testimonials}
-              title={c.testimonialsTitle}
-              subtitle={c.testimonialsSub}
-            />
-          </div>
-
-          {/* FAQ Section */}
-          <div className="mt-20 md:mt-28">
-            <FAQAccordion
-              items={c.faq}
-              title={c.faqTitle}
-              subtitle={c.faqSub}
-            />
-          </div>
-
-          {/* CTA Section */}
-          <div className="mt-20 md:mt-28">
-            <CTASection
-              title={lang === "es" ? "¿Listo para transformar tu hotel?" : "Ready to transform your hotel?"}
-              subtitle={lang === "es" ? "Únete a cientos de hoteles que ya utilizan Yagán para optimizar sus operaciones" : "Join hundreds of hotels already using Yagán to optimize their operations"}
-              primaryText={lang === "es" ? "Solicitar acceso" : "Request access"}
-              secondaryText={lang === "es" ? "Ver demo" : "See demo"}
-              primaryAction={() => window.location.href = "/auth/login"}
-              secondaryAction={() => window.location.href = "#demo"}
-            />
-          </div>
         </div>
 
         {/* Right — animated hotel floor plan canvas */}
         <div
-          className="relative hidden h-[520px] overflow-hidden rounded-3xl border border-border/40 lg:block"
+          className="relative h-[340px] overflow-hidden rounded-3xl border border-border/40 sm:h-[440px] lg:h-[520px]"
           style={{ animation: "lp-card 1s ease 0.1s both" }}
         >
           <HeroCanvas lang={lang} />
         </div>
+      </section>
+
+      {/* STATS BAND */}
+      <section className="mx-auto max-w-7xl px-6 pb-4 lg:px-10">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {c.stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-border/60 bg-card/60 px-4 py-4 backdrop-blur transition hover:border-primary/30 hover:bg-card"
+              style={{ animation: `lp-rise 0.6s ease ${0.1 + i * 0.07}s both` }}
+            >
+              <p className="text-[11px] font-medium uppercase tracking-wider text-foreground/40">{stat.label}</p>
+              <div className="mt-2 flex items-end gap-2">
+                <span className="text-2xl font-semibold tracking-tight text-foreground">{stat.value}</span>
+                <span className="mb-1 rounded-full bg-primary/12 px-2 py-0.5 text-[10px] font-semibold text-primary">{stat.delta}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFITS CAROUSEL — full width */}
+      <section className="mx-auto max-w-5xl px-6 py-10 lg:px-10">
+        <CarouselIcons icons={c.carouselIcons} autoplay interval={4000} />
+      </section>
+
+      {/* LOGOS — full width */}
+      <section className="mx-auto max-w-6xl px-6 pb-6 lg:px-10">
+        <p className="mb-6 text-center text-sm font-medium text-muted-foreground">
+          {lang === "es" ? "Integraciones de confianza" : "Trusted integrations"}
+        </p>
+        <LogosCarousel logos={c.partnerLogos} />
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-8 lg:px-10">
@@ -1167,6 +1126,36 @@ export function LoginShell({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* TESTIMONIALS — full width */}
+      <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <TestimonialsSection
+          testimonials={c.testimonials}
+          title={c.testimonialsTitle}
+          subtitle={c.testimonialsSub}
+        />
+      </section>
+
+      {/* FAQ — full width */}
+      <section className="mx-auto max-w-3xl px-6 py-16 lg:px-10 lg:py-20">
+        <FAQAccordion
+          items={c.faq}
+          title={c.faqTitle}
+          subtitle={c.faqSub}
+        />
+      </section>
+
+      {/* CTA — full width */}
+      <section className="mx-auto max-w-5xl px-6 py-16 lg:px-10 lg:py-20">
+        <CTASection
+          title={lang === "es" ? "¿Listo para transformar tu hotel?" : "Ready to transform your hotel?"}
+          subtitle={lang === "es" ? "Únete a cientos de hoteles que ya optimizan sus operaciones con Yagán." : "Join hundreds of hotels already optimizing operations with Yagán."}
+          primaryText={lang === "es" ? "Solicitar acceso" : "Request access"}
+          secondaryText={lang === "es" ? "Ver demo" : "See demo"}
+          primaryAction={() => (window.location.href = "/auth/login")}
+          secondaryAction={() => (window.location.href = "/walkthrough")}
+        />
       </section>
 
       <footer className="border-t border-border/40">
