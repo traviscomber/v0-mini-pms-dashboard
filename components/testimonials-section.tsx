@@ -42,7 +42,7 @@ export function TestimonialsSection({
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="rounded-xl border border-primary/20 bg-card/50 backdrop-blur-sm p-6 md:p-8 hover:border-primary/40 hover:bg-card/80 transition-all duration-300 shadow-lg hover:shadow-primary/10"
+              className="rounded-xl border border-primary/30 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur p-6 md:p-8 hover:border-primary/60 hover:bg-gradient-to-br hover:from-card hover:to-card/80 transition-all duration-300 shadow-xl hover:shadow-2xl"
             >
               {/* Stars */}
               <div className="flex gap-1 mb-4">

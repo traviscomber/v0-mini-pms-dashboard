@@ -35,7 +35,7 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
           {items.map((item, index) => (
             <div
               key={index}
-              className="rounded-lg border border-primary/20 bg-card/50 backdrop-blur-sm overflow-hidden hover:border-primary/40 transition-colors duration-300"
+              className="rounded-lg border border-primary/30 bg-gradient-to-r from-card/90 to-card/70 backdrop-blur overflow-hidden hover:border-primary/60 transition-colors duration-300"
             >
               <button
                 onClick={() =>
@@ -55,7 +55,7 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
 
               {/* Answer */}
               {openIndex === index && (
-                <div className="px-6 py-4 md:py-5 border-t border-primary/10 bg-primary/2.5 animate-in fade-in duration-300">
+                <div className="px-6 py-4 md:py-5 border-t border-primary/20 bg-gradient-to-r from-primary/5 to-primary/2 animate-in fade-in duration-300">
                   <p className="text-base text-muted-foreground leading-relaxed">
                     {item.answer}
                   </p>
