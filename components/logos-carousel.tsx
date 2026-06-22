@@ -1,72 +1,83 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { CreditCard, QrCode } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-interface LogoItem {
-  name: string;
-  path: string;
-  color: string;
+type Integration =
+  | { name: string; kind: "brand"; src: string }
+  | { name: string; kind: "icon"; Icon: LucideIcon };
+
+// Real integrations used by the platform. Brand marks from theSVG.org (mono),
+// concepts without a brand mark use consistent lucide line icons.
+const INTEGRATIONS: Integration[] = [
+  { name: "WhatsApp", kind: "brand", src: "/brands/whatsapp.svg" },
+  { name: "Webpay", kind: "icon", Icon: CreditCard },
+  { name: "QR Check-in", kind: "icon", Icon: QrCode },
+  { name: "Booking.com", kind: "brand", src: "/brands/bookingdotcom.svg" },
+  { name: "Airbnb", kind: "brand", src: "/brands/airbnb.svg" },
+  { name: "Expedia", kind: "brand", src: "/brands/expedia.svg" },
+  { name: "Mercado Pago", kind: "brand", src: "/brands/mercado-pago.svg" },
+];
+
+function IntegrationMark({ item }: { item: Integration }) {
+  return (
+    <div className="flex flex-shrink-0 items-center gap-2.5 px-6 text-foreground/45 transition-colors duration-300 hover:text-primary">
+      {item.kind === "brand" ? (
+        <span
+          aria-hidden
+          className="block h-6 w-6"
+          style={{
+            backgroundColor: "currentColor",
+            WebkitMaskImage: `url(${item.src})`,
+            maskImage: `url(${item.src})`,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+          }}
+        />
+      ) : (
+        <item.Icon className="h-6 w-6" strokeWidth={1.75} aria-hidden />
+      )}
+      <span className="whitespace-nowrap text-sm font-medium tracking-tight">{item.name}</span>
+    </div>
+  );
 }
 
-export function LogosCarousel({ logos }: { logos: LogoItem[] }) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  // Duplicate logos for infinite scroll effect
-  const duplicatedLogos = [...logos, ...logos, ...logos];
+export function LogosCarousel() {
+  // Duplicate the list so the marquee loops seamlessly.
+  const loop = [...INTEGRATIONS, ...INTEGRATIONS];
 
   return (
-    <div className="w-full py-12 md:py-16 bg-gradient-to-r from-background via-primary/5 to-background rounded-xl border border-primary/10">
-      <div className="relative px-6 md:px-12">
-        {/* Gradient overlays for seamless scroll */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+    <div className="relative w-full overflow-hidden py-6">
+      {/* Edge fades */}
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-background to-transparent" />
 
-        {/* Carousel container */}
-        <div
-          className={`flex gap-6 md:gap-10 transition-transform duration-1000 ease-linear ${
-            isVisible ? "animate-scroll" : ""
-          }`}
-        >
-          {duplicatedLogos.map((logo, index) => (
-            <div
-              key={`${logo.name}-${index}`}
-              className="flex-shrink-0 h-20 w-36 flex items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-md hover:border-primary/40 hover:bg-primary/15 transition-all duration-300 shadow-lg hover:shadow-primary/20"
-              style={{ 
-                borderColor: `${logo.color}30`,
-                backgroundColor: `${logo.color}08`
-              }}
-            >
-              <div className="relative w-28 h-14">
-                <Image
-                  src={logo.path}
-                  alt={logo.name}
-                  fill
-                  className="object-contain drop-shadow-md"
-                  priority={index < logos.length}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="flex w-max animate-marquee items-center">
+        {loop.map((item, i) => (
+          <IntegrationMark key={`${item.name}-${i}`} item={item} />
+        ))}
       </div>
 
       <style jsx>{`
-        @keyframes scroll {
+        @keyframes marquee {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-${logos.length * 300}px);
+            transform: translateX(-50%);
           }
         }
-
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
+        .animate-marquee {
+          animation: marquee 28s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-marquee {
+            animation: none;
+          }
         }
       `}</style>
     </div>

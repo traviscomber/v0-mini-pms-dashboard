@@ -65,16 +65,10 @@ const copy = {
       { label: "Tareas completadas", value: "98%", delta: "+4%" },
     ],
     carouselIcons: [
-      { icon: "🛏️", label: "Gestión de ocupación en tiempo real", color: "oklch(0.60 0.28 320)" },
-      { icon: "💰", label: "Optimización de tarifa diaria", color: "oklch(0.60 0.28 60)" },
-      { icon: "📊", label: "Análisis de ingresos predictivos", color: "oklch(0.60 0.28 200)" },
-      { icon: "✅", label: "Automatización de tareas operacionales", color: "oklch(0.60 0.28 150)" },
-    ],
-    partnerLogos: [
-      { name: "Webpay", path: "/logos/webpay-logo.png", color: "oklch(0.60 0.28 320)" },
-      { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
-      { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
-      { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
+      { key: "occupancy", label: "Gestión de ocupación en tiempo real" },
+      { key: "rate", label: "Optimización de tarifa diaria" },
+      { key: "analytics", label: "Análisis de ingresos predictivos" },
+      { key: "automation", label: "Automatización de tareas operacionales" },
     ],
     testimonialsTitle: "Lo que dicen nuestros clientes",
     testimonialsSub: "Hoteles de 4-5 estrellas en Latinoamérica confían en Yagán para optimizar sus operaciones",
@@ -281,16 +275,10 @@ const copy = {
       { label: "Tasks completed", value: "98%", delta: "+4%" },
     ],
     carouselIcons: [
-      { icon: "🛏️", label: "Real-time occupancy management", color: "oklch(0.60 0.28 320)" },
-      { icon: "💰", label: "Daily rate optimization", color: "oklch(0.60 0.28 60)" },
-      { icon: "📊", label: "Predictive revenue analytics", color: "oklch(0.60 0.28 200)" },
-      { icon: "✅", label: "Operational task automation", color: "oklch(0.60 0.28 150)" },
-    ],
-    partnerLogos: [
-      { name: "Webpay", path: "/logos/webpay-logo.png", color: "oklch(0.60 0.28 320)" },
-      { name: "WhatsApp", path: "/logos/whatsapp-logo.png", color: "oklch(0.60 0.28 140)" },
-      { name: "QR Check-in", path: "/logos/qr-checkin-logo.png", color: "oklch(0.60 0.28 200)" },
-      { name: "CTAs", path: "/logos/cta-logo.png", color: "oklch(0.60 0.28 60)" },
+      { key: "occupancy", label: "Real-time occupancy management" },
+      { key: "rate", label: "Daily rate optimization" },
+      { key: "analytics", label: "Predictive revenue analytics" },
+      { key: "automation", label: "Operational task automation" },
     ],
     testimonialsTitle: "What our customers say",
     testimonialsSub: "4-5 star hotels across Latin America trust Yagán to optimize their operations",
@@ -927,7 +915,7 @@ export function LoginShell({
         <p className="mb-6 text-center text-sm font-medium text-muted-foreground">
           {lang === "es" ? "Integraciones de confianza" : "Trusted integrations"}
         </p>
-        <LogosCarousel logos={c.partnerLogos} />
+        <LogosCarousel />
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-8 lg:px-10">
